@@ -8,8 +8,10 @@ Route::get('/', function () {
 });
 
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\TeachersController;
 Route::resource('students', StudentController::class);
+Route::resource('teachers', TeachersController::class);
+
 
 
 

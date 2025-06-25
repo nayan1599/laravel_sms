@@ -18,4 +18,7 @@ protected $fillable = [
         'address',
         'photo'
     ];
+
+ 
+    
 }

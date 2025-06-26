@@ -9,9 +9,13 @@ Route::get('/', function () {
 
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeachersController;
+use App\Http\Controllers\GuardianController;
+
+
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeachersController::class);
-
+Route::resource('guardians', GuardianController::class);
+Route::post('/students/{student}/attach-guardian', [StudentController::class, 'attachGuardian'])->name('students.attachGuardian');
 
 
 

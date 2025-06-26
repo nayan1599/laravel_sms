@@ -18,7 +18,12 @@ protected $fillable = [
         'address',
         'photo'
     ];
-
+public function guardians()
+{
+    return $this->belongsToMany(Guardian::class, 'student_guardian')
+                ->withPivot('relation')
+                ->withTimestamps();
+}
  
     
 }

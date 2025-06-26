@@ -31,6 +31,7 @@
                 <td>{{ $student->roll }}</td>
                 <td>{{ $student->phone }}</td>
                 <td>
+                      <a href="{{ route('students.show', $student->id) }}" class="btn btn-sm btn-info">View</a>
                     <a href="{{ route('students.edit', $student->id) }}" class="btn btn-sm btn-info">Edit</a>
                     <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline-block;">
                         @csrf @method('DELETE')

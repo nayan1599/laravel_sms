@@ -44,6 +44,13 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Student Added Successfully!');
     }
 
+   public function show($id)
+    {
+        $students = Student::findOrFail($id);
+        return view('students.show', compact('students'));
+    }
+
+
     public function edit(Student $student)
     {
         return view('students.edit', compact('student'));
@@ -87,4 +94,10 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route('students.index')->with('success', 'Student Deleted Successfully!');
     }
+
+
+
+ 
+
 }
+

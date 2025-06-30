@@ -10,11 +10,13 @@ Route::get('/', function () {
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\ClassController;
 
 
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeachersController::class);
 Route::resource('guardians', GuardianController::class);
+Route::resource('classes', ClassController::class);
 Route::post('/students/{student}/attach-guardian', [StudentController::class, 'attachGuardian'])->name('students.attachGuardian');
 
 
@@ -35,4 +37,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

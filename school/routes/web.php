@@ -11,8 +11,9 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\SectionController;
 
-
+Route::resource('sections', SectionController::class);
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeachersController::class);
 Route::resource('guardians', GuardianController::class);

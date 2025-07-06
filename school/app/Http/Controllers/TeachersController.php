@@ -31,6 +31,7 @@ class TeachersController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:150',
             'employee_id' => 'required|unique:teachers,employee_id',
             'designation' => 'required|string|max:100',
             'department' => 'nullable|string|max:100',
@@ -79,6 +80,7 @@ class TeachersController extends Controller
 
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:150',
             'employee_id' => 'required|unique:teachers,employee_id,' . $teacher->id,
             'designation' => 'required|string|max:100',
             'department' => 'nullable|string|max:100',

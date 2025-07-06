@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Student;
 use Illuminate\Http\Request;
-
+use App\Models\ClassModel;
+use App\Models\Section;
+use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -15,21 +19,23 @@ class StudentController extends Controller
 
     public function create()
     {
-        return view('students.create');
+        $classes = ClassModel::all();
+        $sections = Section::all();
+        return view('students.create', compact('classes', 'sections'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:students',
-            'phone' => 'nullable',
+            'phone' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
-            'gender' => 'nullable',
-            'class' => 'required',
-            'section' => 'nullable',
-            'roll' => 'nullable',
-            'address' => 'nullable',
+            'gender' => 'nullable|in:male,female,other',
+            'class_id' => 'required|exists:classes,id',
+            'section_id' => 'nullable|exists:sections,id',
+            'roll' => 'nullable|integer',
+            'address' => 'nullable|string',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -44,30 +50,31 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Student Added Successfully!');
     }
 
-   public function show($id)
+    public function show($id)
     {
-        $students = Student::findOrFail($id);
-        return view('students.show', compact('students'));
+        $student = Student::findOrFail($id);
+        return view('students.show', compact('student'));
     }
-
 
     public function edit(Student $student)
     {
-        return view('students.edit', compact('student'));
+        $classes = ClassModel::all();
+        $sections = Section::all();
+        return view('students.edit', compact('student', 'classes', 'sections'));
     }
 
     public function update(Request $request, Student $student)
     {
         $data = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:students,email,' . $student->id,
-            'phone' => 'nullable',
+            'phone' => 'nullable|string|max:20',
             'dob' => 'nullable|date',
-            'gender' => 'nullable',
-            'class' => 'required',
-            'section' => 'nullable',
-            'roll' => 'nullable',
-            'address' => 'nullable',
+            'gender' => 'nullable|in:male,female,other',
+            'class_id' => 'required|exists:classes,id',
+            'section_id' => 'nullable|exists:sections,id',
+            'roll' => 'nullable|integer',
+            'address' => 'nullable|string',
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -94,10 +101,4 @@ class StudentController extends Controller
         $student->delete();
         return redirect()->route('students.index')->with('success', 'Student Deleted Successfully!');
     }
-
-
-
- 
-
 }
-

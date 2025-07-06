@@ -31,7 +31,7 @@
             <tr>
                 <td>{{ $teachers->firstItem() + $index }}</td>
                 <td>{{ $teacher->employee_id }}</td>
-                <td>{{ $teacher->user->name ?? 'N/A' }}</td>
+                <td>{{ $teacher->name }}</td>
                 <td>{{ $teacher->designation }}</td>
                 <td>{{ $teacher->department ?? '-' }}</td>
                 <td>{{ $teacher->date_of_joining }}</td>

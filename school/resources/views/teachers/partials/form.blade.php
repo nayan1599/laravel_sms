@@ -7,6 +7,12 @@
     </div>
 
     <div class="col-md-6">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" name="name" value="{{ old('name', $teacher->name ?? '') }}" class="form-control @error('name') is-invalid @enderror">
+        @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+    </div>
+
+    <div class="col-md-6">
         <label for="employee_id" class="form-label">Employee ID</label>
         <input type="text" name="employee_id" value="{{ old('employee_id', $teacher->employee_id ?? '') }}" class="form-control @error('employee_id') is-invalid @enderror">
         @error('employee_id') <div class="invalid-feedback">{{ $message }}</div> @enderror

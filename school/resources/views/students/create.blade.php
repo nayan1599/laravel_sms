@@ -32,19 +32,34 @@
             <label>Gender</label>
             <select name="gender" class="form-control">
                 <option value="">Select</option>
-                <option value="Male" {{ (old('gender', $student->gender ?? '') == 'Male') ? 'selected' : '' }}>Male</option>
-                <option value="Female" {{ (old('gender', $student->gender ?? '') == 'Female') ? 'selected' : '' }}>Female</option>
+                <option value="male" {{ old('gender', $student->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                <option value="female" {{ old('gender', $student->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                <option value="other" {{ old('gender', $student->gender ?? '') == 'other' ? 'selected' : '' }}>Other</option>
             </select>
         </div>
 
         <div class="mb-3">
             <label>Class</label>
-            <input type="text" name="class" value="{{ old('class', $student->class ?? '') }}" class="form-control">
+            <select name="class_id" class="form-control">
+                <option value="">Select Class</option>
+                @foreach ($classes as $class)
+                    <option value="{{ $class->id }}" {{ old('class_id', $student->class_id ?? '') == $class->id ? 'selected' : '' }}>
+                        {{ $class->class_name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <div class="mb-3">
             <label>Section</label>
-            <input type="text" name="section" value="{{ old('section', $student->section ?? '') }}" class="form-control">
+            <select name="section_id" class="form-control">
+                <option value="">Select Section</option>
+                @foreach($sections as $section)
+                    <option value="{{ $section->id }}" {{ old('section_id', $student->section_id ?? '') == $section->id ? 'selected' : '' }}>
+                        {{ $section->section_name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <div class="mb-3">
@@ -61,7 +76,7 @@
             <label>Photo</label>
             <input type="file" name="photo" class="form-control">
             @if(isset($student) && $student->photo)
-                <img src="{{ asset($student->photo) }}" width="80">
+                <img src="{{ asset($student->photo) }}" width="80" class="mt-2">
             @endif
         </div>
 

@@ -11,26 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('attendance', function (Blueprint $table) {
+     Schema::create('attendance', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('class_id');
             $table->unsignedBigInteger('section_id')->nullable();
-            $table->unsignedBigInteger('subject_id')->nullable(); // Optional: per-subject attendance
-
+            $table->unsignedBigInteger('subject_id')->nullable();
             $table->date('attendance_date');
 
             $table->enum('status', ['present', 'absent', 'late', 'leave'])->default('present');
             $table->string('remarks', 255)->nullable();
 
-            $table->unsignedBigInteger('recorded_by')->nullable(); // user_id of teacher/admin
+            $table->unsignedBigInteger('recorded_by')->nullable();
             $table->timestamp('recorded_at')->useCurrent();
 
-            // Prevent duplicate entry: same student + date + subject
+            $table->timestamps();
+
             $table->unique(['student_id', 'attendance_date', 'subject_id']);
 
-            // Foreign keys
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
             $table->foreign('section_id')->references('id')->on('sections')->onDelete('set null');

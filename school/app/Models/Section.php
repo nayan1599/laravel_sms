@@ -26,4 +26,6 @@ class Section extends Model
     {
         return $this->belongsTo(Teachers::class, 'section_teacher_id');
     }
+
+    
 }

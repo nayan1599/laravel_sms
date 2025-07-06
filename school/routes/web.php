@@ -12,7 +12,12 @@ use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\AttendanceController;
 
+
+
+
+Route::resource('sections', AttendanceController::class);
 Route::resource('sections', SectionController::class);
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeachersController::class);

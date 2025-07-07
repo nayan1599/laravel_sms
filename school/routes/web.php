@@ -14,11 +14,13 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ExamController;
+ use App\Http\Controllers\MarkController;
 
-
+Route::resource('marks', MarkController::class);
+Route::resource('exams', ExamController::class);
 Route::resource('subjects', SubjectController::class);
 Route::resource('attendance', AttendanceController::class);
-
 Route::resource('sections', SectionController::class);
 Route::resource('students', StudentController::class);
 Route::resource('teachers', TeachersController::class);

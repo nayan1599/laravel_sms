@@ -2,42 +2,64 @@
 
 @section('content')
 <div class="container">
-    <h2>Marks List</h2>
-    <a href="{{ route('marks.create') }}" class="btn btn-success mb-3">+ Add Marks</a>
+    <h2 class="mb-4">All Marks</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Student</th>
-                <th>Exam</th>
-                <th>Subject</th>
-                <th>Marks</th>
-                <th>Grade</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($marks as $mark)
-            <tr>
-                <td>{{ $mark->student->name }}</td>
-                <td>{{ $mark->exam->exam_name }}</td>
-                <td>{{ $mark->subject->subject_name }}</td>
-                <td>{{ $mark->marks_obtained }}/{{ $mark->total_marks }}</td>
-                <td>{{ $mark->grade }}</td>
-                <td>
-                    <a href="{{ route('marks.edit', $mark->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                    <form action="{{ route('marks.destroy', $mark->id) }}" method="POST" style="display:inline-block;">
-                        @csrf @method('DELETE')
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Delete this mark?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <a href="{{ route('marks.create') }}" class="btn btn-success mb-3">+ Add Mark</a>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Student</th>
+                        <th>Exam</th>
+                        <th>Subject</th>
+                        <th>Marks Obtained</th>
+                        <th>Total Marks</th>
+                        <th>Grade</th>
+                        <th>Remarks</th>
+                        <th>Recorded At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($marks as $index => $mark)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $mark->student->name ?? 'N/A' }}</td>
+                            <td>{{ $mark->exam->exam_name ?? 'N/A' }}</td>
+                            <td>{{ $mark->subject->subject_name ?? 'N/A' }}</td>
+                            <td>{{ $mark->marks_obtained }}</td>
+                            <td>{{ $mark->total_marks }}</td>
+                            <td>{{ $mark->grade }}</td>
+                            <td>{{ $mark->remarks }}</td>
+                            <td>{{ \Carbon\Carbon::parse($mark->recorded_at)->format('d M Y') }}</td>
+                            <td>
+                                <a href="{{ route('marks.show', $mark->id) }}" class="btn btn-sm btn-info">View</a>
+                                <a href="{{ route('marks.edit', $mark->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                                <form action="{{ route('marks.destroy', $mark->id) }}" method="POST" class="d-inline-block"
+                                    onsubmit="return confirm('Are you sure you want to delete this mark?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="10" class="text-center">No marks found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 @endsection

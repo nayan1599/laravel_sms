@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
- use App\Models\Mark;
+
+use App\Models\Mark;
 use App\Models\Student;
 use App\Models\Exam;
 use App\Models\Subject;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class MarkController extends Controller
 {
@@ -25,28 +25,28 @@ class MarkController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'student_id' => 'required',
-            'exam_id' => 'required',
-            'subject_id' => 'required',
-            'marks_obtained' => 'required|numeric',
-        ]);
+{
+    $request->validate([
+        'student_id' => 'required',
+        'exam_id' => 'required',
+        'subject_id' => 'required',
+        'marks_obtained' => 'required|numeric',
+    ]);
 
-        $mark = new Mark();
-        $mark->student_id = $request->student_id;
-        $mark->exam_id = $request->exam_id;
-        $mark->subject_id = $request->subject_id;
-        $mark->marks_obtained = $request->marks_obtained;
-        $mark->total_marks = $request->total_marks ?? 100; // Default to 100 if not provided
-        $mark->grade = $request->grade ?? 'N/A'; // Default to 'N/A' if not provided
-        $mark->remarks = $request->remarks ?? '';
-        $mark->recorded_by = Auth::id(); // Assuming the user is logged in
-        $mark->recorded_at = now(); // Current timestamp
-      
+    $mark = new Mark();
+    $mark->student_id = $request->student_id;
+    $mark->exam_id = $request->exam_id;
+    $mark->subject_id = $request->subject_id;
+    $mark->marks_obtained = $request->marks_obtained;
+    $mark->total_marks = $request->total_marks ?? 100; // Default to 100
+    $mark->grade = $request->grade ?? 'N/A';
+    $mark->remarks = $request->remarks ?? '';
+    $mark->recorded_at = now();
 
-        return redirect()->route('marks.index')->with('success', 'Mark added successfully.');
-    }
+    $mark->save(); // ✅ এই লাইনটি আগে ছিল না
+
+    return redirect()->route('marks.index')->with('success', 'Mark added successfully.');
+}
 
     public function edit(Mark $mark)
     {
@@ -62,10 +62,19 @@ class MarkController extends Controller
             'marks_obtained' => 'required|numeric',
         ]);
 
-        $mark->update($request->all());
+        $mark->update([
+            'marks_obtained' => $request->marks_obtained,
+            'total_marks' => $request->total_marks ?? $mark->total_marks,
+            'grade' => $request->grade ?? $mark->grade,
+            'remarks' => $request->remarks ?? $mark->remarks,
+        ]);
 
         return redirect()->route('marks.index')->with('success', 'Mark updated successfully.');
     }
+    public function show(Mark $mark)
+{
+    return view('marks.show', compact('mark'));
+}
 
     public function destroy(Mark $mark)
     {

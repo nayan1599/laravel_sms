@@ -15,8 +15,14 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ExamController;
- use App\Http\Controllers\MarkController;
+use App\Http\Controllers\MarkController;
+use App\Http\Controllers\FeeController;
 
+
+
+
+
+Route::resource('fees', FeeController::class);
 Route::resource('marks', MarkController::class);
 Route::resource('exams', ExamController::class);
 Route::resource('subjects', SubjectController::class);

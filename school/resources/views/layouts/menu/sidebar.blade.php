@@ -59,7 +59,7 @@
                   </li>
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon image" aria-hidden="true"></span>Media
+                          <span class="icon image" aria-hidden="true"></span>Employees
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
@@ -67,10 +67,10 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li>
-                              <a href="media-01.html">Media-01</a>
+                              <a href="{{ route('employees.index')}}">All Employees</a>
                           </li>
                           <li>
-                              <a href="media-02.html">Media-02</a>
+                              <a href="{{ route('employees.create')}}">Add Employees</a>
                           </li>
                       </ul>
                   </li>
@@ -99,48 +99,50 @@
                       <span class="msg-counter">7</span>
                   </li>
               </ul>
-              <span class="system-menu__title">system</span>
+              <span class="system-menu__title">Class Setting</span>
               <ul class="sidebar-body-menu">
                   <li>
-                      <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
-                  </li>
-                  <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon category" aria-hidden="true"></span>Extentions
+                          <span class="icon category" aria-hidden="true"></span>Class & Section
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li>
-                              <a href="extention-01.html">Extentions-01</a>
-                          </li>
-                          <li>
-                              <a href="extention-02.html">Extentions-02</a>
-                          </li>
+                          <li> <a href="extention-01.html">Section List</a> </li>
+                          <li> <a href="extention-02.html">Add New Section</a> </li>
+                          <li> <a href="extention-01.html">Class List</a> </li>
+                          <li> <a href="extention-02.html">Add New Class</a> </li>
                       </ul>
                   </li>
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon user-3" aria-hidden="true"></span>Users
+                          <span class="icon user-3" aria-hidden="true"></span>Exams
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li>
-                              <a href="users-01.html">Users-01</a>
-                          </li>
-                          <li>
-                              <a href="users-02.html">Users-02</a>
-                          </li>
+                          <li> <a href="users-01.html">All Exams</a> </li>
+                          <li> <a href="users-02.html">Add New Exams</a> </li>
                       </ul>
                   </li>
                   <li>
-                      <a href="##"><span class="icon setting" aria-hidden="true"></span>Settings</a>
+                      <a class="show-cat-btn" href="##">
+                          <span class="icon user-3" aria-hidden="true"></span>Exams
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Open list</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
+                      <ul class="cat-sub-menu">
+                          <li> <a href="users-01.html">All Exams</a> </li>
+                          <li> <a href="users-02.html">Add New Exams</a> </li>
+                      </ul>
                   </li>
+                  <li> <a href="##"><span class="icon setting" aria-hidden="true"></span>Attendance</a> </li>
               </ul>
           </div>
       </div>

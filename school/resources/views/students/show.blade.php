@@ -1,25 +1,147 @@
 @extends('layouts.layouts')
 
 @section('content')
-<div class="container">
-    <h3>Student Details</h3>
-    <hr>
+<div class="container bg-white p-4 shadow-sm" id="print-area">
+    <div class="text-center mb-4">
+        <h3 class="fw-bold">Student Admission Form</h3>
+        <p><strong>School Name:</strong> Your School Name Here</p>
+    </div>
 
-    <p><strong>Name:</strong> {{ $student->name }}</p>
-    <p><strong>Email:</strong> {{ $student->email ?? 'N/A' }}</p>
-    <p><strong>Phone:</strong> {{ $student->phone ?? 'N/A' }}</p>
-    <p><strong>Date of Birth:</strong> {{ $student->dob ?? 'N/A' }}</p>
-    <p><strong>Gender:</strong> {{ ucfirst($student->gender) ?? 'N/A' }}</p>
-    <p><strong>Class:</strong> {{ $student->studentClass->class_name ?? 'N/A' }}</p>
-    <p><strong>Section:</strong> {{ $student->section->section_name ?? 'N/A' }}</p>
-    <p><strong>Roll:</strong> {{ $student->roll ?? 'N/A' }}</p>
-    <p><strong>Address:</strong> {{ $student->address ?? 'N/A' }}</p>
+    <div class="row">
+        {{-- Photo --}}
+        <div class="col-md-3 text-center">
+            @if($student->photo)
+                <img src="{{ asset($student->photo) }}" alt="Photo" class="border" width="120">
+            @else
+                <div class="border p-5">No Photo</div>
+            @endif
+        </div>
 
-    @if($student->photo)
-        <p><strong>Photo:</strong><br>
-        <img src="{{ asset($student->photo) }}" width="120" class="mt-2"></p>
-    @endif
+        {{-- Basic Info --}}
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <td>{{ $student->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date of Birth</th>
+                        <td>{{ $student->dob ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender</th>
+                        <td>{{ ucfirst($student->gender) ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Blood Group</th>
+                        <td>{{ $student->blood_group ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Religion</th>
+                        <td>{{ $student->religion ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nationality</th>
+                        <td>{{ $student->nationality ?? 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Birth Certificate No</th>
+                        <td>{{ $student->birth_cert_no ?? 'N/A' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3">Back to List</a>
+    <h5 class="mt-4">Contact Information</h5>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Phone</th>
+                <td>{{ $student->phone ?? 'N/A' }}</td>
+                <th>Email</th>
+                <td>{{ $student->email ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Present Address</th>
+                <td colspan="3">{{ $student->present_address ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Permanent Address</th>
+                <td colspan="3">{{ $student->permanent_address ?? 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5 class="mt-4">Guardian Information</h5>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Father's Name</th>
+                <td>{{ $student->father_name ?? 'N/A' }}</td>
+                <th>Mother's Name</th>
+                <td>{{ $student->mother_name ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Guardian Phone</th>
+                <td>{{ $student->guardian_phone ?? 'N/A' }}</td>
+                <th>Occupation</th>
+                <td>{{ $student->guardian_occupation ?? 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5 class="mt-4">Academic Information</h5>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Class</th>
+                <td>{{ $student->studentClass->class_name ?? 'N/A' }}</td>
+                <th>Section</th>
+                <td>{{ $student->section->section_name ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Roll</th>
+                <td>{{ $student->roll ?? 'N/A' }}</td>
+                <th>Admission Date</th>
+                <td>{{ $student->admission_date ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Previous School</th>
+                <td colspan="3">{{ $student->previous_school ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Last Exam Result</th>
+                <td colspan="3">{{ $student->last_exam_result ?? 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5 class="mt-4">Remarks</h5>
+    <p>{{ $student->remarks ?? 'N/A' }}</p>
+
+    <div class="text-end mt-5">
+        <button onclick="window.print()" class="btn btn-primary">🖨️ Print Form</button>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">← Back to List</a>
+    </div>
 </div>
+
+<style>
+    @media print {
+        .btn, .main-header, .sidebar, footer {
+            display: none !important;
+        }
+
+        #print-area {
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        table, th, td {
+            border: 1px solid black !important;
+        }
+    }
+</style>
 @endsection

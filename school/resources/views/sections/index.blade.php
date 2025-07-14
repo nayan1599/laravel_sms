@@ -2,13 +2,14 @@
 
 @section('content')
 <div class="container">
-    <h2>Sections List</h2>
+    <h2 class="main-title">Sections List</h2>
     <a href="{{ route('sections.create') }}" class="btn btn-success mb-2">Add New Section</a>
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <table class="table table-bordered">
-        <thead>
+
+  <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>Class</th>
                 <th>Section</th>

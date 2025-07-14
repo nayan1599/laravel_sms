@@ -2,20 +2,24 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">All Employees</h2>
+    <h2 class="mb-4 main-title">All Employees</h2>
 
-    <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3">+ Add Employee</a>
+    <a href="{{ route('employees.create') }}" class="btn btn-success mb-3">+ Add Employee</a>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
+   <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>#</th>
-                <th>Name</th><th>Email</th><th>Phone</th>
-                <th>Designation</th><th>Joining Date</th><th>Action</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Designation</th>
+                <th>Joining Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>

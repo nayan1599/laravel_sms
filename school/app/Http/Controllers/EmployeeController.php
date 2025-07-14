@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
-
+use App\Models\Department;
 class EmployeeController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $employees = Employee::latest()->paginate(10);
         return view('employees.index', compact('employees'));
     }
- 
 
-    public function create() {
-        return view('employees.create');
+
+    public function create()
+    {
+        $departments = Department::all(); // অথবা ['HR', 'Accounts', 'IT'] এরকম array
+        return view('employees.create', compact('departments'));
+        // return view('employees.create');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:employees',
@@ -30,11 +35,13 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee added successfully!');
     }
 
-    public function edit(Employee $employee) {
+    public function edit(Employee $employee)
+    {
         return view('employees.edit', compact('employee'));
     }
 
-    public function update(Request $request, Employee $employee) {
+    public function update(Request $request, Employee $employee)
+    {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:employees,email,' . $employee->id,
@@ -43,11 +50,13 @@ class EmployeeController extends Controller
         ]);
 
         $employee->update($request->all());
-
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully!');
+        $departments = Department::all(); // অথবা ['HR', 'Accounts', 'IT'] এরকম array
+        // return view('employees.create', compact('departments'))
+        return redirect()->route('employees.index', compact('departments'))->with('success', 'Employee updated successfully!');
     }
 
-    public function destroy(Employee $employee) {
+    public function destroy(Employee $employee)
+    {
         $employee->delete();
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully!');
     }

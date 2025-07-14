@@ -2,15 +2,15 @@
 
 @section('content')
 <div class="container">
-    <h1>Classes</h1>
-    <a href="{{ route('classes.create') }}" class="btn btn-primary mb-3">Add New Class</a>
+    <h1 class="main-title">Classes</h1>
+    <a href="{{ route('classes.create') }}" class="btn btn-success mb-3">Add New Class</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
+  <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>Class Name</th>

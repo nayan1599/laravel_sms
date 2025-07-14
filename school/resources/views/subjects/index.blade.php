@@ -2,15 +2,16 @@
 
 @section('content')
 <div class="container">
-    <h2>Subject List</h2>
+    <h2 class="main-title">Subject List</h2>
     <a href="{{ route('subjects.create') }}" class="btn btn-primary mb-3">Add New Subject</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
+
+  <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>Name</th>
                 <th>Code</th>

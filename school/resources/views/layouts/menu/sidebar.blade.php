@@ -103,17 +103,17 @@
               <ul class="sidebar-body-menu">
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon category" aria-hidden="true"></span>Class & Section
+                          <span class="icon category" aria-hidden="true"></span>Class & Exam
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li> <a href="extention-01.html">Section List</a> </li>
-                          <li> <a href="extention-02.html">Add New Section</a> </li>
-                          <li> <a href="extention-01.html">Class List</a> </li>
-                          <li> <a href="extention-02.html">Add New Class</a> </li>
+                          <li> <a href="{{route('subjects.index')}}">Subjects List</a> </li>
+                          <li> <a href="{{route('sections.index')}}">Section List</a> </li>
+                          <li> <a href="{{route('classes.index')}}">Class List</a> </li>
+                          <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
                       </ul>
                   </li>
                   <li>
@@ -142,7 +142,24 @@
                           <li> <a href="users-02.html">Add New Exams</a> </li>
                       </ul>
                   </li>
-                  <li> <a href="##"><span class="icon setting" aria-hidden="true"></span>Attendance</a> </li>
+
+                  <!-- setting section  -->
+                  <li>
+                      <a class="show-cat-btn" href="##">
+                          <span class="icon setting" aria-hidden="true"></span>Setting
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Open list</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
+                      <ul class="cat-sub-menu">
+                          <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
+                       </ul>
+                  </li>
+
+
+
+                  <!-- <li> <a href="##"><span class="icon setting" aria-hidden="true"></span>Attendance</a> </li> -->
               </ul>
           </div>
       </div>

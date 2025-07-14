@@ -1,13 +1,22 @@
 <!-- resources/views/teachers/partials/form.blade.php -->
 <div class="row g-3">
     <div class="col-md-6">
-        <label for="user_id" class="form-label">User (Name)</label>
-        <input type="number" name="user_id" value="{{ old('user_id', $teacher->user_id ?? '') }}" class="form-control @error('user_id') is-invalid @enderror">
-        @error('user_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+     
+    <label for="user_id" class="form-label">Select User</label>
+    <select name="user_id" id="user_id" class="form-control" required>
+        <option value="">-- Select a User --</option>
+        @foreach($users as $user)
+            <option value="{{ $user->id }}"
+                {{ isset($teacher) && $teacher->user_id == $user->id ? 'selected' : '' }}>
+                {{ $user->name }} ({{ $user->email }})
+            </option>
+        @endforeach
+    </select>
+ 
     </div>
 
     <div class="col-md-6">
-        <label for="name" class="form-label">Name</label>
+          <label class="form-label">Name</label>
         <input type="text" name="name" value="{{ old('name', $teacher->name ?? '') }}" class="form-control @error('name') is-invalid @enderror">
         @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>

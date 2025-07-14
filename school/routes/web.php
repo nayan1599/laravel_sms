@@ -21,6 +21,7 @@ use App\Http\Controllers\MarkController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DepartmentController;
 
 
 
@@ -29,6 +30,7 @@ use App\Http\Controllers\EmployeeController;
 // Route::get('/', function () {
 //     return redirect()->route('dashboard');
 // });
+Route::resource('departments', DepartmentController::class);
 Route::resource('fees', FeeController::class);
 Route::resource('marks', MarkController::class);
 Route::resource('exams', ExamController::class);

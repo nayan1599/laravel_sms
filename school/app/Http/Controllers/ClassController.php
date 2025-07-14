@@ -31,9 +31,8 @@ class ClassController extends Controller
             'class_teacher_id' => 'nullable|exists:teachers,id',
             'status' => 'required|in:active,inactive',
         ]);
-
+   
         ClassModel::create($request->all());
-
         return redirect()->route('classes.index')->with('success', 'Class created successfully.');
     }
 

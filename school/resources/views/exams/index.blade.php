@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container">
-    <h2>All Exams</h2>
+    <h2 class="main-title">All Exams</h2>
     <a href="{{ route('exams.create') }}" class="btn btn-success mb-3">+ Add Exam</a>
 
-    <table class="table table-bordered">
-        <thead>
+  <table class="table table-bordered table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>Exam Name</th>
                 <th>Class</th>

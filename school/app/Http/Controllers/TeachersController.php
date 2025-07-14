@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teachers;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class TeachersController extends Controller
 {
@@ -21,7 +22,8 @@ class TeachersController extends Controller
      */
     public function create()
     {
-        return view('teachers.create');
+        $users = User::all();
+        return view('teachers.create', compact('users'));
     }
 
     /**
@@ -68,7 +70,9 @@ class TeachersController extends Controller
     public function edit($id)
     {
         $teacher = Teachers::findOrFail($id);
-        return view('teachers.edit', compact('teacher'));
+          $users = User::all();
+    return view('teachers.edit', compact('teacher', 'users'));
+        // return view('teachers.edit', compact('teacher'));
     }
 
     /**

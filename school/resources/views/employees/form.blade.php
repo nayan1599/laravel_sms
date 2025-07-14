@@ -1,28 +1,57 @@
 @csrf
-<div class="mb-3">
-    <label>Name</label>
-    <input type="text" name="name" class="form-control" value="{{ old('name', $employee->name ?? '') }}" required>
-</div>
+<div class="  rounded p-4">
+   
+    <div class="row">
+        <!-- Name -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Name <span class="text-danger">*</span></label>
+            <input type="text" name="name" class="form-control" value="{{ old('name', $employee->name ?? '') }}" required>
+        </div>
 
-<div class="mb-3">
-    <label>Email</label>
-    <input type="email" name="email" class="form-control" value="{{ old('email', $employee->email ?? '') }}" required>
-</div>
+        <!-- Email -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" name="email" class="form-control" value="{{ old('email', $employee->email ?? '') }}" required>
+        </div>
 
-<div class="mb-3">
-    <label>Phone</label>
-    <input type="text" name="phone" class="form-control" value="{{ old('phone', $employee->phone ?? '') }}" required>
-</div>
+        <!-- Phone -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Phone <span class="text-danger">*</span></label>
+            <input type="text" name="phone" class="form-control" value="{{ old('phone', $employee->phone ?? '') }}" required>
+        </div>
 
-<div class="mb-3">
-    <label>Designation</label>
-    <input type="text" name="designation" class="form-control" value="{{ old('designation', $employee->designation ?? '') }}" required>
-</div>
+        <!-- Designation -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Designation <span class="text-danger">*</span></label>
+            <input type="text" name="designation" class="form-control" value="{{ old('designation', $employee->designation ?? '') }}" required>
+        </div>
 
-<div class="mb-3">
-    <label>Joining Date</label>
-    <input type="date" name="joining_date" class="form-control" value="{{ old('joining_date', $employee->joining_date ?? '') }}">
-</div>
+        <!-- Department -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Department <span class="text-danger">*</span></label>
+            <select name="department" class="form-select" required>
+                <option value="">-- Select Department --</option>
+                @foreach($departments as $department)
+                    <option value="{{ $department->name }}" {{ old('department', $employee->department ?? '') == $department->name ? 'selected' : '' }}>
+                        {{ $department->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-<button class="btn btn-success">Save</button>
-<a href="{{ route('employees.index') }}" class="btn btn-secondary">Back</a>
+        <!-- Joining Date -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Joining Date</label>
+            <input type="date" name="joining_date" class="form-control" value="{{ old('joining_date', $employee->joining_date ?? '') }}">
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Save
+        </button>
+        <a href="{{ route('employees.index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+</div>

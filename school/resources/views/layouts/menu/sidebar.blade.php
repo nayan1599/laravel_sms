@@ -131,14 +131,19 @@
                   </li>
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon user-3" aria-hidden="true"></span>Exams
+                          <span class="icon user-3" aria-hidden="true"></span>Report
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li> <a href="users-01.html">All Exams</a> </li>
+                          <li> <a href="{{ route('attendance.report') }}">Attendance Students</a></li>
+                          <li>
+                              <a href="{{ route('attendance.monthly') }}"> Date  Attendance Students </a>
+                          </li>
+
+
                           <li> <a href="users-02.html">Add New Exams</a> </li>
                       </ul>
                   </li>
@@ -154,7 +159,7 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
-                       </ul>
+                      </ul>
                   </li>
 
 

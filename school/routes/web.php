@@ -3,12 +3,8 @@
 // use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 use App\Http\Controllers\DashboardController;
-
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\GuardianController;
@@ -27,10 +23,6 @@ use App\Http\Controllers\TeacherAttendanceController;
 
 
 
-// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-// Route::get('/', function () {
-//     return redirect()->route('dashboard');
-// });
  
 Route::resource('departments', DepartmentController::class);
 Route::resource('teacherattendance', TeacherAttendanceController::class);
@@ -45,8 +37,20 @@ Route::resource('teachers', TeachersController::class);
 Route::resource('guardians', GuardianController::class);
 Route::resource('classes', ClassController::class);
 Route::resource('employees', EmployeeController::class);
-Route::post('/students/{student}/attach-guardian', [StudentController::class, 'attachGuardian'])->name('students.attachGuardian');
+ 
+ 
 
+
+
+
+
+
+
+
+
+Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.getStudents');
+Route::get('/attendance-report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
+Route::get('/monthly-attendance', [App\Http\Controllers\AttendanceController::class, 'dateRangeReport'])->name('attendance.monthly');
 
 
 

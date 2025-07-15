@@ -22,7 +22,6 @@ class Attendance extends Model
         'recorded_by',
         'recorded_at'
     ];
-
     public function student()
     {
         return $this->belongsTo(Student::class);

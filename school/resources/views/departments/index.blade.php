@@ -16,10 +16,9 @@
         </div>
     @endif
 
-    <div class=" ">
-        <div class=" ">
-  
-  <table class="table table-bordered table-striped">
+   
+     
+    <table class="table table-bordered table-striped">
         <thead class="table-dark">
                     <tr>
                         <th style="width: 5%">#</th>
@@ -53,13 +52,13 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
+       
 
         @if($departments->hasPages())
             <div class="card-footer">
                 {{ $departments->links() }}
             </div>
         @endif
-    </div>
+   
 </div>
 @endsection

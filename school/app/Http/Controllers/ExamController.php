@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Exam;
@@ -9,11 +10,20 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $exams = Exam::with('class')->latest()->get();
+        $query = Exam::with('class');
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('exam_name', 'LIKE', "%$search%")
+                ->orWhere('exam_type', 'LIKE', "%$search%");
+        }
+
+        $exams = $query->latest()->paginate(10);
         return view('exams.index', compact('exams'));
     }
+
 
     public function create()
     {
@@ -23,6 +33,19 @@ class ExamController extends Controller
         return view('exams.create', compact('classes', 'sections', 'subjects'));
     }
 
+    //     public function store(Request $request)
+    //     {
+    //         $request->validate([
+    //             'exam_name' => 'required',
+    //             'class_id' => 'required',
+    //             'exam_date' => 'required|date',
+    //         ]);
+    // // logger('Form submitted:', $request->all()); // Laravel log ফাইলে লেখা হবে
+
+    //         Exam::create($request->all());
+    //         return redirect()->route('exams.index')->with('success', 'Exam created successfully.');
+    //     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -31,9 +54,12 @@ class ExamController extends Controller
             'exam_date' => 'required|date',
         ]);
 
-        Exam::create($request->all());
+        Exam::create($request->all()); // ✅ শুধু একবার ডেটা insert
         return redirect()->route('exams.index')->with('success', 'Exam created successfully.');
     }
+
+
+
 
     public function edit(Exam $exam)
     {

@@ -118,15 +118,15 @@
                   </li>
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon user-3" aria-hidden="true"></span>Exams
+                          <span class="icon user-3" aria-hidden="true"></span>attendance
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li> <a href="users-01.html">All Exams</a> </li>
-                          <li> <a href="users-02.html">Add New Exams</a> </li>
+                          <li> <a href="{{route('teacherattendance.index')}}">Teachers Attendance</a> </li>
+                          <li> <a href="{{route('attendance.index')}}">Students Attendance</a> </li>
                       </ul>
                   </li>
                   <li>

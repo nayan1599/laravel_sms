@@ -9,10 +9,10 @@
                     <h4 class="mb-0 main-title">{{ isset($exam) ? 'Edit' : 'Add' }} Exam</h4>
                 </div>
                 <div class="card-body">
-
                     <form action="{{ isset($exam) ? route('exams.update', $exam->id) : route('exams.store') }}" method="POST">
                         @csrf
                         @if(isset($exam)) @method('PUT') @endif
+
 
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -25,9 +25,9 @@
                                 <select id="class_id" name="class_id" class="form-select" required>
                                     <option value="">Select</option>
                                     @foreach($classes as $class)
-                                        <option value="{{ $class->id }}" {{ (old('class_id', $exam->class_id ?? '') == $class->id) ? 'selected' : '' }}>
-                                            {{ $class->class_name }}
-                                        </option>
+                                    <option value="{{ $class->id }}" {{ (old('class_id', $exam->class_id ?? '') == $class->id) ? 'selected' : '' }}>
+                                        {{ $class->class_name }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -37,9 +37,9 @@
                                 <select id="section_id" name="section_id" class="form-select">
                                     <option value="">Select</option>
                                     @foreach($sections as $section)
-                                        <option value="{{ $section->id }}" {{ (old('section_id', $exam->section_id ?? '') == $section->id) ? 'selected' : '' }}>
-                                            {{ $section->section_name }}
-                                        </option>
+                                    <option value="{{ $section->id }}" {{ (old('section_id', $exam->section_id ?? '') == $section->id) ? 'selected' : '' }}>
+                                        {{ $section->section_name }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -49,9 +49,9 @@
                                 <select id="subject_id" name="subject_id" class="form-select">
                                     <option value="">Select</option>
                                     @foreach($subjects as $subject)
-                                        <option value="{{ $subject->id }}" {{ (old('subject_id', $exam->subject_id ?? '') == $subject->id) ? 'selected' : '' }}>
-                                            {{ $subject->subject_name }}
-                                        </option>
+                                    <option value="{{ $subject->id }}" {{ (old('subject_id', $exam->subject_id ?? '') == $subject->id) ? 'selected' : '' }}>
+                                        {{ $subject->subject_name }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>

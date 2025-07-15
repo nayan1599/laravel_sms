@@ -12,70 +12,89 @@
         </div>
     @endif
 
-    <form action="{{ route('attendance.store') }}" method="POST">
+    <form action="{{ route('attendance.store') }}" method="POST" id="attendanceForm">
         @csrf
 
-        <div class="mb-3">
-            <label for="attendance_date" class="form-label">Date</label>
-            <input type="date" name="attendance_date" class="form-control" value="{{ old('attendance_date', date('Y-m-d')) }}" required>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label>Date</label>
+                <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" required>
+            </div>
+
+            <div class="col-md-3">
+                <label>Class</label>
+                <select name="class_id" id="class_id" class="form-select" required>
+                    <option value="">Select Class</option>
+                    @foreach ($classes as $class)
+                        <option value="{{ $class->id }}">{{ $class->class_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Section</label>
+                <select name="section_id" id="section_id" class="form-select" required>
+                    <option value="">Select Section</option>
+                    @foreach ($sections as $section)
+                        <option value="{{ $section->id }}">{{ $section->section_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Subject</label>
+                <select name="subject_id" id="subject_id" class="form-select" required>
+                    <option value="">Select Subject</option>
+                    @foreach ($subjects as $subject)
+                        <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="student_id" class="form-label">Student</label>
-            <select name="student_id" class="form-select" required>
-                <option value="">Select Student</option>
-                @foreach ($students as $student)
-                    <option value="{{ $student->id }}">{{ $student->name }}</option>
-                @endforeach
-            </select>
-        </div>
+        <div id="studentList"></div>
 
-        <div class="mb-3">
-            <label for="class_id" class="form-label">Class</label>
-            <select name="class_id" class="form-select" required>
-                @foreach ($classes as $class)
-                    <option value="{{ $class->id }}">{{ $class->class_name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="section_id" class="form-label">Section</label>
-            <select name="section_id" class="form-select">
-                <option value="">None</option>
-                @foreach ($sections as $section)
-                    <option value="{{ $section->id }}">{{ $section->section_name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="subject_id" class="form-label">Subject (optional)</label>
-            <select name="subject_id" class="form-select">
-                <option value="">None</option>
-                @foreach ($subjects as $subject)
-                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="status" class="form-label">Attendance Status</label>
-            <select name="status" class="form-select">
-                <option value="present">Present</option>
-                <option value="absent">Absent</option>
-                <option value="late">Late</option>
-                <option value="leave">Leave</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="remarks" class="form-label">Remarks (optional)</label>
-            <input type="text" name="remarks" class="form-control" value="{{ old('remarks') }}">
-        </div>
-
-        <button type="submit" class="btn btn-success">Save Attendance</button>
-        <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Back</a>
+        <button type="submit" class="btn btn-success mt-3">Save Attendance</button>
+        <a href="{{ route('attendance.index') }}" class="btn btn-secondary mt-3">Back</a>
     </form>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('section_id').addEventListener('change', function () {
+        const classId = document.getElementById('class_id').value;
+        const sectionId = this.value;
+
+        if (classId && sectionId) {
+            fetch(`/get-students?class_id=${classId}&section_id=${sectionId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = `
+                        <table class="table table-bordered mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Present</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    data.forEach(student => {
+                        html += `
+                            <tr>
+                                <td>${student.name}</td>
+                                <td>
+                                    <input type="checkbox" name="present_students[]" value="${student.id}" checked>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `</tbody></table>`;
+                    document.getElementById('studentList').innerHTML = html;
+                });
+        }
+    });
+</script>
 @endsection

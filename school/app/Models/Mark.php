@@ -11,7 +11,7 @@ class Mark extends Model
 {
     use HasFactory;
 
- 
+
     use HasFactory;
 
     public $timestamps = false; // ✅ Laravel যেন created_at / updated_at না খোঁজে
@@ -26,7 +26,6 @@ class Mark extends Model
         'remarks',
         'recorded_at',
     ];
- 
     public function student()
     {
         return $this->belongsTo(Student::class);

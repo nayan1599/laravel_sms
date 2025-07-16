@@ -114,6 +114,7 @@
                           <li> <a href="{{route('sections.index')}}">Section List</a> </li>
                           <li> <a href="{{route('classes.index')}}">Class List</a> </li>
                           <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
+                           <li> <a href="{{route('marks.index')}}">Mark List</a> </li>
                       </ul>
                   </li>
                   <li>
@@ -139,9 +140,7 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li> <a href="{{ route('attendance.report') }}">Attendance Students</a></li>
-                          <li>
-                              <a href="{{ route('attendance.monthly') }}"> Date  Attendance Students </a>
-                          </li>
+                          <li> <a href="{{ route('attendance.monthly') }}"> Date  Attendance Students </a></li>
 
 
                           <li> <a href="users-02.html">Add New Exams</a> </li>

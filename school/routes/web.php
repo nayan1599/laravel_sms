@@ -51,7 +51,8 @@ Route::resource('employees', EmployeeController::class);
 Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.getStudents');
 Route::get('/attendance-report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
 Route::get('/monthly-attendance', [App\Http\Controllers\AttendanceController::class, 'dateRangeReport'])->name('attendance.monthly');
-
+Route::get('/marksheet', [MarkController::class, 'marksheetForm'])->name('marksheet.index');
+Route::post('/marksheet/view', [MarkController::class, 'viewMarksheet'])->name('marksheet.view');
 
 
 

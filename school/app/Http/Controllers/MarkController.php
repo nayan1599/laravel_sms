@@ -11,10 +11,11 @@ use Illuminate\Http\Request;
 class MarkController extends Controller
 {
     public function index()
-    {
-        $marks = Mark::with(['student', 'exam', 'subject'])->get();
-        return view('marks.index', compact('marks'));
-    }
+{
+    $students = Student::all();
+    $exams = Exam::all();
+    return view('marks.index', compact('students', 'exams'));
+}
 
     public function create()
     {
@@ -25,28 +26,27 @@ class MarkController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'student_id' => 'required',
-        'exam_id' => 'required',
-        'subject_id' => 'required',
-        'marks_obtained' => 'required|numeric',
-    ]);
+    {
+        $request->validate([
+            'student_id' => 'required',
+            'exam_id' => 'required',
+            'subject_id' => 'required',
+            'marks_obtained' => 'required|numeric',
+        ]);
 
-    $mark = new Mark();
-    $mark->student_id = $request->student_id;
-    $mark->exam_id = $request->exam_id;
-    $mark->subject_id = $request->subject_id;
-    $mark->marks_obtained = $request->marks_obtained;
-    $mark->total_marks = $request->total_marks ?? 100; // Default to 100
-    $mark->grade = $request->grade ?? 'N/A';
-    $mark->remarks = $request->remarks ?? '';
-    $mark->recorded_at = now();
+        Mark::create([
+            'student_id' => $request->student_id,
+            'exam_id' => $request->exam_id,
+            'subject_id' => $request->subject_id,
+            'marks_obtained' => $request->marks_obtained,
+            'total_marks' => $request->total_marks ?? 100,
+            'grade' => $request->grade ?? 'N/A',
+            'remarks' => $request->remarks ?? '',
+            'recorded_at' => now(),
+        ]);
 
-    $mark->save(); // ✅ এই লাইনটি আগে ছিল না
-
-    return redirect()->route('marks.index')->with('success', 'Mark added successfully.');
-}
+        return redirect()->route('marks.index')->with('success', 'Mark added successfully.');
+    }
 
     public function edit(Mark $mark)
     {
@@ -71,14 +71,49 @@ class MarkController extends Controller
 
         return redirect()->route('marks.index')->with('success', 'Mark updated successfully.');
     }
+
     public function show(Mark $mark)
-{
-    return view('marks.show', compact('mark'));
-}
+    {
+        return view('marks.show', compact('mark'));
+    }
 
     public function destroy(Mark $mark)
     {
         $mark->delete();
         return redirect()->route('marks.index')->with('success', 'Mark deleted.');
+    }
+
+    // Show Marksheet Form
+    public function marksheetForm()
+    {
+        $students = Student::all();
+        $exams = Exam::all();
+        return view('marks.index', compact('students', 'exams'));
+    }
+
+    // View Marksheet Report
+    public function viewMarksheet(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required',
+            'exam_id' => 'required',
+        ]);
+
+        // যদি 'class' রিলেশন না থাকে তাহলে with('class') বাদ দিন
+        $student = Student::findOrFail($request->student_id);
+
+        $exam = Exam::findOrFail($request->exam_id);
+
+        $marks = Mark::where('student_id', $student->id)
+            ->where('exam_id', $exam->id)
+            ->with('subject')
+            ->get();
+
+        $total_obtained = $marks->sum('marks_obtained');
+        $total_marks = $marks->sum('total_marks');
+
+        return view('marks.report', compact(
+            'student', 'exam', 'marks', 'total_obtained', 'total_marks'
+        ));
     }
 }

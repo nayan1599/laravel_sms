@@ -29,8 +29,18 @@
             </div>
             <div class="col-md-6 my-2">
                 <label class="form-label">Blood Group</label>
-                <input type="text" name="blood_group" value="{{ old('blood_group', $student->blood_group ?? '') }}" class="form-control">
+
+                <select name="blood_group" class="form-select" required>
+                    <option value="">Select Blood</option>
+                    @foreach ($bloodgroups as $bloodgroup)
+                    <option value="{{ $bloodgroup->name }}"
+                        {{ old('blood_group', $student->blood_group ?? '') == $bloodgroup->name ? 'selected' : '' }}>
+                        {{ $bloodgroup->name }}
+                    </option>
+                    @endforeach
+                </select>
             </div>
+
             <div class="col-md-6 my-2">
                 <label class="form-label">Religion</label>
                 <input type="text" name="religion" value="{{ old('religion', $student->religion ?? '') }}" class="form-control">
@@ -86,7 +96,7 @@
                 <select name="class_id" class="form-select">
                     <option value="">Select Class</option>
                     @foreach ($classes as $class)
-                        <option value="{{ $class->id }}" {{ old('class_id', $student->class_id ?? '') == $class->id ? 'selected' : '' }}>{{ $class->class_name }}</option>
+                    <option value="{{ $class->id }}" {{ old('class_id', $student->class_id ?? '') == $class->id ? 'selected' : '' }}>{{ $class->class_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -95,7 +105,7 @@
                 <select name="section_id" class="form-select">
                     <option value="">Select Section</option>
                     @foreach($sections as $section)
-                        <option value="{{ $section->id }}" {{ old('section_id', $student->section_id ?? '') == $section->id ? 'selected' : '' }}>{{ $section->section_name }}</option>
+                    <option value="{{ $section->id }}" {{ old('section_id', $student->section_id ?? '') == $section->id ? 'selected' : '' }}>{{ $section->section_name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -125,7 +135,7 @@
                 <label class="form-label">Photo</label>
                 <input type="file" name="photo" class="form-control">
                 @if(isset($student) && $student->photo)
-                    <img src="{{ asset($student->photo) }}" width="80" class="mt-2">
+                <img src="{{ asset($student->photo) }}" width="80" class="mt-2">
                 @endif
             </div>
         </div>

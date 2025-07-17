@@ -19,11 +19,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\TeacherAttendanceController;
+use App\Http\Controllers\FeeTypeController;
+use App\Http\Controllers\BloodGroupController;
+use App\Http\Controllers\NoticeController;
 
 
 
-
- 
 Route::resource('departments', DepartmentController::class);
 Route::resource('teacherattendance', TeacherAttendanceController::class);
 Route::resource('fees', FeeController::class);
@@ -37,8 +38,10 @@ Route::resource('teachers', TeachersController::class);
 Route::resource('guardians', GuardianController::class);
 Route::resource('classes', ClassController::class);
 Route::resource('employees', EmployeeController::class);
- 
- 
+Route::resource('fee-types', FeeTypeController::class);
+Route::resource('blood-groups', BloodGroupController::class);
+Route::resource('notices', NoticeController::class);
+
 
 
 
@@ -53,6 +56,8 @@ Route::get('/attendance-report', [App\Http\Controllers\AttendanceController::cla
 Route::get('/monthly-attendance', [App\Http\Controllers\AttendanceController::class, 'dateRangeReport'])->name('attendance.monthly');
 Route::get('/marksheet', [MarkController::class, 'marksheetForm'])->name('marksheet.index');
 Route::post('/marksheet/view', [MarkController::class, 'viewMarksheet'])->name('marksheet.view');
+
+
 
 
 

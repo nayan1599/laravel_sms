@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\ClassModel;
+use App\Models\BloodGroup;
 use App\Models\Section;
-use App\Models\Subject;
-use Illuminate\Support\Facades\Auth;
+ 
 
 class StudentController extends Controller
 {
@@ -20,9 +20,10 @@ class StudentController extends Controller
 
     public function create()
     {
+        $bloodgroups = BloodGroup::all();
         $classes = ClassModel::all();
         $sections = Section::all();
-        return view('students.create', compact('classes', 'sections'));
+        return view('students.create', compact('classes', 'bloodgroups', 'sections'));
     }
 
     public function store(Request $request)

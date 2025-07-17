@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-4">
-        <h2 class="fw-bold">Student Mark Sheet</h2>
+        <h2 class="fw-bold main-title">Student Mark Sheet</h2>
         <p class="text-muted">Detailed exam result for individual student</p>
     </div>
 

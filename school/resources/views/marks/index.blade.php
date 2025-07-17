@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container py-4">
-    <h2 class="mb-4">🎓 Generate Student Marksheet</h2>
+    <h2 class="mb-4 main-title">🎓 Generate Student Marksheet</h2>
 
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show">

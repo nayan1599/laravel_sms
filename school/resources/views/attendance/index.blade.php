@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <h2>Attendance List</h2>
-    <a href="{{ route('attendance.create') }}" class="btn btn-primary mb-3">Take Attendance</a>
+    <h2 class="main-title">Attendance List</h2>
+    <a href="{{ route('attendance.create') }}" class="btn btn-success mb-3">Take Attendance</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

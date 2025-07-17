@@ -2,15 +2,51 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">Fees List</h2>
+    <h2 class="mb-4 main-title">Fees List</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('fees.create') }}" class="btn btn-success mb-3">+ Add Fee</a>
+    <!-- Filter Form -->
+    <form method="GET" action="{{ route('fees.index') }}" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="student_name" class="form-control" placeholder="Student Name" value="{{ request('student_name') }}">
+        </div>
+        <div class="col-md-2">
+            <select name="class_id" class="form-select">
+                <option value="">All Classes</option>
+                @foreach($classes as $class)
+                    <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>{{ $class->class_name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-select">
+                <option value="">All Status</option>
+                <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                <option value="overdue" {{ request('status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="month" name="month" class="form-control" value="{{ request('month') }}">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="{{ route('fees.index') }}" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
 
-    <div class="card shadow">
+    <!-- Action Buttons -->
+    <div class="mb-3">
+        <a href="{{ route('fees.create') }}" class="btn btn-success">+ Add Fee</a>
+
+    </div>
+
+    <!-- Fee Table -->
+    <div class="shadow">
         <div class="card-body">
             <table class="table table-bordered table-hover table-striped">
                 <thead class="table-dark">
@@ -57,14 +93,13 @@
                         <td>{{ $fee->remarks ?? '-' }}</td>
                         <td>
                             <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
-
+                          
                             <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" class="d-inline-block"
                                 onsubmit="return confirm('Are you sure you want to delete this fee record?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
-
                         </td>
                     </tr>
                     @empty
@@ -73,11 +108,27 @@
                     </tr>
                     @endforelse
                 </tbody>
+
+                @if($fees->count())
+                <tfoot>
+                    <tr class="table-info fw-bold">
+                        <td colspan="4">Total</td>
+                        <td>{{ number_format($fees->sum('amount'), 2) }} ৳</td>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td>{{ number_format($fees->sum('paid_amount'), 2) }} ৳</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>
+                @endif
             </table>
 
+            <!-- Pagination -->
             <div class="mt-3">
                 {{ $fees->links() }}
             </div>
+
+           
         </div>
     </div>
 </div>

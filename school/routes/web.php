@@ -22,6 +22,7 @@ use App\Http\Controllers\TeacherAttendanceController;
 use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\BloodGroupController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\SchoolCommitteeController;
 
 
 
@@ -41,6 +42,7 @@ Route::resource('employees', EmployeeController::class);
 Route::resource('fee-types', FeeTypeController::class);
 Route::resource('blood-groups', BloodGroupController::class);
 Route::resource('notices', NoticeController::class);
+Route::resource('committees', SchoolCommitteeController::class);
 
 
 
@@ -50,7 +52,7 @@ Route::resource('notices', NoticeController::class);
 
 
 
-
+ 
 Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.getStudents');
 Route::get('/attendance-report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
 Route::get('/monthly-attendance', [App\Http\Controllers\AttendanceController::class, 'dateRangeReport'])->name('attendance.monthly');

@@ -1,13 +1,14 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Notice;
 use Illuminate\Http\Request;
- 
+
 
 class NoticeController extends Controller
 {
-   public function index()
+    public function index()
     {
         $notices = Notice::latest()->paginate(10);
         return view('notices.index', compact('notices'));
@@ -35,7 +36,7 @@ class NoticeController extends Controller
 
     public function edit(Notice $notice)
     {
-        return view('notices.edit', compact('notice'));
+        return view('notices.edit', compact('notices'));
     }
 
     public function update(Request $request, Notice $notice)
@@ -51,6 +52,14 @@ class NoticeController extends Controller
         $notice->update($data);
 
         return redirect()->route('notices.index')->with('success', 'Notice updated successfully.');
+    }
+
+
+
+    public function show($id)
+    {
+        $notices = Notice::findOrFail($id);
+        return view('notices.show', compact('notices'));
     }
 
     public function destroy(Notice $notice)

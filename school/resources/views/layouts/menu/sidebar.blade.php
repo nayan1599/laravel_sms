@@ -141,9 +141,6 @@
                       <ul class="cat-sub-menu">
                           <li> <a href="{{ route('attendance.report') }}">Attendance Students</a></li>
                           <li> <a href="{{ route('attendance.monthly') }}"> Date Attendance Students </a></li>
-
-
-                          <li> <a href="users-02.html">Add New Exams</a> </li>
                       </ul>
                   </li>
 
@@ -159,11 +156,9 @@
                       <ul class="cat-sub-menu">
                           <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
                           <li> <a href="{{route('blood-groups.index')}}">Blood Groups</a> </li>
+                           <li> <a href="{{route('notices.index')}}">Notices</a> </li>
                       </ul>
                   </li>
-
-
-
                   <li> <a href="{{route('fees.index')}}"><span class="icon setting" aria-hidden="true"></span>Fees</a> </li>
               </ul>
           </div>

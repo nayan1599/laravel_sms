@@ -18,7 +18,7 @@
                     <th>Notice Date</th>
                     <th>Expires</th>
                     <th>Status</th>
-                    <th width="150">Actions</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +29,7 @@
                     <td>{{ $notice->expiry_date ?? '-' }}</td>
                     <td><span class="badge bg-{{ $notice->status == 'active' ? 'success' : 'secondary' }}">{{ ucfirst($notice->status) }}</span></td>
                     <td>
+                         <a href="{{ route('notices.show', $notice) }}" class="btn btn-sm btn-info">View</a>
                         <a href="{{ route('notices.edit', $notice) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('notices.destroy', $notice) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?');">
                             @csrf @method('DELETE')

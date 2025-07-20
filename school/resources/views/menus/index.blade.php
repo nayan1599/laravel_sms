@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2>Menu List</h2>
-    <a href="{{ route('menus.create') }}" class="btn btn-primary mb-3">Add New Menu</a>
+    <h2 class="main-title">Menu List</h2>
+    <a href="{{ route('menus.create') }}" class="btn btn-success mb-3">Add New Menu</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

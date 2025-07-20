@@ -76,28 +76,18 @@
                   </li>
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon paper" aria-hidden="true"></span>Pages
+                          <span class="icon paper" aria-hidden="true"></span>Web Site
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li>
-                              <a href="pages.html">All pages</a>
-                          </li>
-                          <li>
-                              <a href="new-page.html">Add new page</a>
-                          </li>
+                          <li> <a href="{{route('menus.index')}}">Menu</a> </li>
+                          <li> <a href="new-page.html">Add new page</a></li>
                       </ul>
                   </li>
-                  <li>
-                      <a href="comments.html">
-                          <span class="icon message" aria-hidden="true"></span>
-                          Comments
-                      </a>
-                      <span class="msg-counter">7</span>
-                  </li>
+               
               </ul>
               <span class="system-menu__title">Class Setting</span>
               <ul class="sidebar-body-menu">

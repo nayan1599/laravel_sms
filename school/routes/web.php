@@ -23,6 +23,8 @@ use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\BloodGroupController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\SchoolCommitteeController;
+use App\Http\Controllers\MenuController;
+
 
 
 
@@ -43,7 +45,7 @@ Route::resource('fee-types', FeeTypeController::class);
 Route::resource('blood-groups', BloodGroupController::class);
 Route::resource('notices', NoticeController::class);
 Route::resource('committees', SchoolCommitteeController::class);
-
+Route::resource('menus', MenuController::class);
 
 
 
@@ -63,7 +65,11 @@ Route::post('/marksheet/view', [MarkController::class, 'viewMarksheet'])->name('
 
 
 
+ 
 
+Route::get('/', function () {
+    return view('index');  // তুমি এখানে যেকোনো ভিউ দিতে পারো, যেমন home বা frontend.index
+});
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])

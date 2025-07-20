@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">School Committee Members</h2>
+    <h2 class="main-title">School Committee Members</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

@@ -153,17 +153,37 @@
               </ul>
           </div>
       </div>
-      <div class="sidebar-footer">
-          <a href="##" class="sidebar-user">
-              <span class="sidebar-user-img">
-                  <picture>
-                      <source srcset="./img/avatar/avatar-illustrated-01.webp" type="image/webp"><img src="./img/avatar/avatar-illustrated-01.png" alt="User name">
-                  </picture>
-              </span>
-              <div class="sidebar-user-info">
-                  <span class="sidebar-user__title">Nafisa Sh.</span>
-                  <span class="sidebar-user__subtitle">Support manager</span>
-              </div>
-          </a>
-      </div>
+
+
+@php
+use App\Models\OrganizationSetting;
+$settings = OrganizationSetting::all();
+@endphp
+
+ 
+
+@forelse($settings as $setting)
+    <div class="sidebar-footer">
+        <a href="" class="sidebar-user d-flex align-items-center text-decoration-none">
+            <span class="sidebar-user-img me-2">
+                @if($setting->logo)
+                    <img src="{{ asset('storage/' . $setting->logo) }}" alt="{{ $setting->organization_name }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+                @else
+                    {{-- Default avatar --}}
+                    <img src="{{ asset('img/avatar/avatar-illustrated-01.png') }}" alt="Default Avatar" class="rounded-circle" style="width:40px; height:40px;">
+                @endif
+            </span>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user__title fw-bold">{{ $setting->owner_name }}</span>
+                <span class="sidebar-user__subtitle text-muted">
+                    {{-- ধরছি এখানে তোমার মডেলে কোনো পজিশন বা ডেসিগনেশন আছে, নাইলে অন্য কিছু দেখাও --}}
+                    {{ $setting->email ?? 'Owner name not set' }}
+                </span>
+            </div>
+        </a>
+    </div>
+@empty
+    <p>No organization settings found.</p>
+@endforelse
+ 
   </aside>

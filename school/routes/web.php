@@ -24,7 +24,7 @@ use App\Http\Controllers\BloodGroupController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\SchoolCommitteeController;
 use App\Http\Controllers\MenuController;
-
+use App\Http\Controllers\OrganizationSettingController;
 
 
 
@@ -46,9 +46,7 @@ Route::resource('blood-groups', BloodGroupController::class);
 Route::resource('notices', NoticeController::class);
 Route::resource('committees', SchoolCommitteeController::class);
 Route::resource('menus', MenuController::class);
-
-
-
+Route::resource('organization_settings', OrganizationSettingController::class);
 
 
 

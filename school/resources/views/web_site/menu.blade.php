@@ -1,16 +1,4 @@
-<section class="top_area">
-    <div class="container">
-        <div class="d-flex">
-            <div class="p-2 flex-grow-1">Flex item</div>
-            <div class="p-2">Flex item</div>
-            <div class="p-2">Third flex item</div>
-        </div>
-    </div>
-</section>
-
-
-
-
+@include('web_site.top_area')
 
 @php
 use App\Models\Menu;

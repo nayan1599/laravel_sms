@@ -7,61 +7,17 @@
     <title>@yield('title', 'My School')</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
+      <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="{{ asset('css/website.css') }}" />
+ <!-- Font Awesome CDN -->
+ 
+ 
     <!-- Optional Custom CSS -->
-    <style>
-        body {
-            padding-top: 70px; /* navbar fixed height */
-        }
-    </style>
+ 
 </head>
 <body>
-
-@php
-    use App\Models\Menu;
-    $menus = Menu::where('status', 'active')->orderBy('order')->get();
-@endphp
-
-
-
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">My School</a>
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                @foreach ($menus as $menu)
-                    <li class="nav-item">
-                        @if ($menu->url)
-                            <a href="{{ url($menu->url) }}" class="nav-link {{ request()->is($menu->url) ? 'active' : '' }}">
-                                {{ $menu->title }}
-                            </a>
-                        @elseif ($menu->route_name)
-                            <a href="{{ route($menu->route_name) }}" class="nav-link {{ request()->routeIs($menu->route_name) ? 'active' : '' }}">
-                                {{ $menu->title }}
-                            </a>
-                        @else
-                            <span class="nav-link disabled">{{ $menu->title }}</span>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-</nav>
+<!-- menu section  -->
+   @include('web_site.menu')
 
 <main class="container my-4">
     @yield('content')
@@ -72,6 +28,6 @@
 </footer>
 
 <!-- Bootstrap JS Bundle (Popper + Bootstrap JS) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+ <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+ </body>
 </html>

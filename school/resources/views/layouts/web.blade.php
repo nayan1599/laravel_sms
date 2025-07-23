@@ -18,8 +18,9 @@
 
 <body>
     <!-- menu section  -->
+    @include('web_site.top_area')
     @include('web_site.menu')
-
+@include('web_site.banner')
     <main class="container my-4">
         @yield('content')
     </main>

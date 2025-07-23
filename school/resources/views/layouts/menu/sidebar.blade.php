@@ -84,7 +84,8 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li> <a href="{{route('menus.index')}}">Menu</a> </li>
-                          <li> <a href="new-page.html">Add new page</a></li>
+                          <li> <a href="{{route('banner.index')}}">Banner</a></li>
+                          <li> <a href="#">About</a></li>
                       </ul>
                   </li>
                

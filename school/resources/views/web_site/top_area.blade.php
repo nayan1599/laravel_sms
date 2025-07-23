@@ -30,14 +30,14 @@
             <div class="p-2 d-flex align-items-center gap-4">
                 @if($setting->email)
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-envelope text-primary me-2"></i>
+                    <i class="fas fa-envelope  me-2"></i>
                     <span>{{ $setting->email }}</span>
                 </div>
                 @endif
 
                 @if($setting->phone)
                 <div class="d-flex align-items-center">
-                    <i class="fas fa-phone text-success me-2"></i>
+                    <i class="fas fa-phone me-2"></i>
                     <span>{{ $setting->phone }}</span>
                 </div>
                 @endif

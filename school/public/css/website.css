@@ -1,4 +1,48 @@
- 
-.navbar{
-    background-color: red;
-}
+ :root {
+     --color_one: #0d6efd;
+     /* Primary Blue */
+     --color_two: #d7c90b;
+     --color_three: #ca500a;
+     --color_four: #0abe0a;
+     --color_five: #084298;
+     --color_six: #c20f68;
+     --color_seven: #03837c;
+     --color_eight: #000000;
+     /* Gray */
+     --color_nine: #b4b4b4;
+     /* Light Gray */
+     --color_ten: #ffffff;
+     /* White */
+ }
+
+
+
+ /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.Top section <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
+ .top_area {
+     background: var(--color_one);
+     color: var(--color_ten);
+ }
+
+ .top_area ul li a {
+     color: var(--color_ten);
+ }
+
+
+ /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.Menu section <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
+ .menu_area a {
+     font-size: 16px;
+     font-weight: bold;
+     color: var(--color_one);
+ }
+
+ .menu_area a:hover {
+
+     color: var(--color_two);
+
+ }
+
+ .menu_area {
+     border-bottom: 1px solid #ccc;
+ }
+
+ /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.Banner section <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */

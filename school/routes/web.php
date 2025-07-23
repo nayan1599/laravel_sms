@@ -25,7 +25,7 @@ use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\SchoolCommitteeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrganizationSettingController;
-
+use App\Http\Controllers\BannerController;
 
 
 Route::resource('departments', DepartmentController::class);
@@ -47,7 +47,7 @@ Route::resource('notices', NoticeController::class);
 Route::resource('committees', SchoolCommitteeController::class);
 Route::resource('menus', MenuController::class);
 Route::resource('organization_settings', OrganizationSettingController::class);
-
+Route::resource('banners', BannerController::class);
 
 
 

@@ -2,8 +2,6 @@
 
 // use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeachersController;
@@ -26,6 +24,10 @@ use App\Http\Controllers\SchoolCommitteeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrganizationSettingController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
+
+
 
 
 Route::resource('departments', DepartmentController::class);
@@ -48,11 +50,23 @@ Route::resource('committees', SchoolCommitteeController::class);
 Route::resource('menus', MenuController::class);
 Route::resource('organization_settings', OrganizationSettingController::class);
 Route::resource('banners', BannerController::class);
-
-
-
+Route::resource('categories', CategoryController::class);
+Route::resource('posts', PostController::class);
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
 Route::get('/get-students', [AttendanceController::class, 'getStudents'])->name('attendance.getStudents');
 Route::get('/attendance-report', [App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
 Route::get('/monthly-attendance', [App\Http\Controllers\AttendanceController::class, 'dateRangeReport'])->name('attendance.monthly');

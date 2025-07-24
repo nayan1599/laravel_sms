@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website.css') }}" />
     <!-- Font Awesome CDN -->
- <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}" />
 
 
 </head>
@@ -20,7 +20,7 @@
     <!-- menu section  -->
     @include('web_site.top_area')
     @include('web_site.menu')
-@include('web_site.banner')
+    @include('web_site.banner')
     <main class="container my-4">
         @yield('content')
     </main>

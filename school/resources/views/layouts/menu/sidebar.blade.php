@@ -149,6 +149,7 @@
                       <ul class="cat-sub-menu">
                           <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
                           <li> <a href="{{route('blood-groups.index')}}">Blood Groups</a> </li>
+                          <li> <a href="{{route('fee-types.index')}}">Fee Types</a> </li>
                            <li> <a href="{{route('notices.index')}}">Notices</a> </li>
                       </ul>
                   </li>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/website.css') }}" />
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 
 </head>
@@ -21,7 +22,7 @@
     @include('web_site.top_area')
     @include('web_site.menu')
     @include('web_site.banner')
-    <main class="container my-4">
+    <main class=" my-4">
         @yield('content')
     </main>
 
@@ -31,6 +32,7 @@
 
     <!-- Bootstrap JS Bundle (Popper + Bootstrap JS) -->
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    
 </body>
 
 </html>

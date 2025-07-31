@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
 use App\Models\SchoolCommittee;
@@ -79,5 +79,10 @@ class SchoolCommitteeController extends Controller
 
         return redirect()->route('committees.index')->with('success', 'Committee member deleted successfully.');
     }
-}
 
+    public function show($id)
+    {
+        $committee = \App\Models\SchoolCommittee::findOrFail($id);
+        return view('committee.show', compact('committee'));
+    }
+}

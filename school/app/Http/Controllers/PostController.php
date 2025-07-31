@@ -94,4 +94,13 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
+
+
+    public function show($id)
+{
+    $post = \App\Models\Post::findOrFail($id);
+    return view('posts.show', compact('post'));
+}
+
+
 }

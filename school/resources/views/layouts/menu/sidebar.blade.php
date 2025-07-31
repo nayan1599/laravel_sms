@@ -86,11 +86,13 @@
                           <li> <a href="{{route('menus.index')}}">Menu</a> </li>
                           <li> <a href="{{route('banners.index')}}">Banner</a></li>
                           <li> <a href="{{route('categories.index')}}">categories</a></li>
-                         <li> <a href="{{route('posts.index')}}">Pages</a></li>
+                          <li> <a href="{{route('posts.index')}}">Pages</a></li>
+                          <li> <a href="{{route('notices.index')}}">Notices</a> </li>
+                          <li> <a href="{{route('committees.index')}}">Committees</a> </li>
                           <!-- <li> <a href="#">About</a></li> -->
                       </ul>
                   </li>
-               
+
               </ul>
               <span class="system-menu__title">Class Setting</span>
               <ul class="sidebar-body-menu">
@@ -150,7 +152,7 @@
                           <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
                           <li> <a href="{{route('blood-groups.index')}}">Blood Groups</a> </li>
                           <li> <a href="{{route('fee-types.index')}}">Fee Types</a> </li>
-                           <li> <a href="{{route('notices.index')}}">Notices</a> </li>
+
                       </ul>
                   </li>
                   <li> <a href="{{route('fees.index')}}"><span class="icon setting" aria-hidden="true"></span>Fees</a> </li>
@@ -159,35 +161,35 @@
       </div>
 
 
-@php
-use App\Models\OrganizationSetting;
-$settings = OrganizationSetting::all();
-@endphp
+      @php
+      use App\Models\OrganizationSetting;
+      $settings = OrganizationSetting::all();
+      @endphp
 
- 
 
-@forelse($settings as $setting)
-    <div class="sidebar-footer">
-        <a href="" class="sidebar-user d-flex align-items-center text-decoration-none">
-            <span class="sidebar-user-img me-2">
-                @if($setting->logo)
-                    <img src="{{ asset('storage/' . $setting->logo) }}" alt="{{ $setting->organization_name }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
-                @else
-                    {{-- Default avatar --}}
-                    <img src="{{ asset('img/avatar/avatar-illustrated-01.png') }}" alt="Default Avatar" class="rounded-circle" style="width:40px; height:40px;">
-                @endif
-            </span>
-            <div class="sidebar-user-info">
-                <span class="sidebar-user__title fw-bold">{{ $setting->owner_name }}</span>
-                <span class="sidebar-user__subtitle text-muted">
-                    {{-- ধরছি এখানে তোমার মডেলে কোনো পজিশন বা ডেসিগনেশন আছে, নাইলে অন্য কিছু দেখাও --}}
-                    {{ $setting->email ?? 'Owner name not set' }}
-                </span>
-            </div>
-        </a>
-    </div>
-@empty
-    <p>No organization settings found.</p>
-@endforelse
- 
+
+      @forelse($settings as $setting)
+      <div class="sidebar-footer">
+          <a href="" class="sidebar-user d-flex align-items-center text-decoration-none">
+              <span class="sidebar-user-img me-2">
+                  @if($setting->logo)
+                  <img src="{{ asset('storage/' . $setting->logo) }}" alt="{{ $setting->organization_name }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
+                  @else
+                  {{-- Default avatar --}}
+                  <img src="{{ asset('img/avatar/avatar-illustrated-01.png') }}" alt="Default Avatar" class="rounded-circle" style="width:40px; height:40px;">
+                  @endif
+              </span>
+              <div class="sidebar-user-info">
+                  <span class="sidebar-user__title fw-bold">{{ $setting->owner_name }}</span>
+                  <span class="sidebar-user__subtitle text-muted">
+                      {{-- ধরছি এখানে তোমার মডেলে কোনো পজিশন বা ডেসিগনেশন আছে, নাইলে অন্য কিছু দেখাও --}}
+                      {{ $setting->email ?? 'Owner name not set' }}
+                  </span>
+              </div>
+          </a>
+      </div>
+      @empty
+      <p>No organization settings found.</p>
+      @endforelse
+
   </aside>

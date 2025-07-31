@@ -50,8 +50,8 @@ $activeClasses = 12; // ডায়নামিক হলে এখানে ক�
                         <div class="display-4 text-warning mb-2">
                             <i class="bi bi-journal-bookmark-fill"></i>
                         </div>
-                        <h5 class="card-title">Active Classes</h5>
-                        <h3 class="fw-bold text-dark">{{ $activeClasses ?? '0' }}</h3>
+                        <h5 class="card-title">Total Employees</h5>
+                        <h3 class="fw-bold text-dark">{{ $totalEmployees ?? '0' }}</h3>
                     </div>
                 </div>
             </div>

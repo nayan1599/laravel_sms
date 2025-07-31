@@ -53,14 +53,13 @@ Route::resource('banners', BannerController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('posts', PostController::class);
 
+
+//  single routes
+Route::get('/notices/{id}', [NoticeController::class, 'show'])->name('notices.show');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/committees/{id}', [SchoolCommitteeController::class, 'show'])->name('committees.show');
+
  
-
-
-
-
-
-
-
 
 
 

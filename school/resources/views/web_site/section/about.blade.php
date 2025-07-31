@@ -13,12 +13,11 @@
 
     <div class="container">
         <h1 class="text-center mb-4 fw-bold">About Us</h1>
-
         @if($post)
         <div class="row align-items-center">
             <!-- ইমেজ -->
             <div class="col-md-5 mb-3 mb-md-0">
-                <img src="{{ asset('uploads/posts/'.$post->featured_image) }}" 
+                <img src="{{ asset($post->feature_image) }}" 
                      alt="{{ $post->title }}" 
                      class="img-fluid rounded shadow-sm">
             </div>
@@ -26,7 +25,15 @@
             <!-- কনটেন্ট -->
             <div class="col-md-7">
                 <h3 class="fw-bold">{{ $post->title }}</h3>
-                <p class="text-muted">{!! nl2br(e($post->content)) !!}</p>
+                <p class="text-muted">
+                    {!! Str::limit(strip_tags($post->content), 200, '...') !!}
+                </p>
+
+                <!-- ✅ See More Button -->
+                <a href="{{ route('posts.show', $post->id) }}" 
+                   class="btn btn-primary mt-3">
+                   See More
+                </a>
             </div>
         </div>
         @else

@@ -21,32 +21,48 @@ class NoticeController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required',
             'notice_date' => 'required|date',
-            'expiry_date' => 'nullable|date|after_or_equal:notice_date',
-            'status' => 'required|in:active,inactive',
+            'expiry_date' => 'nullable|date',
+            'status' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        Notice::create($data);
+        $notice = new Notice();
+        $notice->title = $request->title;
+        $notice->description = $request->description;
+        $notice->notice_date = $request->notice_date;
+        $notice->expiry_date = $request->expiry_date;
+        $notice->status = $request->status;
 
-        return redirect()->route('notices.index')->with('success', 'Notice created successfully.');
+        // ✅ Image Upload
+        if ($request->hasFile('image')) {
+            $fileName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('uploads/notices'), $fileName);
+            $notice->image = 'uploads/notices/' . $fileName;
+        }
+
+        $notice->save();
+
+        return redirect()->route('notices.index')->with('success', 'Notice added successfully.');
     }
 
     public function edit(Notice $notice)
     {
-        return view('notices.edit', compact('notices'));
+        return view('notices.edit', compact('notice'));
     }
 
     public function update(Request $request, Notice $notice)
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required',
             'notice_date' => 'required|date',
-            'expiry_date' => 'nullable|date|after_or_equal:notice_date',
-            'status' => 'required|in:active,inactive',
+            'expiry_date' => 'nullable|date',
+            'status' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $notice->update($data);

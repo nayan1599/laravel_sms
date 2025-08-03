@@ -6,22 +6,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'My School')</title>
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website.css') }}" />
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
     <!-- menu section  -->
     @include('web_site.top_area')
     @include('web_site.menu')
-    @include('web_site.banner')
     <main class=" my-4">
         @yield('content')
     </main>
@@ -32,7 +28,7 @@
 
     <!-- Bootstrap JS Bundle (Popper + Bootstrap JS) -->
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    
+
 </body>
 
 </html>

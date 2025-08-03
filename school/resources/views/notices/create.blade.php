@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="main-title">➕ Add Notice</h2>
 
-    <form action="{{ route('notices.store') }}" method="POST">
+    <form action="{{ route('notices.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -27,6 +27,12 @@
                 <label class="form-label">📅 Expiry Date</label>
                 <input type="date" name="expiry_date" class="form-control" value="{{ old('expiry_date') }}">
             </div>
+        </div>
+
+        <!-- ✅ Image Field -->
+        <div class="mb-3">
+            <label class="form-label">🖼️ Upload Image</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
         </div>
 
         <div class="mb-3">

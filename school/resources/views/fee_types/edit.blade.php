@@ -14,7 +14,8 @@
 
         <div class="mb-3">
             <label>Default Amount</label>
-            <input type="number" step="0.01" name="default_amount" class="form-control" value="{{ $feeType->default_amount }}" required>
+            <input type="number" step="0.01" name="default_amount" class="form-control" value="{{ $
+            ->default_amount }}" required>
         </div>
 
         <button class="btn btn-primary">Update</button>

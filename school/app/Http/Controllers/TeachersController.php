@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Teachers;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\BloodGroup;
 
 class TeachersController extends Controller
 {
@@ -22,8 +23,9 @@ class TeachersController extends Controller
      */
     public function create()
     {
+        $bloodgroups = BloodGroup::all();
         $users = User::all();
-        return view('teachers.create', compact('users'));
+        return view('teachers.create', compact('bloodgroups', 'users'));
     }
 
     /**
@@ -70,8 +72,8 @@ class TeachersController extends Controller
     public function edit($id)
     {
         $teacher = Teachers::findOrFail($id);
-          $users = User::all();
-    return view('teachers.edit', compact('teacher', 'users'));
+        $users = User::all();
+        return view('teachers.edit', compact('teacher', 'users'));
         // return view('teachers.edit', compact('teacher'));
     }
 

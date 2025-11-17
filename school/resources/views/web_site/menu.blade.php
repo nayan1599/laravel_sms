@@ -11,23 +11,20 @@
          <nav class="navbar navbar-expand-lg ">
              <div class="container-fluid">
 
-<a class="navbar-brand" href="#">
-    @if ($setting && $setting->logo)
-        <img src="{{ asset('storage/' . $setting->logo) }}" 
-             alt="{{ $setting->organization_name ?? 'Logo' }}" 
-             style="height:40px; width:40px; border-radius:50%; object-fit:cover;">
-    @else
-        <picture>
-            <source srcset="{{ asset('img/avatar/avatar-illustrated-02.webp') }}" type="image/webp">
-            <img src="{{ asset('img/avatar/avatar-illustrated-02.png') }}" 
-                 alt="Default Logo" 
-                 style="height:40px; width:40px; border-radius:50%;">
-        </picture>
-    @endif
-</a>
-
-
-
+                 <a class="navbar-brand" href="#">
+                     @if ($setting && $setting->logo)
+                     <img src="{{ asset('storage/' . $setting->logo) }}"
+                         alt="{{ $setting->organization_name ?? 'Logo' }}"
+                         style="height:40px; width:40px; border-radius:50%; object-fit:cover;">
+                     @else
+                     <picture>
+                         <source srcset="{{ asset('img/avatar/avatar-illustrated-02.webp') }}" type="image/webp">
+                         <img src="{{ asset('img/avatar/avatar-illustrated-02.png') }}"
+                             alt="Default Logo"
+                             style="height:40px; width:40px; border-radius:50%;">
+                     </picture>
+                     @endif
+                 </a>
 
 
                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

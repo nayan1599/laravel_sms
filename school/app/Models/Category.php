@@ -15,4 +15,10 @@ class Category extends Model
         'description',
         'status',
     ];
+
+
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class, 'category_id');
+    }
 }

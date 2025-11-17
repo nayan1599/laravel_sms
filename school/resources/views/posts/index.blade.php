@@ -50,7 +50,7 @@
                     </td>
                     <td class="text-center">
                         <a href="{{ route('posts.edit', $post) }}" class="btn btn-sm btn-primary me-1" title="Edit">
-                            <i class="bi bi-pencil-square"></i>
+                            Edit
                         </a>
 
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline"
@@ -58,7 +58,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                <i class="bi bi-trash"></i>
+                                Delete
                             </button>
                         </form>
                     </td>

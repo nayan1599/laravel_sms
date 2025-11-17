@@ -4,7 +4,6 @@ $banners = Banner::where('status', 1)->get();
 @endphp
 
 
-
 <section class="banner_area">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">

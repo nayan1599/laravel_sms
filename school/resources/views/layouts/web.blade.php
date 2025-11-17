@@ -18,7 +18,7 @@
     <!-- menu section  -->
     @include('web_site.top_area')
     @include('web_site.menu')
-    <main class=" my-4">
+    <main class="">
         @yield('content')
     </main>
 

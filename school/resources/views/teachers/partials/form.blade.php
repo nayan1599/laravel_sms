@@ -1,22 +1,22 @@
 <!-- resources/views/teachers/partials/form.blade.php -->
 <div class="row g-3">
     <div class="col-md-6">
-     
-    <label for="user_id" class="form-label">Select User</label>
-    <select name="user_id" id="user_id" class="form-control" required>
-        <option value="">-- Select a User --</option>
-        @foreach($users as $user)
+
+        <label for="user_id" class="form-label">Select User</label>
+        <select name="user_id" id="user_id" class="form-control" required>
+            <option value="">-- Select a User --</option>
+            @foreach($users as $user)
             <option value="{{ $user->id }}"
                 {{ isset($teacher) && $teacher->user_id == $user->id ? 'selected' : '' }}>
                 {{ $user->name }} ({{ $user->email }})
             </option>
-        @endforeach
-    </select>
- 
+            @endforeach
+        </select>
+
     </div>
 
     <div class="col-md-6">
-          <label class="form-label">Name</label>
+        <label class="form-label">Name</label>
         <input type="text" name="name" value="{{ old('name', $teacher->name ?? '') }}" class="form-control @error('name') is-invalid @enderror">
         @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
@@ -73,9 +73,9 @@
         <label for="employment_type" class="form-label">Employment Type</label>
         <select name="employment_type" class="form-select">
             @foreach(['permanent', 'contract', 'part-time'] as $type)
-                <option value="{{ $type }}" {{ old('employment_type', $teacher->employment_type ?? '') == $type ? 'selected' : '' }}>
-                    {{ ucfirst($type) }}
-                </option>
+            <option value="{{ $type }}" {{ old('employment_type', $teacher->employment_type ?? '') == $type ? 'selected' : '' }}>
+                {{ ucfirst($type) }}
+            </option>
             @endforeach
         </select>
     </div>
@@ -84,16 +84,24 @@
         <label for="status" class="form-label">Status</label>
         <select name="status" class="form-select">
             @foreach(['active', 'on_leave', 'resigned', 'retired'] as $status)
-                <option value="{{ $status }}" {{ old('status', $teacher->status ?? '') == $status ? 'selected' : '' }}>
-                    {{ ucfirst($status) }}
-                </option>
+            <option value="{{ $status }}" {{ old('status', $teacher->status ?? '') == $status ? 'selected' : '' }}>
+                {{ ucfirst($status) }}
+            </option>
             @endforeach
         </select>
     </div>
 
-    <div class="col-md-6">
-        <label for="blood_group" class="form-label">Blood Group</label>
-        <input type="text" name="blood_group" value="{{ old('blood_group', $teacher->blood_group ?? '') }}" class="form-control">
+    <div class="col-md-6 my-2">
+        <label class="form-label">Blood Group</label>
+        <select name="blood_group" class="form-select" required>
+            <option value="">Select Blood</option>
+            @foreach ($bloodgroups as $bloodgroup)
+            <option value="{{ $bloodgroup->name }}"
+                {{ old('blood_group', $student->blood_group ?? '') == $bloodgroup->name ? 'selected' : '' }}>
+                {{ $bloodgroup->name }}
+            </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="col-md-6">

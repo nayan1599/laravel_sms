@@ -11,16 +11,13 @@
             ->get();
     @endphp
 
-    <div class="sidebar_section">
-        <h4 class="fw-bold">Search</h4>
-        
-    </div>
+    
     <div class="sidebar_section">
         <h4 class="fw-bold">Recent Posts</h4>
         <ul class="list-unstyled">
             @foreach($relatedPosts as $relatedPost)
                 <li>
-                    <a href="{{ route('posts.show', $relatedPost->id) }}">{{ $relatedPost->title }}</a>
+                    <a href="{{ route('posts.show', $relatedPost->slug) }}">{{ $relatedPost->title }}</a>
                 </li>
             @endforeach
         </ul>
@@ -30,7 +27,7 @@
         <ul class="list-unstyled">
             @foreach($categories as $category)
                 <li>        
-                    <a href="{{ route('categories.show', $category->id) }}">{{ $category->name }}</a>
+                    <a href="{{ route('categories.show', $category->slug) }}">{{ $category->name }}</a>
                 </li>
             @endforeach
             <li>

@@ -11,7 +11,7 @@
          <nav class="navbar navbar-expand-lg ">
              <div class="container-fluid">
 
-                 <a class="navbar-brand" href="#">
+                 <a class="navbar-brand" href="{{ url('/') }}">
                      @if ($setting && $setting->logo)
                      <img src="{{ asset('storage/' . $setting->logo) }}"
                          alt="{{ $setting->organization_name ?? 'Logo' }}"

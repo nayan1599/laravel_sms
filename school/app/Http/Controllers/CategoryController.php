@@ -61,10 +61,10 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $category = \App\Models\Category::findOrFail($id);
-        $posts = \App\Models\Post::where('category_id', $id)->get();
+        $category = \App\Models\Category::where('slug', $slug)->firstOrFail();
+        $posts = \App\Models\Post::where('category_id', $category->id)->get();
         return view('categories.show', compact('category', 'posts'));
     }
 }

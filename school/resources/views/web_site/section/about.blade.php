@@ -30,7 +30,7 @@
                 </p>
 
                 <!-- ✅ See More Button -->
-                <a href="{{ route('posts.show', $post->id) }}" 
+                <a href="{{ route('posts.show', $post->slug) }}" 
                    class="btn btn-primary mt-3">
                    See More
                 </a>

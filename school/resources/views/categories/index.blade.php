@@ -39,13 +39,13 @@
                     </td>
                     <td class="text-center">
                         <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-primary me-1" title="Edit">
-                            <i class="bi bi-pencil-square"></i>
+                          Edit
                         </a>
                         <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure to delete this category?');">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger" title="Delete" type="submit">
-                                <i class="bi bi-trash"></i>
+                               Delete
                             </button>
                         </form>
                     </td>

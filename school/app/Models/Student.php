@@ -11,14 +11,27 @@ class Student extends Model
 
     protected $fillable = [
         'name',
-        'email',
-        'phone',
         'dob',
         'gender',
-        'class_id',     // ঠিক নাম
-        'section_id',   // ঠিক নাম
+        'blood_group',
+        'religion',
+        'nationality',
+        'birth_cert_no',
+        'phone',
+        'email',
+        'present_address',
+        'permanent_address',
+        'father_name',
+        'mother_name',
+        'guardian_phone',
+        'guardian_occupation',
+        'class_id',
+        'section_id',
         'roll',
-        'address',
+        'previous_school',
+        'last_exam_result',
+        'admission_date',
+        'remarks',
         'photo'
     ];
 

@@ -1,10 +1,15 @@
 @extends('layouts.layouts')
+ 
+
+@section('title', 'Student Admission Form')
+
+
 
 @section('content')
 <div class="container bg-white p-4 shadow-sm" id="print-area">
     <div class="text-center mb-4">
         <h3 class="fw-bold">Student Admission Form</h3>
-        <p><strong>School Name:</strong> Your School Name Here</p>
+        <p><strong>School Name:</strong> {{ $org_settings->organization_name ?? 'My School' }}</p>
     </div>
 
     <div class="row">

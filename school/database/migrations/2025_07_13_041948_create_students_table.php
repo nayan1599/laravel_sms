@@ -6,56 +6,47 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-      Schema::create('students', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
 
             // Personal Information
-            $table->string('name');
-            $table->date('dob')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->default('male');
-            $table->string('blood_group', 10)->nullable();
-            $table->string('religion', 50)->nullable();
-            $table->string('nationality', 50)->default('Bangladeshi');
-            $table->string('birth_cert_no', 30)->nullable();
-
-            // Contact Info
-            $table->string('phone', 20)->nullable();
-            $table->string('email', 100)->nullable();
-            $table->text('present_address')->nullable();
-            $table->text('permanent_address')->nullable();
-
-            // Guardian Info
+            $table->string('name', 100);
+            $table->string('name_bn', 100)->nullable();
             $table->string('father_name', 100)->nullable();
+            $table->string('father_name_bn', 100)->nullable();
             $table->string('mother_name', 100)->nullable();
-            $table->string('guardian_phone', 20)->nullable();
-            $table->string('guardian_occupation', 100)->nullable();
+            $table->string('mother_name_bn', 100)->nullable();
 
-            // Academic Info
+            // Guardian Information
+            $table->string('guardian_name', 100)->nullable();
+            $table->string('guardian_contact', 15)->nullable();
+            $table->string('guardian_relation', 50)->nullable();
+
+            // Contact & Address
+            $table->string('contact', 15)->nullable();
+            $table->string('present_address', 255)->nullable();
+            $table->string('permanent_address', 255)->nullable();
+
+            // Academic Information
             $table->unsignedBigInteger('class_id');
-            $table->unsignedBigInteger('section_id')->nullable();
-            $table->string('roll', 20)->nullable();
-            $table->string('previous_school', 150)->nullable();
-            $table->string('last_exam_result', 50)->nullable();
+            $table->string('roll', 20)->nullable();  // Keep as STRING to match your form
 
-            // Other
-            $table->date('admission_date')->nullable();
-            $table->string('photo')->nullable();
-            $table->text('remarks')->nullable();
+            // Additional Details
+            $table->date('date_of_birth');
+            $table->string('blood_group', 5)->nullable();
+            $table->string('religion', 50)->nullable();
+            $table->string('gender', 10);
+            $table->string('photo', 255)->nullable();
 
             $table->timestamps();
 
- 
+            // Foreign Key
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('students');

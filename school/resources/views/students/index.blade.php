@@ -1,71 +1,135 @@
 @extends('layouts.layouts')
-
+@section('title', 'Students List')
 @section('content')
-<div class="container">
-    <h2 class="main-title">All Students</h2>
-
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <a href="{{ route('students.create') }}" class="btn btn-success mb-3">+ Add New Student</a>
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Class</th>
-                    <th>Section</th>
-                    <th>Roll</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Guardian</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($students as $student)
-                <tr>
-                    <td>
-                        @if($student->photo)
-                            <img src="{{ asset($student->photo) }}" width="50" height="50" class="rounded">
-                        @else
-                            N/A
-                        @endif
-                    </td>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ ucfirst($student->gender) ?? 'N/A' }}</td>
-                    <td>{{ $student->studentClass->class_name ?? 'N/A' }}</td>
-                    <td>{{ $student->section->section_name ?? 'N/A' }}</td>
-                    <td>{{ $student->roll ?? 'N/A' }}</td>
-                    <td>{{ $student->phone ?? 'N/A' }}</td>
-                    <td>{{ $student->email ?? 'N/A' }}</td>
-                    <td>{{ $student->father_name ?? 'N/A' }}</td>
-                    <td>
-                        <a href="{{ route('students.show', $student->id) }}" class="btn btn-info btn-sm">View</a>
-                        <a href="{{ route('students.edit', $student->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure to delete?')">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="10" class="text-center">No students found.</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+<div class="container-fluid py-4">
+    {{-- Page Header --}}
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 main-title">Students</h2>
+            <p class="mb-0 ">Manage all registered students</p>
+        </div>
+        <a href="{{ route('students.create') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Add New Student
+        </a>
     </div>
 
-    {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-3">
-        {{ $students->links() }}
+    {{-- Flash Message --}}
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    {{-- Card --}}
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            {{-- Table --}}
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead class="table-light text-uppercase small">
+                        <tr>
+                            <th>Student</th>
+                            <th>Gender</th>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Roll</th>
+                            <th>Contact</th>
+                            <th>Guardian</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($students as $student)
+                        <tr>
+                            {{-- Student Info --}}
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    @if($student->photo)
+                                    <img src="{{ asset($student->photo) }}" class="rounded-circle border" width="48" height="48" alt="photo">
+                                    @else
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:48px;height:48px;">
+                                        {{ strtoupper(substr($student->name,0,1)) }}
+                                    </div>
+                                    @endif
+                                    <div>
+                                        <div class="fw-semibold">{{ $student->name }}</div>
+                                        <div class="text-muted small">{{ $student->email ?? 'No email' }}</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            {{-- Gender --}}
+                            <td>
+                                <span class="badge bg-{{ $student->gender === 'male' ? 'primary' : 'warning' }}">
+                                    {{ ucfirst($student->gender) ?? 'N/A' }}
+                                </span>
+                            </td>
+
+                            {{-- Class --}}
+                            <td>{{ $student->studentClass->class_name ?? 'N/A' }}</td>
+
+                            {{-- Section --}}
+                            <td>{{ $student->section->section_name ?? 'N/A' }}</td>
+
+                            {{-- Roll --}}
+                            <td>{{ $student->roll ?? 'N/A' }}</td>
+
+                            {{-- Contact --}}
+                            <td>
+                                <div class="small">📞 {{ $student->phone ?? 'N/A' }}</div>
+                            </td>
+
+                            {{-- Guardian --}}
+                            <td>{{ $student->father_name ?? 'N/A' }}</td>
+
+                            {{-- Actions --}}
+                          
+                            <td class="text-end">
+                                <a href="{{ route('students.show', $student->id) }}"
+                                    class="btn btn-sm btn-outline-info me-1"
+                                    title="View">
+                                    View
+                                </a>
+
+                                <a href="{{ route('students.edit', $student->id) }}"
+                                    class="btn btn-sm btn-outline-primary me-1"
+                                    title="Edit">
+                                    Edit
+                                </a>
+
+                                <form action="{{ route('students.destroy', $student->id) }}"
+                                    method="POST"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Are you sure to delete this student?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Delete">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                No students found.
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Pagination --}}
+            <div class="d-flex justify-content-end mt-3">
+                {{ $students->links() }}
+            </div>
+        </div>
     </div>
 </div>
 @endsection

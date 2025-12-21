@@ -25,6 +25,7 @@ class Mark extends Model
         'grade',
         'remarks',
         'recorded_at',
+        
     ];
     public function student()
     {

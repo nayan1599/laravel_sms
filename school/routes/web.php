@@ -27,10 +27,8 @@ use App\Http\Controllers\{
     CategoryController,
     PostController,
     StudentApplicationController,
-
 };
-
- 
+use Symfony\Component\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,18 +36,17 @@ use App\Http\Controllers\{
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn () => view('index'))->name('home');
+Route::get('/', fn() => view('index'))->name('home');
 
 Route::prefix('frontend')->group(function () {
     Route::get('posts/{slug}', [PostController::class, 'show'])->name('frontend.posts.show');
     Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('frontend.categories.show');
     Route::get('notices/{id}', [NoticeController::class, 'show'])->name('frontend.notices.show');
     Route::get('committees/{id}', [SchoolCommitteeController::class, 'show'])->name('frontend.committees.show');
- 
 });
 
-Route::get('/apply', [StudentApplicationController::class,'create'])->name('apply');
-Route::post('/apply', [StudentApplicationController::class,'store']);
+Route::get('/apply', [StudentApplicationController::class, 'create'])->name('apply');
+Route::post('/apply', [StudentApplicationController::class, 'store']);
 
 /*
 |--------------------------------------------------------------------------
@@ -117,17 +114,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [MarkController::class, 'marksheetForm'])->name('index');
         Route::post('/view', [MarkController::class, 'viewMarksheet'])->name('view');
     });
-    
- 
-    Route::get('applications', [StudentApplicationController::class,'index'])->name('applications.index');
-    Route::get('applications/{id}', [StudentApplicationController::class,'show'])->name('applications.show');
-    Route::post('applications/{id}/approve', [StudentApplicationController::class,'approve'])->name('applications.approve');
-    Route::post('applications/{id}/reject', [StudentApplicationController::class,'reject'])->name('applications.reject');
-    Route::delete('applications/{id}', [StudentApplicationController::class,'destroy'])->name('applications.destroy');
- 
 
 
- 
+    Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
+    Route::get('applications/{id}', [StudentApplicationController::class, 'show'])->name('applications.show');
+    Route::get('applications/{id}/edit', [StudentApplicationController::class, 'edit'])->name('applications.edit');
+    Route::put('applications/{id}', [StudentApplicationController::class, 'update'])->name('applications.update');
+    Route::post('applications/{id}/approve', [StudentApplicationController::class, 'approve'])->name('applications.approve');
+    Route::post('applications/{id}/reject', [StudentApplicationController::class, 'reject'])->name('applications.reject');
+    Route::delete('applications/{id}', [StudentApplicationController::class, 'destroy'])->name('applications.destroy');
 });
 
 /*

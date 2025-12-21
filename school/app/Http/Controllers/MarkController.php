@@ -12,9 +12,13 @@ class MarkController extends Controller
 {
     public function index()
 {
-    $students = Student::all();
-    $exams = Exam::all();
-    return view('marks.index', compact('students', 'exams'));
+
+
+     $marks = Mark::latest()->paginate(10);
+        return view('marks.index', compact('marks'));
+
+     // $marks = Mark::latest()->paginate(10);
+   // return view('marks.index', compact('marks'));
 }
 
     public function create()

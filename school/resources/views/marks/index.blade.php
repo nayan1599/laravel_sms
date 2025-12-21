@@ -1,48 +1,58 @@
 @extends('layouts.layouts')
-
 @section('content')
-<div class="container py-4">
-    <h2 class="mb-4 main-title">🎓 Generate Student Marksheet</h2>
-
-    @if ($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2>Marks Management</h2>
+            </div>
+            <div class="pull-right pt-2 text-end">
+                <a class="btn btn-success" href="{{ route('marks.create') }}"> Add New Mark</a>
+            </div>
         </div>
+    </div>
+
+    @if ($message = Session::get('success'))
+    <div class="alert alert-success">
+        <p>{{ $message }}</p>
+    </div>
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     @endif
-
-    <form action="{{ route('marksheet.view') }}" method="POST" class="row g-3">
-        @csrf
-
-        <div class="col-md-6">
-            <label for="student_id" class="form-label">Select Student</label>
-            <select name="student_id" class="form-select" required>
-                <option value="">-- Choose Student --</option>
-                @foreach($students as $student)
-                    <option value="{{ $student->id }}">{{ $student->name }} (Roll: {{ $student->roll_no }})</option>
-                @endforeach
-            </select>
+    <table class="table table-bordered">
+        <tr>
+            
+            <th>Student</th>
+            <th>Exam</th>
+            <th>Subject</th>
+            <th>Marks Obtained</th>
+            <th>Total Marks</th>
+            <th>Grade</th>
+            <th>Remarks</th>
+            <th width="280px">Action</th>
+        </tr>
+        @foreach ($marks as $mark)
+        <tr>
+      
+            <td>{{ $mark->student->name }}</td>
+            <td>{{ $mark->exam->name }}</td>
+            <td>{{ $mark->subject->name }}</td>
+            <td>{{ $mark->marks_obtained }}</td>
+            <td>{{ $mark->total_marks }}</td>
+            <td>{{ $mark->grade }}</td>
+            <td>{{ $mark->remarks }}</td>
+            <td>
+                <a class="btn btn-info" href="{{ route('marks.show',$mark->id) }}">Show</a>
+                <a class="btn btn-primary" href="{{ route('marks.edit',$mark->id) }}">Edit</a>
+                <form action="{{ route('marks.destroy',$mark->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+        </table>
+        {{ $marks->links() }}
         </div>
-
-        <div class="col-md-6">
-            <label for="exam_id" class="form-label">Select Exam</label>
-            <select name="exam_id" class="form-select" required>
-                <option value="">-- Choose Exam --</option>
-                @foreach($exams as $exam)
-                    <option value="{{ $exam->id }}">{{ $exam->exam_name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-bar-chart-line"></i> View Marksheet
-            </button>
-        </div>
-    </form>
-</div>
-@endsection
+        @endsection

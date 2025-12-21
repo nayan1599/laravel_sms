@@ -12,17 +12,17 @@ use Illuminate\Support\Facades\DB;
 class StudentApplicationController extends Controller
 {
     // ADMIN LIST
-  public function index()
-{
-    $applications = StudentApplication::latest()->paginate(10);
-    return view('applications.index', compact('applications'));
-}
+    public function index()
+    {
+        $applications = StudentApplication::latest()->paginate(10);
+        return view('applications.index', compact('applications'));
+    }
 
 
     // PUBLIC FORM
     public function create()
     {
-          $classes = ClassModel::all();
+        $classes = ClassModel::all();
         $sections = Section::all();
         return view('applications.apply', compact('classes', 'sections'));
     }
@@ -35,12 +35,28 @@ class StudentApplicationController extends Controller
             'phone'    => 'required|string|max:20',
             'gender'   => 'required|in:male,female',
             'class_id' => 'required|exists:classes,id',
+            'email'    => 'nullable|email|max:255',
+            'section_id' => 'nullable|exists:sections,id',
+            'father_name' => 'nullable|string|max:100',
+            'photo'    => 'nullable|image|max:2048',
+            'status'   => 'nullable|in:pending,approved,rejected',
         ]);
 
         StudentApplication::create($data);
 
         return redirect()->back()->with('success', 'Application submitted successfully');
     }
+
+
+    public function edit($id)
+    {
+        //
+        $classes = ClassModel::all();
+         $sections = Section::all();
+        $data = StudentApplication::findOrFail($id);
+        return view('applications.edit', compact('data', 'classes', 'sections'));
+    }
+
 
     // SHOW APPLICATION
     public function show($id)
@@ -77,6 +93,27 @@ class StudentApplicationController extends Controller
 
         return back()->with('success', 'Student approved successfully');
     }
+
+    // update application
+    public function update(Request $request, $id)
+    {
+        $application = StudentApplication::findOrFail($id);
+
+        $data = $request->validate([
+            'name'     => 'required|string|max:255',
+            'phone'    => 'required|string|max:20',
+            'gender'   => 'required|in:male,female',
+            'class_id' => 'required|exists:classes,id',
+            'email'    => 'nullable|email|max:255',
+            'section_id' => 'nullable|exists:sections,id',
+            'father_name' => 'nullable|string|max:100',
+            'photo'    => 'nullable|image|max:2048',
+            'status'   => 'nullable|in:pending,approved,rejected',
+        ]);
+        $application->update($data);
+        return redirect()->route('applications.index')->with('success', 'Application updated successfully');
+    }
+
 
     // REJECT APPLICATION
     public function reject($id)

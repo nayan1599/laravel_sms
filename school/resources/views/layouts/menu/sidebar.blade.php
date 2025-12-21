@@ -110,6 +110,7 @@
                           <li> <a href="{{route('classes.index')}}">Class List</a> </li>
                           <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
                           <li> <a href="{{route('marks.index')}}">Mark List</a> </li>
+                          <li> <a href="{{route('marks.create')}}">Mark Add</a> </li>
                       </ul>
                   </li>
                   <li>

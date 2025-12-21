@@ -16,7 +16,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                  
                     @foreach($applications as $app)
+
+
+  <!-- {{ $app }} -->
+
                     <tr>
                         <td>{{ $app->name }}</td>
                         <td>{{ $app->phone }}</td>
@@ -26,20 +31,36 @@
                         </td>
                         <td class="text-end">
                             <a href="{{ route('applications.show',$app->id) }}" class="btn btn-sm btn-outline-info">
-                                <i class="bi bi-eye"></i>
+                               View
+                            </a>
+                      
+                             <a href="{{ route('applications.edit',$app->id) }}" class="btn btn-sm btn-outline-info">
+                               Edit
                             </a>
                             <form method="POST" action="{{ route('applications.approve',$app->id) }}" class="d-inline">
                                 @csrf
                                 <button class="btn btn-sm btn-outline-success">
-                                    <i class="bi bi-check"></i>
+                                    Approve
                                 </button>
                             </form>
                             <form method="POST" action="{{ route('applications.reject',$app->id) }}" class="d-inline">
                                 @csrf
                                 <button class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-x"></i>
+                                   Reject
                                 </button>
                             </form>
+                            <form action="{{ route('applications.destroy', $app->id) }}"
+                                    method="POST"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Are you sure to delete this student?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Delete">
+                                        Delete
+                                    </button>
+                                </form>
                         </td>
                     </tr>
                     @endforeach

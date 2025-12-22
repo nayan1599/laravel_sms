@@ -25,10 +25,7 @@ return new class extends Migration
         $table->enum('exam_type', ['written', 'oral', 'practical', 'online'])->default('written');
         $table->enum('status', ['scheduled', 'completed', 'cancelled'])->default('scheduled');
         $table->timestamps();
-
-        $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-        $table->foreign('section_id')->references('id')->on('sections')->onDelete('set null');
-        $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('set null');
+ 
     });
     }
 

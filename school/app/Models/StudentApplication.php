@@ -17,6 +17,9 @@ class StudentApplication extends Model
         'class_id',
         'section_id',
         'father_name',
+        'mother_name',
+        'date_of_birth',
+        'address',
         'photo',
         'status'
     ];

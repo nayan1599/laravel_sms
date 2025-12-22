@@ -11,11 +11,25 @@ use Illuminate\Support\Facades\DB;
 
 class StudentApplicationController extends Controller
 {
+
+
+
     // ADMIN LIST
     public function index()
     {
         $applications = StudentApplication::latest()->paginate(10);
-        return view('applications.index', compact('applications'));
+        $totalApplications = StudentApplication::count();
+        $approvedApplications = StudentApplication::where('status', 'approved')->count();
+        $pendingApplications = StudentApplication::where('status', 'pending')->count();
+        $rejectedApplications = StudentApplication::where('status', 'rejected')->count();
+
+        return view('applications.index', compact(
+            'totalApplications',
+            'approvedApplications',
+            'pendingApplications',
+            'rejectedApplications',
+            'applications'
+        ));
     }
 
 
@@ -52,7 +66,7 @@ class StudentApplicationController extends Controller
     {
         //
         $classes = ClassModel::all();
-         $sections = Section::all();
+        $sections = Section::all();
         $data = StudentApplication::findOrFail($id);
         return view('applications.edit', compact('data', 'classes', 'sections'));
     }

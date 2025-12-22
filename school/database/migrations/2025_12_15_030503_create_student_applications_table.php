@@ -11,20 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-   Schema::create('student_applications', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->string('email')->nullable();
-    $table->string('phone');
-    $table->enum('gender',['male','female']);
-    $table->foreignId('class_id')->nullable();
-    $table->foreignId('section_id')->nullable();
-    $table->string('father_name')->nullable();
-    $table->string('photo')->nullable();
-    $table->enum('status',['pending','approved','rejected'])->default('pending');
-    $table->timestamps();
-});
-
+        Schema::create('student_applications', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone');
+            $table->enum('gender', ['male', 'female']);
+            $table->foreignId('class_id')->nullable();
+            $table->foreignId('section_id')->nullable();
+            $table->string('father_name')->nullable();
+            $table->string('mother_name')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->text('address')->nullable();
+            $table->string('photo')->nullable();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->timestamps();
+        });
     }
 
     /**

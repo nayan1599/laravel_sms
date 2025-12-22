@@ -24,8 +24,7 @@ return new class extends Migration
     $table->enum('status', ['active', 'inactive', 'deceased'])->default('active');
     $table->timestamps();
 
-    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-});
+ });
     }
 
     /**

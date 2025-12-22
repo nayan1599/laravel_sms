@@ -30,11 +30,7 @@ return new class extends Migration
 
             $table->unique(['student_id', 'attendance_date', 'subject_id']);
 
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-            $table->foreign('section_id')->references('id')->on('sections')->onDelete('set null');
-            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('set null');
-            $table->foreign('recorded_by')->references('id')->on('users')->onDelete('set null');
+          
         });
     }
 

@@ -16,29 +16,31 @@
               </button>
           </div>
           <div class="sidebar-body">
+              <span class="system-menu__title">Students</span>
               <ul class="sidebar-body-menu">
                   <li>
-                      <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                          <span class="icon home" aria-hidden="true"></span>Dashboard
-                      </a>
-                  </li>
-                  <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon document" aria-hidden="true"></span>Students
+                          <span class="icon document" aria-hidden="true"></span> Students 
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
                       <ul class="cat-sub-menu">
-                          <li>
-                              <a class="{{ request()->is('students') || request()->is('students/*') ? 'active' : '' }}" href="{{ route('students.index') }}">All Students</a>
-                          </li>
-                          <li>
-                              <a class="{{ request()->is('students/create') ? 'active' : '' }}" href="{{ route('students.create') }}">Add new Student</a>
-                          </li>
+                          <li><a class="{{ request()->is('students') || request()->is('students/*') ? 'active' : '' }}" href="{{ route('students.index') }}">All Students</a></li>
+                          <li> <a class="{{ request()->is('students/create') ? 'active' : '' }}" href="{{ route('students.create') }}">Add new Student</a></li>
                       </ul>
                   </li>
+              </ul>
+
+
+              <ul class="sidebar-body-menu">
+                  <li>
+                      <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                          <span class="icon home" aria-hidden="true"></span>Dashboard
+                      </a>
+                  </li>
+
 
                   <li>
                       <a class="show-cat-btn" href="##">
@@ -133,7 +135,7 @@
                           <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
                           <li> <a href="{{route('marks.index')}}">Mark List</a> </li>
                           <li> <a href="{{route('marks.create')}}">Mark Add</a> </li>
-                       </ul>
+                      </ul>
                   </li>
 
 

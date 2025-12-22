@@ -25,8 +25,7 @@ return new class extends Migration
             $table->string('remarks', 255)->nullable();
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
+          
        
         });
     }

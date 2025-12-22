@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashboardController,
@@ -48,6 +49,8 @@ Route::prefix('frontend')->group(function () {
 
 Route::get('/apply', [StudentApplicationController::class, 'create'])->name('apply');
 Route::post('/apply', [StudentApplicationController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -97,8 +100,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'categories'     => CategoryController::class,
         'posts'          => PostController::class,
         'student_applications' => StudentApplicationController::class,
-        'certificates'   => CertificateController::class,
-    ]);
+         'certificates'   => CertificateController::class,
+     ]);
 
     /*
     |------------------------------------------------------------------
@@ -117,8 +120,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/view', [MarkController::class, 'viewMarksheet'])->name('view');
     });
 
-
-    Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
+     Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
     Route::get('applications/{id}', [StudentApplicationController::class, 'show'])->name('applications.show');
     Route::get('applications/{id}/edit', [StudentApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('applications/{id}', [StudentApplicationController::class, 'update'])->name('applications.update');

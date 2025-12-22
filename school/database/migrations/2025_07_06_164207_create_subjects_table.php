@@ -28,9 +28,7 @@ return new class extends Migration
     $table->enum('status', ['active', 'inactive'])->default('active');
 
     $table->timestamps();
-
-    $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-    $table->foreign('subject_teacher_id')->references('id')->on('teachers')->onDelete('set null');
+ 
 });
     }
 

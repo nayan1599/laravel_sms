@@ -20,9 +20,7 @@ return new class extends Migration
         $table->enum('status', ['active', 'inactive'])->default('active');
         $table->timestamps();
 
-        $table->unique(['class_id', 'section_name']);
-        $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
-        $table->foreign('section_teacher_id')->references('id')->on('teachers')->onDelete('set null');
+      
     });
     }
 

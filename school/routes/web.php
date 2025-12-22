@@ -27,6 +27,7 @@ use App\Http\Controllers\{
     CategoryController,
     PostController,
     StudentApplicationController,
+    CertificateController,
 };
 use Symfony\Component\Routing\Router;
 
@@ -96,6 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'categories'     => CategoryController::class,
         'posts'          => PostController::class,
         'student_applications' => StudentApplicationController::class,
+        'certificates'   => CertificateController::class,
     ]);
 
     /*

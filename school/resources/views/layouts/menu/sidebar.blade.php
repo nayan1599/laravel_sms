@@ -94,13 +94,20 @@
                   </li>
 
               </ul>
-              <span class="system-menu__title">Class Setting</span>
+              <span class="system-menu__title">Mark & Certificates</span>
+              <ul class="sidebar-body-menu">
+                  <li> <a href="{{ route('certificates.index') }}"><span class="icon document" aria-hidden="true"></span>Certificates</a> </li>
+                  <li> <a href="{{ url('marksheet') }}"><span class="icon document" aria-hidden="true"></span>Mark Sheets</a> </li>
+              </ul>
+
+
+              <span class="system-menu__title"> Setting</span>
               <ul class="sidebar-body-menu">
                   <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon category" aria-hidden="true"></span>Class & Exam
+                          <span class="icon category" aria-hidden="true"></span>Class Setting
                           <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
+                              <span class="sr-only">Class</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
                           </span>
                       </a>
@@ -108,11 +115,30 @@
                           <li> <a href="{{route('subjects.index')}}">Subjects List</a> </li>
                           <li> <a href="{{route('sections.index')}}">Section List</a> </li>
                           <li> <a href="{{route('classes.index')}}">Class List</a> </li>
+
+                      </ul>
+                  </li>
+
+                  <!-- exam section -->
+                  <li>
+                      <a class="show-cat-btn" href="##">
+                          <span class="icon category" aria-hidden="true"></span> Exam Setting
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Exam Setting</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
+                      <ul class="cat-sub-menu">
+
                           <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
                           <li> <a href="{{route('marks.index')}}">Mark List</a> </li>
                           <li> <a href="{{route('marks.create')}}">Mark Add</a> </li>
-                      </ul>
+                       </ul>
                   </li>
+
+
+
+
                   <li>
                       <a class="show-cat-btn" href="##">
                           <span class="icon user-3" aria-hidden="true"></span>attendance

@@ -11,20 +11,21 @@ use Illuminate\Http\Request;
 class MarkController extends Controller
 {
     public function index()
-{
+    {
 
 
-     $marks = Mark::latest()->paginate(10);
+        $marks = Mark::latest()->paginate(10);
         return view('marks.index', compact('marks'));
 
-     // $marks = Mark::latest()->paginate(10);
-   // return view('marks.index', compact('marks'));
-}
+        // $marks = Mark::latest()->paginate(10);
+        // return view('marks.index', compact('marks'));
+    }
+
 
     public function create()
     {
         $students = Student::all();
-        $exams = Exam::all();
+        $exams = Exam::whereIn('status', ['scheduled'])->get(); // Example IDs
         $subjects = Subject::all();
         return view('marks.create', compact('students', 'exams', 'subjects'));
     }
@@ -92,7 +93,7 @@ class MarkController extends Controller
     {
         $students = Student::all();
         $exams = Exam::all();
-        return view('marks.index', compact('students', 'exams'));
+        return view('marks.marksheetForm', compact('students', 'exams'));
     }
 
     // View Marksheet Report
@@ -117,7 +118,11 @@ class MarkController extends Controller
         $total_marks = $marks->sum('total_marks');
 
         return view('marks.report', compact(
-            'student', 'exam', 'marks', 'total_obtained', 'total_marks'
+            'student',
+            'exam',
+            'marks',
+            'total_obtained',
+            'total_marks'
         ));
     }
 }

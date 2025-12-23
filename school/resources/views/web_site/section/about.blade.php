@@ -1,6 +1,6 @@
 <section class="py-5 bg-light">
     @php
-        $category = \App\Models\Category::where('name', 'news')->first();
+        $category = \App\Models\Category::where('name', 'about')->first();
 
         // ক্যাটাগরির পোস্ট থেকে প্রথমটি নাও, যদি থাকে
         $post = null;

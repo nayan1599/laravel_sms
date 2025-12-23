@@ -24,7 +24,7 @@
                   </li>
               </ul>
               <!-- student menu -->
-              <span class="system-menu__title">Students</span>
+              <span class="system-menu__title">**Students</span>
               <ul class="sidebar-body-menu">
 
                   <li>
@@ -43,11 +43,17 @@
               </ul>
 
               <!-- Tachers & Employees Menu -->
-              <span class="system-menu__title">Staffs</span>
+              <span class="system-menu__title">**Staffs</span>
               <ul class="sidebar-body-menu">
                   <li><a class="{{ request()->is('teachers') || request()->is('teachers/*') ? 'active' : '' }}" href="{{ route('teachers.index') }}">All Teachers</a></li>
                   <li><a class="{{ request()->is ('employees') ? 'active' : '' }}" href="{{ route('employees.index')}}">All Employees</a></li>
-                
+
+
+
+              </ul>
+              <!-- web site menu all  -->
+              <span class="system-menu__title">**Website</span>
+              <ul class="sidebar-body-menu">
                   <li>
                       <a class="show-cat-btn" href="##">
                           <span class="icon paper" aria-hidden="true"></span>Web Site
@@ -61,36 +67,26 @@
                           <li> <a href="{{route('banners.index')}}">Banner</a></li>
                           <li> <a href="{{route('categories.index')}}">categories</a></li>
                           <li> <a href="{{route('posts.index')}}">Pages</a></li>
-                          <li> <a href="{{route('notices.index')}}">Notices</a> </li>
-                          <li> <a href="{{route('committees.index')}}">Committees</a> </li>
                           <!-- <li> <a href="#">About</a></li> -->
                       </ul>
                   </li>
-
               </ul>
-              <span class="system-menu__title">Mark & Certificates</span>
+
+              <!-- Marks & Certificates Menu -->
+              <span class="system-menu__title">**Mark & Certificates</span>
               <ul class="sidebar-body-menu">
-                  <li> <a href="{{ route('certificates.index') }}"><span class="icon document" aria-hidden="true"></span>Certificates</a> </li>
                   <li> <a href="{{ url('marksheet') }}"><span class="icon document" aria-hidden="true"></span>Mark Sheets</a> </li>
+                  <li> <a href="{{ route('certificates.index') }}"><span class="icon document" aria-hidden="true"></span>Certificates</a> </li>
               </ul>
 
 
-              <span class="system-menu__title"> Setting</span>
+              <span class="system-menu__title">** Class Setting </span>
               <ul class="sidebar-body-menu">
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon category" aria-hidden="true"></span>Class Setting
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Class</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li> <a href="{{route('subjects.index')}}">Subjects List</a> </li>
-                          <li> <a href="{{route('sections.index')}}">Section List</a> </li>
-                          <li> <a href="{{route('classes.index')}}">Class List</a> </li>
+                  <li> <a class="{{ request()->is('classes') || request()->is('classes/*') ? 'active' : '' }}" href="{{route('classes.index')}}">Class List</a> </li>
+                  <li> <a class="{{ request()->is('sections') || request()->is('sections/*') ? 'active' : '' }}" href="{{route('sections.index')}}">Section List</a> </li>
+                  <li> <a class="{{ request()->is('subjects') || request()->is('subjects/*') ? 'active' : '' }}" href="{{route('subjects.index')}}">Subjects List</a> </li>
 
-                      </ul>
+
                   </li>
 
                   <!-- exam section -->

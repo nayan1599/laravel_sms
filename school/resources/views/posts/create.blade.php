@@ -98,4 +98,23 @@
         <a href="{{ route('posts.index') }}" class="btn btn-secondary ms-2">Cancel</a>
     </form>
 </div>
+
+
+
+{{-- 🔥 AUTO SLUG SCRIPT --}}
+<script>
+document.getElementById('title').addEventListener('input', function () {
+    let title = this.value;
+
+    // convert to slug
+    let slug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')  // remove special chars
+        .trim()
+        .replace(/\s+/g, '-')          // replace spaces with -
+        .replace(/-+/g, '-');          // remove multiple dashes
+
+    document.getElementById('slug').value = slug;
+});
+</script>
 @endsection

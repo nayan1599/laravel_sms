@@ -3,8 +3,8 @@
 @section('content')
 <div class="container-fluid py-4">
 
-<!-- dd($studentsByClass); -->
- 
+    <!-- dd($studentsByClass); -->
+
 
 
 
@@ -21,9 +21,9 @@
     </div>
 
 
-<!-- students / -->
-<div class="row mb-4 g-4">
-    @foreach($studentsByClass as $row)
+    <!-- students / -->
+    <div class="row mb-4 g-4">
+        @foreach($studentsByClass as $row)
         <div class="col-md-3">
             <div class="card shadow-sm border-0">
                 <div class="card-body text-center">
@@ -37,15 +37,8 @@
                 </div>
             </div>
         </div>
-    @endforeach
-</div>
-
-
-
-
-
-
-
+        @endforeach
+    </div>
 
 
     {{-- Flash Message --}}
@@ -119,7 +112,7 @@
                             <td>{{ $student->father_name ?? 'N/A' }}</td>
 
                             {{-- Actions --}}
-                          
+
                             <td class="text-end">
                                 <a href="{{ route('students.show', $student->id) }}"
                                     class="btn btn-sm btn-outline-info me-1"

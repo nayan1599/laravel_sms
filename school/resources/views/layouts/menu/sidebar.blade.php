@@ -16,11 +16,20 @@
               </button>
           </div>
           <div class="sidebar-body">
-              <span class="system-menu__title">Students</span>
               <ul class="sidebar-body-menu">
                   <li>
+                      <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                          <span class="icon home" aria-hidden="true"></span>Dashboard
+                      </a>
+                  </li>
+              </ul>
+              <!-- student menu -->
+              <span class="system-menu__title">Students</span>
+              <ul class="sidebar-body-menu">
+
+                  <li>
                       <a class="show-cat-btn" href="##">
-                          <span class="icon document" aria-hidden="true"></span> Students 
+                          <span class="icon document" aria-hidden="true"></span> Students
                           <span class="category__btn transparent-btn" title="Open list">
                               <span class="sr-only">Open list</span>
                               <span class="icon arrow-down" aria-hidden="true"></span>
@@ -28,54 +37,17 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li><a class="{{ request()->is('students') || request()->is('students/*') ? 'active' : '' }}" href="{{ route('students.index') }}">All Students</a></li>
-                          <li> <a class="{{ request()->is('students/create') ? 'active' : '' }}" href="{{ route('students.create') }}">Add new Student</a></li>
+                          <li> <a class="{{ request()->is('student_applications') ? 'active' : '' }}" href="{{ url('student_applications') }}">Online apply</a></li>
                       </ul>
                   </li>
               </ul>
 
-
+              <!-- Tachers & Employees Menu -->
+              <span class="system-menu__title">Staffs</span>
               <ul class="sidebar-body-menu">
-                  <li>
-                      <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                          <span class="icon home" aria-hidden="true"></span>Dashboard
-                      </a>
-                  </li>
-
-
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon folder" aria-hidden="true"></span>Tachers
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li>
-                              <a href="{{ route('teachers.index')}}">All Teacher</a>
-                          </li>
-                          <li>
-                              <a href="{{ route('teachers.create')}}">Add New Teacher</a>
-                          </li>
-                      </ul>
-                  </li>
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon image" aria-hidden="true"></span>Employees
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li>
-                              <a href="{{ route('employees.index')}}">All Employees</a>
-                          </li>
-                          <li>
-                              <a href="{{ route('employees.create')}}">Add Employees</a>
-                          </li>
-                      </ul>
-                  </li>
+                  <li><a class="{{ request()->is('teachers') || request()->is('teachers/*') ? 'active' : '' }}" href="{{ route('teachers.index') }}">All Teachers</a></li>
+                  <li><a class="{{ request()->is ('employees') ? 'active' : '' }}" href="{{ route('employees.index')}}">All Employees</a></li>
+                
                   <li>
                       <a class="show-cat-btn" href="##">
                           <span class="icon paper" aria-hidden="true"></span>Web Site

@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="container-fluid py-4">
-    <h3 class="fw-bold mb-3">Student Applications Dashboard</h3>
+    <h3 class="fw-bold mb-3 main-title">Student Applications Dashboard</h3>
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card shadow-sm border-0">
@@ -34,7 +34,7 @@
 </div>
 
 <div class="container-fluid py-4">
-    <h3 class="fw-bold mb-3">Student Applications</h3>
+    <h3 class="fw-bold mb-3 main-title">Student Applications</h3>
     <div class="card shadow-sm border-0">
         <div class="card-body table-responsive">
             <table class="table table-hover align-middle">

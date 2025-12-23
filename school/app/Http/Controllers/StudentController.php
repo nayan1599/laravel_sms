@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Models\ClassModel;
@@ -13,8 +13,15 @@ class StudentController extends Controller
 {
     public function index()
     {
+
+$totalStudents = Student::count();
+$studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.id')
+    ->select('classes.class_name as class_names', DB::raw('COUNT(students.id) as total'))
+    ->groupBy('classes.class_name')
+    ->get();
+
         $students = Student::latest()->paginate(10);
-        return view('students.index', compact('students'));
+        return view('students.index', compact('students', 'totalStudents', 'studentsByClass'));
     }
 
     public function create()

@@ -2,6 +2,13 @@
 @section('title', 'Students List')
 @section('content')
 <div class="container-fluid py-4">
+
+<!-- dd($studentsByClass); -->
+ 
+
+
+
+
     {{-- Page Header --}}
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
@@ -12,6 +19,34 @@
             <i class="bi bi-plus-circle me-1"></i> Add New Student
         </a>
     </div>
+
+
+<!-- students / -->
+<div class="row mb-4 g-4">
+    @foreach($studentsByClass as $row)
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill text-primary fs-2"></i>
+                    <h6 class="mt-2 text-muted">
+                        {{ $row->class_names ?? 'N/A' }}
+                    </h6>
+                    <h3 class="fw-bold mb-0">
+                        {{ $row->total }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
+
+
+
+
+
+
+
+
 
     {{-- Flash Message --}}
     @if(session('success'))

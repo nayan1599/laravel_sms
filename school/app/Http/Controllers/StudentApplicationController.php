@@ -52,6 +52,9 @@ class StudentApplicationController extends Controller
             'email'    => 'nullable|email|max:255',
             'section_id' => 'nullable|exists:sections,id',
             'father_name' => 'nullable|string|max:100',
+            'mother_name' => 'nullable|string|max:100',
+            'date_of_birth' => 'nullable|date',
+            'address' => 'nullable|string|max:255',
             'photo'    => 'nullable|image|max:2048',
             'status'   => 'nullable|in:pending,approved,rejected',
         ]);
@@ -93,11 +96,11 @@ class StudentApplicationController extends Controller
 
             Student::create([
                 'name'         => $application->name,
-                'phone'        => $application->phone,
+                'guardian_contact'        => $application->phone,
                 'gender'       => $application->gender,
                 'class_id'     => $application->class_id,
-                'section_id'   => $application->section_id,
                 'father_name'  => $application->father_name,
+                'date_of_birth' => $application->date_of_birth,
             ]);
 
             $application->update([

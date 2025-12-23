@@ -1,6 +1,6 @@
 @csrf
 <div class="  rounded p-4">
-   
+
     <div class="row">
         <!-- Name -->
         <div class="col-md-6 mb-3">
@@ -32,13 +32,21 @@
             <select name="department" class="form-select" required>
                 <option value="">-- Select Department --</option>
                 @foreach($departments as $department)
-                    <option value="{{ $department->name }}" {{ old('department', $employee->department ?? '') == $department->name ? 'selected' : '' }}>
-                        {{ $department->name }}
-                    </option>
+                <option value="{{ $department->name }}" {{ old('department', $employee->department ?? '') == $department->name ? 'selected' : '' }}>
+                    {{ $department->name }}
+                </option>
                 @endforeach
             </select>
         </div>
 
+        <!-- status  -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Status <span class="text-danger">*</span></label>
+            <select name="status" class="form-select" required>
+                <option value="active" {{ old('status', $employee->status ?? '') == 'active' ? 'selected' : '' }}>Active</option>
+                <option value="inactive" {{ old('status', $employee->status ?? '') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+            </select>
+        </div>
         <!-- Joining Date -->
         <div class="col-md-6 mb-3">
             <label class="form-label">Joining Date</label>

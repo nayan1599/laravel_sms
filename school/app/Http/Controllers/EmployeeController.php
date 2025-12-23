@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Department;
+
 class EmployeeController extends Controller
 {
     public function index()
     {
+        $totalEmployees = Employee::count();
+        $totalactive = Employee::where('status', 'active')->count();
+        $totalinactive = Employee::where('status', 'inactive')->count();
         $employees = Employee::latest()->paginate(10);
-        return view('employees.index', compact('employees'));
+        return view('employees.index', compact('employees', 'totalEmployees', 'totalactive', 'totalinactive'));
     }
 
 

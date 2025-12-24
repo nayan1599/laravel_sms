@@ -11,13 +11,13 @@ class TeacherAttendanceController extends Controller
     // Attendance list with pagination and date filter
     public function index(Request $request)
     {
-        $date = $request->get('date', date('Y-m-d'));
+        $date = $request->get('created_at', date('Y-m-d'));
 
         $attendances = TeacherAttendance::with('teacher')
-            ->where('date', $date)
+            ->where('created_at', $date)
             ->orderBy('teacher_id')
             ->paginate(10)
-            ->appends(['date' => $date]);
+            ->appends(['created_at' => $date]);
 
         return view('teacherattendance.index', compact('attendances', 'date'));
     }
@@ -33,13 +33,13 @@ class TeacherAttendanceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'date' => 'required|date',
+            'created_at' => 'required|created_at',
             'attendances' => 'required|array',
         ]);
 
         foreach ($request->attendances as $teacher_id => $status) {
             TeacherAttendance::updateOrCreate(
-                ['teacher_id' => $teacher_id, 'date' => $request->date],
+                ['teacher_id' => $teacher_id, 'created_at' => $request->date],
                 ['status' => $status]
             );
         }

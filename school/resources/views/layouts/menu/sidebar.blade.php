@@ -87,72 +87,36 @@
                   <li> <a class="{{ request()->is('subjects') || request()->is('subjects/*') ? 'active' : '' }}" href="{{route('subjects.index')}}">Subjects List</a> </li>
 
 
-                  </li>
-
+              </ul>
+              <span class="system-menu__title">** Exam Setting </span>
+              <ul class="sidebar-body-menu">
                   <!-- exam section -->
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon category" aria-hidden="true"></span> Exam Setting
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Exam Setting</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
+                  <li> <a class="{{ request()->is('exams') || request()->is('exams/*') ? 'active' : '' }}" href="{{route('exams.index')}}">Exams List</a> </li>
+                  <li> <a class="{{ request()->is('marks') || request()->is('marks/*') ? 'active' : '' }}" href="{{route('marks.index')}}">Mark List</a> </li>
+                  <li> <a class="{{ request()->is('marks/create') ? 'active' : '' }}" href="{{route('marks.create')}}">Mark Add</a> </li>
+              </ul>
 
-                          <li> <a href="{{route('exams.index')}}">Exams List</a> </li>
-                          <li> <a href="{{route('marks.index')}}">Mark List</a> </li>
-                          <li> <a href="{{route('marks.create')}}">Mark Add</a> </li>
-                      </ul>
-                  </li>
+              <span class="system-menu__title">** Attendance </span>
+              <ul class="sidebar-body-menu">
+                  <li> <a class="{{ request()->is('teacherattendance') || request()->is('teacherattendance/*') ? 'active' : '' }}" href="{{route('teacherattendance.index')}}">Teachers Attendance</a> </li>
+                  <li> <a class="{{ request()->is('attendance') || request()->is('attendance/*') ? 'active' : '' }}" href="{{route('attendance.index')}}">Students Attendance</a> </li>
+              </ul>
 
+              <span class="system-menu__title">** Reports </span>
+              <ul class="sidebar-body-menu">
+                  <li> <a class="{{ request()->is('attendance/report') ? 'active' : '' }}" href="{{ route('attendance.report') }}">Attendance Students</a></li>
+                  <li> <a href="{{ route('attendance.monthly') }}"> Date Attendance Students </a></li>
+              </ul>
+              <span class="system-menu__title">** Settings </span>
+              <ul class="sidebar-body-menu">
+                  <li> <a class="{{ request()->is('departments') ? 'active' : '' }}" href="{{route('departments.index')}}">Departments List</a> </li>
+                  <li> <a class="{{ request()->is('blood-groups') ? 'active' : '' }}" href="{{route('blood-groups.index')}}">Blood Groups</a> </li>
 
-
-
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon user-3" aria-hidden="true"></span>attendance
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li> <a href="{{route('teacherattendance.index')}}">Teachers Attendance</a> </li>
-                          <li> <a href="{{route('attendance.index')}}">Students Attendance</a> </li>
-                      </ul>
-                  </li>
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon user-3" aria-hidden="true"></span>Report
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li> <a href="{{ route('attendance.report') }}">Attendance Students</a></li>
-                          <li> <a href="{{ route('attendance.monthly') }}"> Date Attendance Students </a></li>
-                      </ul>
-                  </li>
-
-                  <!-- setting section  -->
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <span class="icon setting" aria-hidden="true"></span>Setting
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li> <a href="{{route('departments.index')}}">Departments List</a> </li>
-                          <li> <a href="{{route('blood-groups.index')}}">Blood Groups</a> </li>
-                          <li> <a href="{{route('fee-types.index')}}">Fee Types</a> </li>
-
-                      </ul>
-                  </li>
-                  <li> <a href="{{route('fees.index')}}"><span class="icon setting" aria-hidden="true"></span>Fees</a> </li>
+              </ul>
+              <span class="system-menu__title">** Fees Management </span>
+              <ul class="sidebar-body-menu">
+                  <li> <a class="{{ request()->is('fee-types') ? 'active' : '' }}" href="{{route('fee-types.index')}}">Fee Types</a> </li>
+                  <li> <a class="{{ request()->is('fees') ? 'active' : '' }}" href="{{route('fees.index')}}">Fees</a> </li>
               </ul>
           </div>
       </div>

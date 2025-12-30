@@ -24,7 +24,7 @@ class TeachersController extends Controller
     public function create()
     {
         $bloodgroups = BloodGroup::all();
-        $users = User::all();
+        $users = User::where('role', 'teacher')->get();
         return view('teachers.create', compact('bloodgroups', 'users'));
     }
 

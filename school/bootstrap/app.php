@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+ 
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,9 +12,18 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+
+->withMiddleware(function ($middleware) {
+    $middleware->alias([
+        'student' => \App\Http\Middleware\StudentMiddleware::class,
+    ]);
+})
+
     ->withMiddleware(function (Middleware $middleware): void {
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
+
+

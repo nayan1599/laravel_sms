@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-
+           $table->foreignId('user_id')->constrained()->onDelete('cascade');
             // Personal Information
             $table->string('name', 100);
             $table->string('name_bn', 100)->nullable();
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign Key
-         });
+        });
     }
 
     public function down(): void

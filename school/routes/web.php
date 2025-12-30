@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
+Route::resource('users', UserController::class);
+use Symfony\Component\Routing\Router;
 use App\Http\Controllers\{
     DashboardController,
     StudentController,
@@ -30,7 +34,7 @@ use App\Http\Controllers\{
     StudentApplicationController,
     CertificateController,
 };
-use Symfony\Component\Routing\Router;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +53,7 @@ Route::prefix('frontend')->group(function () {
 
 Route::get('/apply', [StudentApplicationController::class, 'create'])->name('apply');
 Route::post('/apply', [StudentApplicationController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +131,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('applications/{id}/reject', [StudentApplicationController::class, 'reject'])->name('applications.reject');
     Route::delete('applications/{id}', [StudentApplicationController::class, 'destroy'])->name('applications.destroy');
 });
+
+
+// student dashboard route
+use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\StudentResultController;
+use App\Http\Controllers\StudentFeeController;
+
+Route::middleware(['auth','student'])->group(function () {
+
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
+        ->name('student.dashboard');
+
+    Route::get('/student/result', [StudentResultController::class, 'index'])
+        ->name('student.result');
+
+    Route::get('/student/fees', [StudentFeeController::class, 'index'])
+        ->name('student.fees');
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------

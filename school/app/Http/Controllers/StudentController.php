@@ -60,7 +60,7 @@ $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.i
             'last_exam_result' => 'nullable|string|max:50',
             'admission_date' => 'nullable|date',
             'remarks' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {
@@ -118,7 +118,7 @@ $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.i
             'last_exam_result' => 'nullable|string|max:50',
             'admission_date' => 'nullable|date',
             'remarks' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('photo')) {

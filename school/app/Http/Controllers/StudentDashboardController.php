@@ -11,9 +11,9 @@ use App\Models\User;
 class StudentDashboardController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
 {
-    $student = auth()->user()->student;
+    $student = $request->user()->student;
     return view('student.dashboard', compact('student'));
 }
 }

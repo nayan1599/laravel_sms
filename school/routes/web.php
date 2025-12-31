@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+ 
 
-Route::resource('users', UserController::class);
+
 use Symfony\Component\Routing\Router;
 use App\Http\Controllers\{
     DashboardController,
@@ -33,8 +33,12 @@ use App\Http\Controllers\{
     PostController,
     StudentApplicationController,
     CertificateController,
+    UserController,
+ 
 };
-
+use App\Models\{
+    User,
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -104,9 +108,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'posts'          => PostController::class,
         'student_applications' => StudentApplicationController::class,
          'certificates'   => CertificateController::class,
+         'users'          => UserController::class,
      ]);
 
-    /*
+    /*Route::resource('users', UserController::class);
     |------------------------------------------------------------------
     | Custom / Report Routes
     |------------------------------------------------------------------

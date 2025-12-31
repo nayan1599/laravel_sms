@@ -1,4 +1,5 @@
 @extends('layouts.layouts')
+@section('title', 'User Management')
 
 @section('content')
 <div class="container-fluid py-4">
@@ -6,8 +7,8 @@
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="main-title">User Management</h3>
-            <p>Manage system users and roles</p>
+            <h3 class="fw-bold mb-0 main-title">👥 User Management</h3>
+            <small class="text-muted">Manage system users & roles</small>
         </div>
         <a href="{{ route('users.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-circle me-1"></i> Add User
@@ -16,30 +17,32 @@
 
     {{-- Success Alert --}}
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <div class="alert alert-success alert-dismissible fade show shadow-sm">
             <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     {{-- Card --}}
     <div class="card border-0 shadow-sm">
+
+        {{-- Card Header --}}
         <div class="card-header bg-light border-0">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h6 class="mb-0 fw-semibold">
+                    <h6 class="fw-semibold mb-0">
                         <i class="bi bi-people me-1"></i> User List
                     </h6>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-6">
                     <form method="GET" class="d-flex justify-content-end">
                         <input type="text"
                                name="search"
                                value="{{ request('search') }}"
-                               class="form-control   w-50 me-2"
+                               class="form-control form-control-sm w-50 me-2"
                                placeholder="Search name or email">
                         <button class="btn btn-sm btn-outline-primary">
-                             search
+                           Search
                         </button>
                     </form>
                 </div>
@@ -53,10 +56,9 @@
                     <thead class="table-light">
                         <tr>
                             <th width="5%">#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th width="12%">Role</th>
-                            <th width="18%" class="text-center">Action</th>
+                            <th>User</th>
+                            <th width="15%">Role</th>
+                            <th width="20%" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,23 +66,40 @@
                         <tr>
                             <td>{{ $users->firstItem() + $key }}</td>
 
+                            {{-- User Info --}}
                             <td>
-                                <div class="fw-semibold">{{ $user->name }}</div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="{{ asset($user->photo) }}"
+                                         class="rounded-circle"
+                                         width="40" height="40">
+                                    <div>
+                                        <div class="fw-semibold">{{ $user->name }}</div>
+                                        <small class="text-muted">{{ $user->email }}</small>
+                                    </div>
+                                </div>
                             </td>
 
-                            <td class="text-muted">{{ $user->email }}</td>
-
+                            {{-- Role --}}
                             <td>
                                 <span class="badge rounded-pill
-                                    {{ $user->role == 'admin' ? 'bg-danger' : 'bg-primary' }}">
+                                    {{ $user->role == 'admin' ? 'bg-danger' :
+                                       ($user->role == 'teacher' ? 'bg-success' : 'bg-primary') }}">
                                     {{ ucfirst($user->role) }}
                                 </span>
                             </td>
 
+                            {{-- Actions --}}
                             <td class="text-center">
+                                <a href="{{ route('users.show',$user->id) }}"
+                                   class="btn btn-sm btn-outline-info me-1"
+                                   title="View">
+                                    View
+                                </a>
+
                                 <a href="{{ route('users.edit',$user->id) }}"
-                                   class="btn btn-sm btn-outline-warning me-1">
-                                    Edit
+                                   class="btn btn-sm btn-outline-warning me-1"
+                                   title="Edit">
+                                     Edit
                                 </a>
 
                                 <form action="{{ route('users.destroy',$user->id) }}"
@@ -89,15 +108,16 @@
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Are you sure?')"
-                                            class="btn btn-sm btn-outline-danger">
-                                        Delete
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Delete">
+                                       delete
                                     </button>
                                 </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
+                            <td colspan="4" class="text-center text-muted py-4">
                                 <i class="bi bi-info-circle"></i> No users found
                             </td>
                         </tr>

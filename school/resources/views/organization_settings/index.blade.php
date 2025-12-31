@@ -6,7 +6,7 @@
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h3 class="fw-bold mb-0">🏢 Organization Settings</h3>
+            <h3 class="fw-bold mb-0 main-title">🏢 Organization Settings</h3>
             <small class="text-muted">Manage school / organization information</small>
         </div>
 

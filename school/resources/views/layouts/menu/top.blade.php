@@ -75,40 +75,84 @@
           </div>
           <div class="nav-user-wrapper">
 
+            @auth
             @php
-            use App\Models\OrganizationSetting;
-            $setting = OrganizationSetting::first(); // প্রথম রেকর্ড
+            $user = auth()->user();
             @endphp
 
             <button class="nav-user-btn dropdown-btn" title="My profile" type="button">
               <span class="sr-only">My profile</span>
+
               <span class="nav-user-img">
-                @if($setting && $setting->logo)
-                <img src="{{ asset('storage/' . $setting->logo) }}" alt="{{ $setting->organization_name }}" style="height:40px; width:40px; border-radius:50%; object-fit:cover;">
+                @if($user->photo)
+                <img src="{{ asset('storage/' . $user->photo) }}"
+                  alt="{{ $user->name }}"
+                  style="height:40px; width:40px; border-radius:50%; object-fit:cover;">
                 @else
-                <picture>
-                  <source srcset="./img/avatar/avatar-illustrated-02.webp" type="image/webp">
-                  <img src="./img/avatar/avatar-illustrated-02.png" alt="Default User" style="height:40px; width:40px; border-radius:50%;">
-                </picture>
+                <img src="{{ asset('images/default-user.png') }}"
+                  alt="Default User"
+                  style="height:40px; width:40px; border-radius:50%;">
                 @endif
               </span>
             </button>
 
             <ul class="users-item-dropdown nav-user-dropdown dropdown">
-              <li><a href="##">
-                  <i data-feather="user" aria-hidden="true"></i>
-                  <span>Profile</span>
-                </a></li>
-              <li><a href="{{route('organization_settings.index')}}">
-                  <i data-feather="settings" aria-hidden="true"></i>
+
+              {{-- Profile --}}
+              <li>
+                <a href="{{ route('users.show', $user->id) }}">
+                  <i data-feather="user"></i>
+                  <span>{{ $user->name }}</span>
+                </a>
+              </li>
+
+              {{-- Account Settings --}}
+
+              @if($user->role =='admin')
+
+
+              <li>
+                <a href="{{ route('organization_settings.index') }}">
+                  <i data-feather="settings"></i>
                   <span>Account settings</span>
-                </a></li>
-              <li><a class="danger" href="{{ route('login') }}">
-                  <i data-feather="log-out" aria-hidden="true"></i>
-                  <span>Log out</span>
-                </a></li>
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('users.index') }}">
+                  <i data-feather="user"></i>
+                  <span> settings</span>
+                </a>
+              </li>
+              @endif
+
+              {{-- Account Settings --}}
+              <li>
+                <a href="{{ route('users.edit', $user->id) }}">
+                  <i data-feather="settings"></i>
+                  <span>user settings</span>
+                </a>
+              </li>
+
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+
+              {{-- Logout (POST required) --}}
+              <li>
+                <form method="POST" action="{{ route('logout') }}">
+                  @csrf
+                  <button type="submit" class="dropdown-item text-danger">
+                    <i data-feather="log-out"></i>
+                    <span>Log out</span>
+                  </button>
+                </form>
+              </li>
+
             </ul>
+            @endauth
+
           </div>
+
         </div>
       </div>
     </nav>

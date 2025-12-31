@@ -9,12 +9,13 @@ use App\Models\User;
 class StudentResultController extends Controller
 {
     //
-    public function index()
-{
-    $studentId = auth()->user()->student->id;
-    $results = Mark::where('student_id', $studentId)->get();
+  
+    public function index(Request $request)
+    {
+        $studentId = $request->user()->student->id;
+        $results = Mark::where('student_id', $studentId)->get();
 
-    return view('student.result', compact('results'));
-}
+        return view('student.result', compact('results'));
+    }
 
 }

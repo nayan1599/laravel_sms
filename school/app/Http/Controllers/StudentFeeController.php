@@ -10,11 +10,10 @@ use App\Models\User;
 
 class StudentFeeController extends Controller
 {
-    //
 
-    public function index()
+    public function index(Request $request)
 {
-    $studentId = auth()->user()->student->id;
+    $studentId =$request->user()->student->id;
     $fee = Fee::where('student_id', $studentId)->get();
 
     return view('student.fees', compact('fee'));

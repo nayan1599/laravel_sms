@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\StudentApplication;
 use App\Models\ClassModel;
+use App\Models\User;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,31 +39,49 @@ class StudentApplicationController extends Controller
     {
         $classes = ClassModel::all();
         $sections = Section::all();
+     
         return view('applications.apply', compact('classes', 'sections'));
     }
 
     // STORE APPLICATION (PUBLIC)
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name'     => 'required|string|max:255',
-            'phone'    => 'required|string|max:20',
-            'gender'   => 'required|in:male,female',
-            'class_id' => 'required|exists:classes,id',
-            'email'    => 'nullable|email|max:255',
-            'section_id' => 'nullable|exists:sections,id',
-            'father_name' => 'nullable|string|max:100',
-            'mother_name' => 'nullable|string|max:100',
-            'date_of_birth' => 'nullable|date',
-            'address' => 'nullable|string|max:255',
-            'photo'    => 'nullable|image|max:2048',
-            'status'   => 'nullable|in:pending,approved,rejected',
+public function store(Request $request)
+{
+    $data = $request->validate([
+        'name'          => 'required|string|max:255',
+        'phone'         => 'required|string|max:20',
+        'gender'        => 'required|in:male,female',
+        'class_id'      => 'required|exists:classes,id',
+        'email'         => 'nullable|email|max:255',
+        'section_id'    => 'nullable|exists:sections,id',
+        'father_name'   => 'nullable|string|max:100',
+        'mother_name'   => 'nullable|string|max:100',
+        'date_of_birth' => 'nullable|date',
+        'address'       => 'nullable|string|max:255',
+        'photo'         => 'nullable|image|max:2048',
+        'status'        => 'nullable|in:pending,approved,rejected',
+    ]);
+
+    DB::transaction(function () use ($data) {
+
+        // 1️⃣ Create User
+        $user = User::create([
+            'name'     => $data['name'],     // ✅ array access
+            'email'    => $data['email'] ?? null,
+            'phone_number'    => $data['phone'],
+            'password' => bcrypt($data['phone']),
+            'role'     => 'student',
         ]);
 
-        StudentApplication::create($data);
+        // 2️⃣ Attach user_id with application
+        $data['user_id'] = $user->id;
+        $data['status']  = 'pending';
 
-        return redirect()->back()->with('success', 'Application submitted successfully');
-    }
+        // 3️⃣ Create Student Application
+        StudentApplication::create($data);
+    });
+
+    return redirect()->back()->with('success', 'Application submitted successfully');
+}
 
 
     public function edit($id)
@@ -93,14 +112,16 @@ class StudentApplicationController extends Controller
         }
 
         DB::transaction(function () use ($application) {
-
+ 
+            // 2️⃣ Create Student with user_id
             Student::create([
-                'name'         => $application->name,
-                'guardian_contact'        => $application->phone,
-                'gender'       => $application->gender,
-                'class_id'     => $application->class_id,
-                'father_name'  => $application->father_name,
-                'date_of_birth' => $application->date_of_birth,
+          
+                'name'            => $application->name,
+                'guardian_contact' => $application->phone,
+                'gender'          => $application->gender,
+                'class_id'        => $application->class_id,
+                'father_name'     => $application->father_name,
+                'date_of_birth'   => $application->date_of_birth,
             ]);
 
             $application->update([
@@ -126,6 +147,7 @@ class StudentApplicationController extends Controller
             'father_name' => 'nullable|string|max:100',
             'photo'    => 'nullable|image|max:2048',
             'status'   => 'nullable|in:pending,approved,rejected',
+            'updated_at'   => now(),
         ]);
         $application->update($data);
         return redirect()->route('applications.index')->with('success', 'Application updated successfully');

@@ -15,10 +15,10 @@
                 <div class="card-body p-4">
 
                     @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show">
-                            {{ session('success') }}
-                            <button class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
+                    <div class="alert alert-success alert-dismissible fade show">
+                        {{ session('success') }}
+                        <button class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
                     @endif
 
                     <form method="POST" action="{{ url('/apply') }}">
@@ -27,6 +27,8 @@
                         <!-- ================= Student Information ================= -->
                         <h5 class="mb-3 text-primary">Student Information</h5>
                         <div class="row g-3 mb-4">
+
+                        
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Student Name *</label>
                                 <input type="text" name="name" class="form-control" required>
@@ -34,7 +36,7 @@
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Date of Birth *</label>
-                                <input type="date" name="dob" class="form-control" required>
+                                <input type="date" name="date_of_birth" class="form-control" required>
                             </div>
 
                             <div class="col-md-4">
@@ -56,10 +58,14 @@
                                 <label class="form-label fw-semibold">Blood Group</label>
                                 <select name="blood_group" class="form-select">
                                     <option value="">Select</option>
-                                    <option>A+</option><option>A-</option>
-                                    <option>B+</option><option>B-</option>
-                                    <option>O+</option><option>O-</option>
-                                    <option>AB+</option><option>AB-</option>
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>O+</option>
+                                    <option>O-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
                                 </select>
                             </div>
                         </div>
@@ -72,10 +78,23 @@
                                 <select name="class_id" class="form-select" required>
                                     <option value="">Select Class</option>
                                     @foreach($classes as $class)
-                                        <option value="{{ $class->id }}">{{ $class->class_name }}</option>
+                                    <option value="{{ $class->id }}">{{ $class->class_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
+                            <!-- section  -->
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Section</label>
+                                <select name="section_id" class="form-select">
+                                    <option value="">Select Section</option>
+                                    @foreach($sections as $section)
+                                    <option value="{{ $section->id }}">{{ $section->section_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Previous School</label>
@@ -100,6 +119,12 @@
                                 <label class="form-label fw-semibold">Guardian Phone *</label>
                                 <input type="text" name="phone" class="form-control" required>
                             </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Guardian Email</label>
+                                <input type="email" name="email" class="form-control">
+                            </div>
+
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Guardian Occupation</label>

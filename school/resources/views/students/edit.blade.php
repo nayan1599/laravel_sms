@@ -20,12 +20,12 @@
 
         <div class="mb-3">
             <label>Phone</label>
-            <input type="text" name="phone" value="{{ old('phone', $student->phone ?? '') }}" class="form-control">
+            <input type="text" name="contact" value="{{ old('contact', $student->contact ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">
             <label>Date of Birth</label>
-            <input type="date" name="dob" value="{{ old('dob', $student->dob ?? '') }}" class="form-control">
+            <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">

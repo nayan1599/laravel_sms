@@ -36,13 +36,13 @@ $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.i
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'dob' => 'nullable|date',
+            'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female,other',
             'blood_group' => 'nullable|string|max:10',
             'religion' => 'nullable|string|max:50',
             'nationality' => 'nullable|string|max:50',
             'birth_cert_no' => 'nullable|string|max:30',
-            'phone' => 'nullable|string|max:20',
+            'contact' => 'nullable|string|max:20',
 
             // ⭐ FIXED
             'email' => 'nullable|email|unique:students,email',
@@ -94,13 +94,13 @@ $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.i
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'dob' => 'nullable|date',
+            'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female,other',
             'blood_group' => 'nullable|string|max:10',
             'religion' => 'nullable|string|max:50',
             'nationality' => 'nullable|string|max:50',
             'birth_cert_no' => 'nullable|string|max:30',
-            'phone' => 'nullable|string|max:20',
+            'contact' => 'nullable|string|max:20',
 
             // ⭐ FIXED — allow same email for current student
             'email' => 'nullable|email|unique:students,email,' . $student->id,

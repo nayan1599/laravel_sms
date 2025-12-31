@@ -79,13 +79,14 @@
             @php
             $user = auth()->user();
             @endphp
-
+<!-- {{$user->photo}} -->
             <button class="nav-user-btn dropdown-btn" title="My profile" type="button">
               <span class="sr-only">My profile</span>
 
               <span class="nav-user-img">
                 @if($user->photo)
-                <img src="{{ asset('storage/' . $user->photo) }}"
+ 
+                <img src="{{ asset($user->photo) }}"
                   alt="{{ $user->name }}"
                   style="height:40px; width:40px; border-radius:50%; object-fit:cover;">
                 @else

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->decimal('default_amount', 10, 2);
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('class_id');
+            $table->date('expiry_date')->nullable();
             $table->timestamps();
         });
     }

@@ -3,7 +3,9 @@
 @section('content')
 <div class="container">
     <h2 class="main-title">Fee Types</h2>
-    <a href="{{ route('fee-types.create') }}" class="btn btn-success mb-3">+ Add Fee Type</a>
+    <div class="text-end">
+            <a href="{{ route('fee-types.create') }}" class="btn btn-success mb-3">+ Add Fee Type</a>
+    </div>
 
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -16,7 +18,9 @@
                 <th>Class</th>
                 <th>Description </th>
                 <th>Amount</th>
+                <th>Expiry Date</th>
                 <th>Created At</th>
+
                 <th>Action</th>
             </tr>
         </thead>
@@ -25,9 +29,10 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <th>{{ $fee->name }}</th>
-                <td>{{ $fee->class_id->class_name ?? 'N/A' }}</td>
+                <td>{{ $fee->class->class_name ?? 'N/A' }}</td>
                 <td>{{$fee->description}}</td>
                 <td>{{ number_format($fee->default_amount, 2) }}</td>
+                <td>{{ $fee->expiry_date }}</td>
                 <td>{{ $fee->created_at->format('d M Y') }}</td>
                 <td>
                     <a href="{{ route('fee-types.edit', $fee->id) }}" class="btn btn-warning btn-sm">Edit</a>

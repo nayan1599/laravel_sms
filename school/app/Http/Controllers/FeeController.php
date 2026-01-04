@@ -23,6 +23,8 @@ class FeeController extends Controller
             });
         }
 
+ 
+
         if ($request->class_id) {
             $query->where('class_id', $request->class_id);
         }
@@ -46,7 +48,8 @@ class FeeController extends Controller
     // ===================== [ Create Form ] =====================
     public function create()
     {
-        $feetypes = FeeType::all();
+        $feetypes = FeeType::whereNull('expiry_date')->orWhere('expiry_date', '>=', \Carbon\Carbon::today())
+    ->get();
         $students = Student::all();
         $classes = ClassModel::all();
         return view('fees.create', compact('students', 'classes', 'feetypes'));

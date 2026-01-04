@@ -12,8 +12,8 @@ class FeeTypeController extends Controller
     {
 
         $feeTypes = FeeType::all();
-     
-        return view('fee_types.index', compact('feeTypes'));
+        $classModel = ClassModel::all();
+      return view('fee_types.index', compact('feeTypes', 'classModel'));
     }
 
     public function create()
@@ -29,6 +29,7 @@ class FeeTypeController extends Controller
             'description' => 'nullable|string',
             'default_amount' => 'required|numeric|min:0',
             'class_id' => 'required|exists:classes,id',
+            'expiry_date' => 'nullable|date',
         ]);
 
         FeeType::create($request->all());
@@ -48,7 +49,10 @@ class FeeTypeController extends Controller
             'description' => 'nullable|string',
             'default_amount' => 'required|numeric|min:0',
             'class_id' => 'required|exists:classes,id',
+            'expiry_date' => 'nullable|date',
         ]);
+
+        
 
         $feeType->update($request->all());
         return redirect()->route('fee-types.index')->with('success', 'Fee Type updated successfully.');

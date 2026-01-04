@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Add New Blood Group</h2>
+    <h2 class="main-title">Add New Blood Group</h2>
 
     <form action="{{ route('blood-groups.store') }}" method="POST">
         @csrf

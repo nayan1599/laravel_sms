@@ -1,5 +1,5 @@
 @extends('layouts.layouts')
-
+@section('title','Add New Fee')
 @section('content')
 <div class="container">
     <h2 class="main-title">➕ Add New Fee</h2>

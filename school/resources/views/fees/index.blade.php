@@ -1,5 +1,5 @@
 @extends('layouts.layouts')
-
+@section('title','Fees List')
 @section('content')
 <div class="container">
     <h2 class="mb-4 main-title">Fees List</h2>
@@ -11,6 +11,7 @@
     <!-- Filter Form -->
     <form method="GET" action="{{ route('fees.index') }}" class="row g-3 mb-4">
         <div class="col-md-3">
+            
             <input type="text" name="student_name" class="form-control" placeholder="Student Name" value="{{ request('student_name') }}">
         </div>
         <div class="col-md-2">
@@ -40,7 +41,7 @@
     </form>
 
     <!-- Action Buttons -->
-    <div class="mb-3">
+    <div class="mb-3 text-end">
         <a href="{{ route('fees.create') }}" class="btn btn-success">+ Add Fee</a>
 
     </div>
@@ -55,13 +56,13 @@
                         <th>Student</th>
                         <th>Class</th>
                         <th>Fee Type</th>
-                        <th>Amount</th>
-                        <th>Due Date</th>
+                      
+                         
                         <th>Payment Date</th>
                         <th>Status</th>
                         <th>Paid Amount</th>
                         <th>Receipt No.</th>
-                        <th>Remarks</th>
+                       
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -72,8 +73,8 @@
                         <td>{{ $fee->student->name ?? 'N/A' }}</td>
                         <td>{{ $fee->class->class_name ?? 'N/A' }}</td>
                         <td>{{ $fee->fee_type }}</td>
-                        <td>{{ number_format($fee->amount, 2) }}</td>
-                        <td>{{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}</td>
+                    
+                   
                         <td>{{ $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date)->format('d M Y') : '-' }}</td>
                         <td>
                             @php
@@ -90,7 +91,7 @@
                         </td>
                         <td>{{ number_format($fee->paid_amount, 2) }}</td>
                         <td>{{ $fee->receipt_number ?? '-' }}</td>
-                        <td>{{ $fee->remarks ?? '-' }}</td>
+                       
                         <td>
                             @php if(($fee->payment_status == 'paid')){
                                 $disabled = 'disabled';
@@ -118,18 +119,7 @@
                     @endforelse
                 </tbody>
 
-                @if($fees->count())
-                <tfoot>
-                    <tr class="table-info fw-bold">
-                        <td colspan="4">Total</td>
-                        <td>{{ number_format($fees->sum('amount'), 2) }} ৳</td>
-                        <td colspan="2"></td>
-                        <td></td>
-                        <td>{{ number_format($fees->sum('paid_amount'), 2) }} ৳</td>
-                        <td colspan="3"></td>
-                    </tr>
-                </tfoot>
-                @endif
+              
             </table>
 
             <!-- Pagination -->

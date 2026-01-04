@@ -2,8 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Edit Blood Group</h2>
-
+    <h2 class="main-title">Edit Blood Group</h2>
     <form action="{{ route('blood-groups.update', $bloodGroup) }}" method="POST">
         @csrf @method('PUT')
         <div class="mb-3">

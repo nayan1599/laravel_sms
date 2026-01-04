@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FeeType extends Model
 {
-    protected $fillable = ['name', 'description', 'default_amount' , 'class_id'];
+    protected $fillable = ['name', 'description', 'default_amount' , 'class_id','expiry_date'];
 
 
       public function class()

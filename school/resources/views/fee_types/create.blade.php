@@ -26,6 +26,11 @@
                 </select>
             </div>
 
+            <!-- expiry_date -->
+            <div class="col-md-6 col-sm-12">
+                <label for="expiry_date" class="form-label">Expiry Date</label>
+                <input type="date" name="expiry_date" id="expiry_date" class="form-control" value="{{ old('expiry_date') }}">
+            </div>
 
 
             <div class="col-md-6 col-sm-12">

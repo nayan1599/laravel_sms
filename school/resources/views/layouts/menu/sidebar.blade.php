@@ -142,7 +142,7 @@
               </span>
               <div class="sidebar-user-info">
                   <span class="sidebar-user__title fw-bold">{{ $setting->owner_name }}</span>
-                  <span class="sidebar-user__subtitle text-muted">
+                  <span class="sidebar-user__subtitle light-text">
                       {{-- ধরছি এখানে তোমার মডেলে কোনো পজিশন বা ডেসিগনেশন আছে, নাইলে অন্য কিছু দেখাও --}}
                       {{ $setting->email ?? 'Owner name not set' }}
                   </span>

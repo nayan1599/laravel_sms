@@ -11,18 +11,24 @@
     <table class="table table-bordered table-hover table-striped">
         <thead class="table-dark">
             <tr>
+                <th>#</th>
                 <th>Name</th>
+                <th>Class</th>
                 <th>Description </th>
                 <th>Amount</th>
+                <th>Created At</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($feeTypes as $fee)
+            @foreach($feeTypes as $index => $fee)
             <tr>
-                <td>{{ $fee->name }}</td>
+                <td>{{ $index + 1 }}</td>
+                <th>{{ $fee->name }}</th>
+                <td>{{ $fee->class_id->class_name ?? 'N/A' }}</td>
                 <td>{{$fee->description}}</td>
                 <td>{{ number_format($fee->default_amount, 2) }}</td>
+                <td>{{ $fee->created_at->format('d M Y') }}</td>
                 <td>
                     <a href="{{ route('fee-types.edit', $fee->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('fee-types.destroy', $fee->id) }}" method="POST" style="display:inline;">

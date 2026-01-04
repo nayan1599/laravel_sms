@@ -1,7 +1,7 @@
 @csrf
 
 <div class="mb-3">
-    <label>User</label>
+    <label class="form-label">User</label>
     <select name="user_id" class="form-select" required>
         <option value="">Select User</option>
         @foreach($users as $user)
@@ -11,7 +11,7 @@
 </div>
 
 <div class="mb-3">
-    <label>Relation</label>
+    <label class="form-label">Relation</label>
     <select name="relation" class="form-select" required>
         <option value="father">Father</option>
         <option value="mother">Mother</option>
@@ -26,7 +26,7 @@
 <textarea name="address" class="form-control mb-3" placeholder="Address">{{ old('address', $guardian->address ?? '') }}</textarea>
 
 <div class="mb-3">
-    <label>Status</label>
+    <label class="form-label">Status</label>
     <select name="status" class="form-select">
         <option value="active">Active</option>
         <option value="inactive">Inactive</option>

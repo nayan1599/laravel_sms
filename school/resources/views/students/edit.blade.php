@@ -9,27 +9,27 @@
         @if(isset($student)) @method('PUT') @endif
 
         <div class="mb-3">
-            <label>Name</label>
+            <label class="form-label">Name</label>
             <input type="text" name="name" value="{{ old('name', $student->name ?? '') }}" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label>Email</label>
+            <label class="form-label">Email</label>
             <input type="email" name="email" value="{{ old('email', $student->email ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Phone</label>
+            <label class="form-label">Phone</label>
             <input type="text" name="contact" value="{{ old('contact', $student->contact ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Date of Birth</label>
+            <label class="form-label">Date of Birth</label>
             <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Gender</label>
+            <label class="form-label">Gender</label>
             <select name="gender" class="form-control">
                 <option value="">Select</option>
                 <option value="male" {{ old('gender', $student->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Class</label>
+            <label class="form-label">Class</label>
             <select name="class_id" class="form-control" required>
                 <option value="">Select Class</option>
                 @foreach($classes as $class)
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Section</label>
+            <label class="form-label">Section</label>
             <select name="section_id" class="form-control">
                 <option value="">Select Section</option>
                 @foreach($sections as $section)
@@ -63,17 +63,17 @@
         </div>
 
         <div class="mb-3">
-            <label>Roll</label>
+            <label class="form-label">Roll</label>
             <input type="text" name="roll" value="{{ old('roll', $student->roll ?? '') }}" class="form-control">
         </div>
 
         <div class="mb-3">
-            <label>Address</label>
+            <label class="form-label">Address</label>
             <textarea name="address" class="form-control">{{ old('address', $student->address ?? '') }}</textarea>
         </div>
 
         <div class="mb-3">
-            <label>Photo</label>
+            <label class="form-label">Photo</label>
             <input type="file" name="photo" class="form-control">
             @if(isset($student) && $student->photo)
                 <img src="{{ asset($student->photo) }}" width="80" class="mt-2">

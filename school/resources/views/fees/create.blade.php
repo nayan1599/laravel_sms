@@ -5,13 +5,13 @@
     <h2 class="main-title">➕ Add New Fee</h2>
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
     <form action="{{ route('fees.store') }}" method="POST" class="row g-3">
@@ -23,9 +23,9 @@
             <select name="student_id" class="form-select" required>
                 <option value="">-- Select Student --</option>
                 @foreach($students as $student)
-                    <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                        {{ $student->name }}
-                    </option>
+                <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                    {{ $student->name }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -35,9 +35,9 @@
             <select name="class_id" class="form-select" required>
                 <option value="">-- Select Class --</option>
                 @foreach($classes as $class)
-                    <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
-                        {{ $class->class_name }}
-                    </option>
+                <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
+                    {{ $class->class_name }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -48,12 +48,12 @@
             <select name="fee_type" class="form-select" id="fee_type_select" required>
                 <option value="">-- Select Type --</option>
                 @foreach($feetypes as $feetype)
-                    <option 
-                        value="{{ $feetype->name }}" 
-                        data-amount="{{ $feetype->default_amount }}"
-                        {{ old('fee_type') == $feetype->name ? 'selected' : '' }}>
-                        {{ $feetype->name }}
-                    </option>
+                <option
+                    value="{{ $feetype->name }}"
+                    data-amount="{{ $feetype->default_amount }}"
+                    {{ old('fee_type') == $feetype->name ? 'selected' : '' }}>
+                    {{ $feetype->name }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -91,10 +91,10 @@
         </div>
 
         <!-- Receipt & Remarks -->
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <label class="form-label">🧾 Receipt Number</label>
             <input type="text" name="receipt_number" class="form-control" value="{{ old('receipt_number') }}" placeholder="e.g. RCV-2025001">
-        </div>
+        </div> -->
 
         <div class="col-md-6">
             <label class="form-label">📝 Remarks (optional)</label>
@@ -111,7 +111,7 @@
 @endsection
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const feeTypeSelect = document.getElementById('fee_type_select');
         const amountField = document.getElementById('amount_field');
         const paymentDateInput = document.querySelector('input[name="payment_date"]');
@@ -119,7 +119,7 @@
 
         // Fee type change → auto fill amount
         if (feeTypeSelect && amountField) {
-            feeTypeSelect.addEventListener('change', function () {
+            feeTypeSelect.addEventListener('change', function() {
                 const selectedOption = feeTypeSelect.options[feeTypeSelect.selectedIndex];
                 const defaultAmount = selectedOption.getAttribute('data-amount');
                 amountField.value = defaultAmount || '';
@@ -128,7 +128,7 @@
 
         // Payment Date → Auto-fill Due Date (add 30 days)
         if (paymentDateInput && dueDateInput) {
-            paymentDateInput.addEventListener('change', function () {
+            paymentDateInput.addEventListener('change', function() {
                 const paymentDate = new Date(paymentDateInput.value);
                 if (!isNaN(paymentDate.getTime())) {
                     const dueDate = new Date(paymentDate);
@@ -142,6 +142,15 @@
                 }
             });
         }
+        // Set Payment Date to today if empty on load
+        const dates = document.querySelectorAll(
+            'input[name="payment_date"], input[name="due_date"]'
+        );
+
+        dates.forEach(input => {
+            if (!input.value) {
+                input.value = new Date().toISOString().split('T')[0];
+            }
+        });
     });
 </script>
-

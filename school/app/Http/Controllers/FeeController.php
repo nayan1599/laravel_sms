@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Fee;
 use App\Models\Student;
 use App\Models\FeeType;
+use App\Models\OrganizationSetting;
 use App\Models\ClassModel; // adjust if your model name is different
 use Illuminate\Http\Request;
 
@@ -54,27 +55,34 @@ class FeeController extends Controller
     // ===================== [ Store Fee ] =====================
     public function store(Request $request)
     {
-        $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'class_id' => 'required|exists:classes,id',
-            'fee_type' => 'required|string|max:50',
-            'amount' => 'required|numeric|min:0',
-            'due_date' => 'required|date',
-            'payment_date' => 'nullable|date', // Remove after_or_equal rule
+        $validated = $request->validate([
+            'student_id'     => 'required|exists:students,id',
+            'class_id'       => 'required|exists:classes,id',
+            'fee_type'       => 'required|string|max:50',
+            'amount'         => 'required|numeric|min:0',
+            'due_date'       => 'required|date',
+            'payment_date'   => 'nullable|date',
             'payment_status' => 'required|in:pending,paid,partial,overdue',
-            'paid_amount' => 'nullable|numeric|min:0',
-            'receipt_number' => 'nullable|string|max:50|unique:fees,receipt_number',
-            'remarks' => 'nullable|string|max:255',
+            'paid_amount'    => 'nullable|numeric|min:0',
+            'remarks'        => 'nullable|string|max:255',
         ]);
-        Fee::create($request->all());
 
+        // 🔹 Auto Receipt Number Generate
+        $lastFee = Fee::latest('id')->first();
+        $nextNumber = $lastFee ? $lastFee->id + 1 : 1;
+
+        $validated['receipt_number'] = 'RCPT-' . now()->year . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+        $validated['payment_date'] = $validated['payment_date'] ?? now()->toDateString();
+        Fee::create($validated);
         return redirect()->route('fees.index')->with('success', 'Fee record added successfully.');
     }
 
+
     // ===================== [ Edit Form ] =====================
-    public function edit(Fee $fee)
+    public function edit($id)
     {
         $feetypes = FeeType::all();
+        $fee = Fee::findOrFail($id);
         $students = Student::all();
         $classes = ClassModel::all();
         return view('fees.edit', compact('fee', 'students', 'classes',  'feetypes'));
@@ -99,6 +107,19 @@ class FeeController extends Controller
         $fee->update($request->all());
 
         return redirect()->route('fees.index')->with('success', 'Fee record updated successfully.');
+    }
+
+    // ==============================[ Invoice ]==============================
+
+
+
+    public function invoice($id)
+    {
+        $fee = Fee::findOrFail($id);
+        $classes = ClassModel::all();
+        $org_settings = OrganizationSetting::first();
+
+        return view('fees.invoice', compact('fee', 'org_settings', 'classes'));
     }
 
     // ===================== [ Delete Fee ] =====================

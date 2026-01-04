@@ -34,7 +34,6 @@ use App\Http\Controllers\{
     StudentApplicationController,
     CertificateController,
     UserController,
- 
 };
 use App\Models\{
     User,
@@ -107,15 +106,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'categories'     => CategoryController::class,
         'posts'          => PostController::class,
         'student_applications' => StudentApplicationController::class,
-         'certificates'   => CertificateController::class,
-         'users'          => UserController::class,
-     ]);
+        'certificates'   => CertificateController::class,
+        'users'          => UserController::class,
+    ]);
 
     /*Route::resource('users', UserController::class);
     |------------------------------------------------------------------
     | Custom / Report Routes
     |------------------------------------------------------------------
     */
+ 
+
+    // Fee Invoice Route    
+Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');
+
+
+
 
     Route::prefix('attendance')->name('attendance.')->group(function () {
         Route::get('get-students', [AttendanceController::class, 'getStudents'])->name('getStudents');
@@ -128,7 +134,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/view', [MarkController::class, 'viewMarksheet'])->name('view');
     });
 
-     Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
+    Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
     Route::get('applications/{id}', [StudentApplicationController::class, 'show'])->name('applications.show');
     Route::get('applications/{id}/edit', [StudentApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('applications/{id}', [StudentApplicationController::class, 'update'])->name('applications.update');
@@ -140,10 +146,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // student dashboard route
 use App\Http\Controllers\StudentDashboardController;
+
 use App\Http\Controllers\StudentResultController;
 use App\Http\Controllers\StudentFeeController;
 
-Route::middleware(['auth','student'])->group(function () {
+Route::middleware(['auth', 'student'])->group(function () {
 
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
         ->name('student.dashboard');

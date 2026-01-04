@@ -27,7 +27,7 @@
                 @csrf
 
                 <div class="mb-3 col-md-6">
-                    <label>Student</label>
+                    <label class="form-label">Student</label>
                     <select name="student_id" class="form-select" required>
                         <option value="">Select</option>
                         @foreach($students as $student)
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Exam</label>
+                    <label class="form-label">Exam</label>
                     <select name="exam_id" class="form-select" required>
                         <option value="">Select</option>
                         @foreach($exams as $exam)
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Subject</label>
+                    <label class="form-label">Subject</label>
                     <select name="subject_id" class="form-select" required>
                         <option value="">Select</option>
                         @foreach($subjects as $subject)
@@ -57,22 +57,22 @@
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Marks Obtained</label>
+                    <label class="form-label">Marks Obtained</label>
                     <input type="number" step="0.01" name="marks_obtained" class="form-control" required>
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Total Marks</label>
+                    <label class="form-label">Total Marks</label>
                     <input type="number" name="total_marks" class="form-control" value="100">
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Grade</label>
+                    <label class="form-label">Grade</label>
                     <input type="text" name="grade" class="form-control">
                 </div>
 
                 <div class="mb-3 col-md-6">
-                    <label>Remarks</label>
+                    <label class="form-label">Remarks</label>
                     <textarea name="remarks" class="form-control"></textarea>
                 </div>
 

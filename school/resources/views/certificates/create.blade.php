@@ -12,27 +12,27 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label>Student Name</label>
+                    <label class="form-label">Student Name</label>
                     <input type="text" name="student_name" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label>Father Name</label>
+                    <label class="form-label">Father Name</label>
                     <input type="text" name="father_name" class="form-control">
                 </div>
 
                 <div class="mb-3">
-                    <label>Class</label>
+                    <label class="form-label">Class</label>
                     <input type="text" name="class" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label>Roll</label>
+                    <label class="form-label">Roll</label>
                     <input type="text" name="roll" class="form-control">
                 </div>
 
                 <div class="mb-3">
-                    <label>Certificate Type</label>
+                    <label class="form-label">Certificate Type</label>
                     <select name="certificate_type" class="form-select" required>
                         <option value="">Select Type</option>
                         <option value="bonafide">Bonafide</option>
@@ -42,12 +42,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label>Issue Date</label>
+                    <label class="form-label">Issue Date</label>
                     <input type="date" name="issue_date" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label>Remarks</label>
+                    <label class="form-label">Remarks</label>
                     <textarea name="remarks" class="form-control" rows="3"></textarea>
                 </div>
 

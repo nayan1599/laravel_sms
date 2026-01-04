@@ -12,6 +12,22 @@
                 <input type="text" name="name" id="name" class="form-control" required value="{{ old('name') }}">
             </div>
 
+            <!-- class -->
+
+            <div class="col-md-6 col-sm-12">
+                <label for="class_id" class="form-label">Class <span class="text-danger">*</span></label>
+                <select name="class_id" id="class_id" class="form-select" required>
+                    <option value="">-- Select Class --</option>
+                    @foreach($classModel as $class)
+                    <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
+                        {{ $class->class_name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+
+
             <div class="col-md-6 col-sm-12">
                 <label for="default_amount" class="form-label">Default Amount (৳) <span class="text-danger">*</span></label>
                 <input type="number" step="0.01" name="default_amount" id="default_amount" class="form-control" required value="{{ old('default_amount') }}">

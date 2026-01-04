@@ -7,7 +7,7 @@
     <form action="{{ route('departments.store') }}" method="POST">
         @csrf
         <div class="mb-3">
-            <label>Department Name</label>
+            <label class="form-label">Department Name</label>
             <input type="text" name="name" class="form-control" required>
         </div>
 

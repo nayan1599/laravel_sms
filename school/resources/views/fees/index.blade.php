@@ -5,7 +5,7 @@
     <h2 class="mb-4 main-title">Fees List</h2>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <!-- Filter Form -->
@@ -17,7 +17,7 @@
             <select name="class_id" class="form-select">
                 <option value="">All Classes</option>
                 @foreach($classes as $class)
-                    <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>{{ $class->class_name }}</option>
+                <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>{{ $class->class_name }}</option>
                 @endforeach
             </select>
         </div>
@@ -77,12 +77,12 @@
                         <td>{{ $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date)->format('d M Y') : '-' }}</td>
                         <td>
                             @php
-                                $statusClass = [
-                                    'pending' => 'badge bg-warning text-dark',
-                                    'paid' => 'badge bg-success',
-                                    'partial' => 'badge bg-info text-dark',
-                                    'overdue' => 'badge bg-danger',
-                                ];
+                            $statusClass = [
+                            'pending' => 'badge bg-warning text-dark',
+                            'paid' => 'badge bg-success',
+                            'partial' => 'badge bg-info text-dark',
+                            'overdue' => 'badge bg-danger',
+                            ];
                             @endphp
                             <span class="{{ $statusClass[$fee->payment_status] ?? 'badge bg-secondary' }}">
                                 {{ ucfirst($fee->payment_status) }}
@@ -92,8 +92,17 @@
                         <td>{{ $fee->receipt_number ?? '-' }}</td>
                         <td>{{ $fee->remarks ?? '-' }}</td>
                         <td>
-                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                          
+                            @php if(($fee->payment_status == 'paid')){
+                                $disabled = 'disabled';
+                            } else {
+                                $disabled = '';
+                            } @endphp
+
+
+                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-sm btn-warning {{ $disabled }}">Edit</a>
+                            
+                            <a href="{{ route('fees.invoice',$fee->id) }}" class="btn btn-sm btn-info"> Invoice</a>
+                            
                             <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" class="d-inline-block"
                                 onsubmit="return confirm('Are you sure you want to delete this fee record?');">
                                 @csrf
@@ -128,8 +137,15 @@
                 {{ $fees->links() }}
             </div>
 
-           
+
         </div>
     </div>
 </div>
+
+
+
+ 
+
+
+
 @endsection

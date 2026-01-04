@@ -493,9 +493,15 @@ document.addEventListener('DOMContentLoaded', function () {
       customersChart.customers = myCustomersChart;
     }
   })();
+
+
+
+
+
+
+
+
   /* Change data of all charts */
-
-
   function addData() {
     var darkMode = localStorage.getItem('darkMode');
 
@@ -518,3 +524,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   addData();
 });
+
+
+// invoice print 
+function printInvoice() {
+    const printContents = document.getElementById('printArea').innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    location.reload();
+}

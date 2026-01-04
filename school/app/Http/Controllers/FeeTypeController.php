@@ -1,20 +1,25 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\FeeType;
+use App\Models\ClassModel; 
 use Illuminate\Http\Request;
 
 class FeeTypeController extends Controller
 {
     public function index()
     {
+
         $feeTypes = FeeType::all();
+     
         return view('fee_types.index', compact('feeTypes'));
     }
 
     public function create()
     {
-        return view('fee_types.create');
+        $classModel = ClassModel::all();
+        return view('fee_types.create', compact('classModel'));
     }
 
     public function store(Request $request)
@@ -23,6 +28,7 @@ class FeeTypeController extends Controller
             'name' => 'required|string|max:100|unique:fee_types,name',
             'description' => 'nullable|string',
             'default_amount' => 'required|numeric|min:0',
+            'class_id' => 'required|exists:classes,id',
         ]);
 
         FeeType::create($request->all());
@@ -31,7 +37,8 @@ class FeeTypeController extends Controller
 
     public function edit(FeeType $feeType)
     {
-        return view('fee_types.edit', compact('feeType'));
+        $classModel = ClassModel::all();
+        return view('fee_types.edit', compact('feeType', 'classModel'));
     }
 
     public function update(Request $request, FeeType $feeType)
@@ -40,6 +47,7 @@ class FeeTypeController extends Controller
             'name' => 'required|string|max:100|unique:fee_types,name,' . $feeType->id,
             'description' => 'nullable|string',
             'default_amount' => 'required|numeric|min:0',
+            'class_id' => 'required|exists:classes,id',
         ]);
 
         $feeType->update($request->all());

@@ -1,9 +1,15 @@
 <?php 
 namespace App\Models;
-
+ use App\Models\ClassModel;
 use Illuminate\Database\Eloquent\Model;
 
 class FeeType extends Model
 {
-    protected $fillable = ['name', 'description', 'default_amount'];
+    protected $fillable = ['name', 'description', 'default_amount' , 'class_id'];
+
+
+      public function class()
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id');
+    }
 }

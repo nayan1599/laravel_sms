@@ -9,7 +9,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label>Department Name</label>
+            <label class="form-label">Department Name</label>
             <input type="text" name="name" class="form-control" value="{{ old('name', $department->name) }}" required>
         </div>
 

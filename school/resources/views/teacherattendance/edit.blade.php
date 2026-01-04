@@ -35,7 +35,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Status</label>
+            <label class="form-label">Status</label>
             <select name="status" class="form-control" required>
                 <option value="present" {{ $attendance->status == 'present' ? 'selected' : '' }}>Present</option>
                 <option value="absent" {{ $attendance->status == 'absent' ? 'selected' : '' }}>Absent</option>

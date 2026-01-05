@@ -47,7 +47,7 @@ class MarkController extends Controller
             'total_marks' => $request->total_marks ?? 100,
             'grade' => $request->grade ?? 'N/A',
             'remarks' => $request->remarks ?? '',
-            'recorded_at' => now(),
+            'created_at' => now(),
         ]);
 
         return redirect()->route('marks.index')->with('success', 'Mark added successfully.');

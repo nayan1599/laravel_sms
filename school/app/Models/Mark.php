@@ -24,7 +24,7 @@ class Mark extends Model
         'total_marks',
         'grade',
         'remarks',
-        'recorded_at',
+        'created_at',
         
     ];
     public function student()
@@ -41,4 +41,6 @@ class Mark extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+
+ 
 }

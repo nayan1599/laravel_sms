@@ -36,12 +36,29 @@ use App\Http\Controllers\{
     UserController,
     StudentDashboardController,
 };
-use App\Models\{
-    User,
-};
+ 
+ 
+// role based dashboard routes
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard',[DashboardController::class, 'index']) ->name('admin.dashboard');
+});
+
+
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index']) ->name('student.dashboard');
+    Route::get('/student/fee', [StudentDashboardController::class, 'fee']) ->name('student.fee');
+    Route::get('/student/results', [StudentDashboardController::class, 'results']) ->name('student.results');
+});
+
+
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', fn () => view('teacher.dashboard')) ->name('teacher.dashboard');
+});
+
 
 /*
-|--------------------------------------------------------------------------
 | Public / Frontend Routes
 |--------------------------------------------------------------------------
 */
@@ -109,6 +126,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'student_applications' => StudentApplicationController::class,
         'certificates'   => CertificateController::class,
         'users'          => UserController::class,
+        'students'       => StudentController::class,
     ]);
 
     /*Route::resource('users', UserController::class);
@@ -144,25 +162,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('applications/{id}', [StudentApplicationController::class, 'destroy'])->name('applications.destroy');
 });
 
-// role based dashboard routes
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard',[DashboardController::class, 'index'])
-        ->name('admin.dashboard');
-});
-
-
-
-Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
-        ->name('student.dashboard');
-});
-
-
-Route::middleware(['auth', 'role:teacher'])->group(function () {
-    Route::get('/teacher/dashboard', fn () => view('teacher.dashboard'))
-        ->name('teacher.dashboard');
-});
 
 
 

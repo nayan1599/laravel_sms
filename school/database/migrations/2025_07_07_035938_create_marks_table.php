@@ -24,7 +24,7 @@ return new class extends Migration
         $table->string('remarks')->nullable();
 
         $table->unsignedBigInteger('recorded_by')->nullable();
-        $table->timestamp('recorded_at')->useCurrent();
+        $table->timestamp('created_at')->useCurrent();
         $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 
         $table->unique(['student_id', 'exam_id', 'subject_id']);

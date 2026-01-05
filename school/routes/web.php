@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
- 
+
 
 
 use Symfony\Component\Routing\Router;
@@ -115,10 +115,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     | Custom / Report Routes
     |------------------------------------------------------------------
     */
- 
+
 
     // Fee Invoice Route    
-Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');
+    Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');
 
 
 
@@ -143,29 +143,22 @@ Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoic
     Route::delete('applications/{id}', [StudentApplicationController::class, 'destroy'])->name('applications.destroy');
 });
 
+// role based dashboard routes
 
-// student dashboard route
-use App\Http\Controllers\StudentDashboardController;
-
-use App\Http\Controllers\StudentResultController;
-use App\Http\Controllers\StudentFeeController;
-
-Route::middleware(['auth', 'student'])->group(function () {
-
-    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
-        ->name('student.dashboard');
-
-    Route::get('/student/result', [StudentResultController::class, 'index'])
-        ->name('student.result');
-
-    Route::get('/student/fees', [StudentFeeController::class, 'index'])
-        ->name('student.fees');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', fn () => view('admin.dashboard'))
+        ->name('admin.dashboard');
 });
 
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', fn () => view('student.dashboard'))
+        ->name('student.dashboard');
+});
 
-
-
-
+Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', fn () => view('teacher.dashboard'))
+        ->name('teacher.dashboard');
+});
 
 
 

@@ -1,19 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\Mark;
-use App\Models\Fee;
-use App\Models\Student;
 use App\Models\User;
+use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentDashboardController extends Controller
 {
-    //
-    public function index(Request $request)
-{
-    $student = $request->user()->student;
-    return view('student.dashboard', compact('student'));
-}
+    public function index()
+    {
+        $user = Auth::user();
+        $student = "hoe are "; // student table data get
+
+        return view('student.dashboard', compact('student'));
+    }
 }

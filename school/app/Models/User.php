@@ -31,9 +31,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function student()
+   public function student()
     {
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class, 'user_id'); // user_id ধরে সম্পর্ক
     }
     /**
      * Get the attributes that should be cast.

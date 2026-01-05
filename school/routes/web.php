@@ -150,10 +150,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.dashboard');
 });
 
+use App\Http\Controllers\StudentDashboardController;
+
 Route::middleware(['auth', 'role:student'])->group(function () {
-    Route::get('/student/dashboard', fn () => view('student.dashboard'))
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
         ->name('student.dashboard');
 });
+
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/dashboard', fn () => view('teacher.dashboard'))

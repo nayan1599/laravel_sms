@@ -12,7 +12,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
               </div>
               <div class="stat-cards-info">
-                <p class="stat-cards-info__num"> </p>
+                <p class="stat-cards-info__num">{{ $totalStudents }} </p>
                 <p class="stat-cards-info__title">Total Students</p>
                 <p class="stat-cards-info__progress">
                   <span class="stat-cards-info__profit success">
@@ -29,7 +29,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
               </div>
               <div class="stat-cards-info">
-                <p class="stat-cards-info__num"> </p>
+                <p class="stat-cards-info__num">{{ $totalTeachers }} </p>
                 <p class="stat-cards-info__title">Total Teachers</p>
                 <p class="stat-cards-info__progress">
                   <span class="stat-cards-info__profit success">
@@ -46,7 +46,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file" aria-hidden="true"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
               </div>
               <div class="stat-cards-info">
-                <p class="stat-cards-info__num"> </p>
+                <p class="stat-cards-info__num">{{ $totalEmployees }}</p>
                 <p class="stat-cards-info__title">Total Employees</p>
                 <p class="stat-cards-info__progress">
                   <span class="stat-cards-info__profit danger">

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+ 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Student;   // যদি Student মডেল থাকে
@@ -11,7 +12,7 @@ use App\Models\Employee; // যদি Employees মডেল থাকে
 
 class DashboardController extends Controller
 {
-    public function admin()
+    public function index()
     {
         $totalStudents = Student::count();
         $totalTeachers = Teachers::count();
@@ -21,8 +22,6 @@ class DashboardController extends Controller
     }
 
      
-    public function teacher()
-    {
-        return view('teacher.dashboard');
-    }
+ 
 }
+ 

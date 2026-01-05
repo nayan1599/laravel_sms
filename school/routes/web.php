@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
-
+ 
 
 
 use Symfony\Component\Routing\Router;
@@ -34,6 +34,7 @@ use App\Http\Controllers\{
     StudentApplicationController,
     CertificateController,
     UserController,
+    StudentDashboardController,
 };
 use App\Models\{
     User,
@@ -146,11 +147,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // role based dashboard routes
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', fn () => view('admin.dashboard'))
+    Route::get('/admin/dashboard',[DashboardController::class, 'index'])
         ->name('admin.dashboard');
 });
 
-use App\Http\Controllers\StudentDashboardController;
+
 
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])

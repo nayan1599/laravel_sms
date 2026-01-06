@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id');
             $table->string('name', 150);
+            $table->string('email', 150);
             $table->string('employee_id', 50)->unique();
             $table->string('designation', 100);
             $table->string('department', 100)->nullable();
@@ -30,7 +31,7 @@ return new class extends Migration
 
             $table->decimal('salary', 10, 2)->default(0.00);
             $table->enum('employment_type', ['permanent', 'contract', 'part-time'])->default('permanent');
-
+            $table->string('photo')->nullable();
             $table->string('blood_group', 5)->nullable();
             $table->string('emergency_contact_name', 100)->nullable();
             $table->string('emergency_contact_phone', 20)->nullable();
@@ -40,7 +41,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign key
-         });
+        });
     }
 
     /**

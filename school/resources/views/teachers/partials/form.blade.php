@@ -1,26 +1,23 @@
 <!-- resources/views/teachers/partials/form.blade.php -->
 <div class="row g-3">
+ 
     <div class="col-md-6">
-
-        <label for="user_id" class="form-label">Select User</label>
-        <select name="user_id" id="user_id" class="form-control" required>
-            <option value="">-- Select a User --</option>
-            @foreach($users as $user)
-            <option value="{{ $user->id }}"
-                {{ isset($teacher) && $teacher->user_id == $user->id ? 'selected' : '' }}>
-                {{ $user->name }} ({{ $user->email }})
-            </option>
-            @endforeach
-        </select>
-
+        <label for="emergency_contact_name" class="form-label">Nick Name</label>
+        <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $teacher->emergency_contact_name ?? '') }}" class="form-control">
     </div>
-
     <div class="col-md-6">
         <label class="form-label">Name</label>
         <input type="text" name="name" value="{{ old('name', $teacher->name ?? '') }}" class="form-control @error('name') is-invalid @enderror">
         @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
-
+  <div class="col-md-6">
+        <label for="emergency_contact_phone" class="form-label">Contact Phone</label>
+        <input type="text" name="emergency_contact_phone" value="{{ old('emergency_contact_phone', $teacher->emergency_contact_phone ?? '') }}" class="form-control">
+    </div>
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" name="email" value="{{ old('email', $teacher->email ?? '') }}" class="form-control">
+    </div>
     <div class="col-md-6">
         <label for="employee_id" class="form-label">Employee ID</label>
         <input type="text" name="employee_id" value="{{ old('employee_id', $teacher->employee_id ?? '') }}" class="form-control @error('employee_id') is-invalid @enderror">
@@ -104,13 +101,7 @@
         </select>
     </div>
 
-    <div class="col-md-6">
-        <label for="emergency_contact_name" class="form-label">Emergency Contact Name</label>
-        <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $teacher->emergency_contact_name ?? '') }}" class="form-control">
-    </div>
 
-    <div class="col-md-6">
-        <label for="emergency_contact_phone" class="form-label">Emergency Contact Phone</label>
-        <input type="text" name="emergency_contact_phone" value="{{ old('emergency_contact_phone', $teacher->emergency_contact_phone ?? '') }}" class="form-control">
-    </div>
+
+  
 </div>

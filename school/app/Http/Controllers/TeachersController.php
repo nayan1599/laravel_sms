@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teachers;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\BloodGroup;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TeachersController extends Controller
 {
@@ -34,10 +35,11 @@ class TeachersController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+
             'name' => 'required|string|max:150',
             'employee_id' => 'required|unique:teachers,employee_id',
             'designation' => 'required|string|max:100',
+            'email'       => 'required|string|max:100',
             'department' => 'nullable|string|max:100',
             'qualification' => 'nullable|string|max:255',
             'experience_years' => 'nullable|integer|min:0',
@@ -51,8 +53,25 @@ class TeachersController extends Controller
             'emergency_contact_phone' => 'nullable|string|max:20',
             'status' => 'required|in:active,on_leave,resigned,retired',
         ]);
+    DB::transaction(function () use ($validated) {
 
-        Teachers::create($validated);
+        // 1️⃣ Create User
+        $user = User::create([
+            'name'     => $validated['name'],     // ✅ array access
+            'email'    => $validated['email'] ?? null,
+            'phone_number'    => $validated['emergency_contact_phone'],
+            'password' => bcrypt($validated['emergency_contact_phone']),
+            'role'     => 'teacher',
+        ]);
+
+        // 2️⃣ Attach user_id with application
+        $validated['user_id'] = $user->id;
+         
+ Teachers::create($validated);
+        // 3️⃣ Create Student Application
+    
+    });
+       
 
         return redirect()->route('teachers.index')->with('success', 'Teacher added successfully.');
     }

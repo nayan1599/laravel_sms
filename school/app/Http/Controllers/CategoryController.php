@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+
 class CategoryController extends Controller
 {
     // List all categories
@@ -17,6 +18,7 @@ class CategoryController extends Controller
     // Show create form
     public function create()
     {
+     
         return view('categories.create');
     }
 

@@ -8,8 +8,8 @@
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold mb-0">My Leave Applications</h4>
-            <small class="text-muted">আপনার জমা দেওয়া সব ছুটির দরখাস্ত</small>
+            <h4 class="fw-bold mb-0 main-title ">My Leave Applications</h4>
+            <small>আপনার জমা দেওয়া সব ছুটির দরখাস্ত</small>
         </div>
         <a href="{{ route('student.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Apply Leave

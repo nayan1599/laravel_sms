@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\{
     DashboardController,
     StudentController,
@@ -33,37 +34,15 @@ use App\Http\Controllers\{
     StudentDashboardController,
     LeaveApplicationController,
 };
-/*
-|--------------------------------------------------------------------------
-| User Role / Backend Routes
-|--------------------------------------------------------------------------
-*/
-/*
-================================================
-                Admin role
-================================================
-*/
+
+
+// role based dashboard routes
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    // posts section 
-    Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
-    Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-    // category section 
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 });
-/*
-================================================
-                Student role
-================================================
-*/
+
+
 
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
@@ -73,69 +52,32 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/create', [LeaveApplicationController::class, 'create'])->name('student.create');
     Route::post('/student/store', [LeaveApplicationController::class, 'store'])->name('student.store');
 });
-/*
-================================================
-                Tacher role
-================================================
-*/
+
+
 Route::middleware(['auth', 'role:teacher'])->group(function () {
-
-    Route::get('/student/dashboard', [TeacherDashboardController::class, 'index'])->name('student.dashboard');
-
-
     Route::get('/teacher/dashboard', fn() => view('teacher.dashboard'))->name('teacher.dashboard');
 });
 
 
 
 
-
-
-
-
-
-
-
 /*
-|--------------------------------------------------------------------------
-| User Role / Backend End
-|--------------------------------------------------------------------------
-*/
-
-
-/*
-|--------------------------------------------------------------------------
 | Public / Frontend Routes
 |--------------------------------------------------------------------------
 */
 
 Route::get('/', fn() => view('index'))->name('home');
-Route::get('posts/{slug}', [PostController::class, 'show'])->name('frontend.posts.show');
-Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('frontend.categories.show');
-Route::get('notices/{id}', [NoticeController::class, 'show'])->name('frontend.notices.show');
-Route::get('committees/{id}', [SchoolCommitteeController::class, 'show'])->name('frontend.committees.show');
-// online apply 
+
+Route::prefix('frontend')->group(function () {
+    Route::get('posts/{slug}', [PostController::class, 'show'])->name('frontend.posts.show');
+    Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('frontend.categories.show');
+    Route::get('notices/{id}', [NoticeController::class, 'show'])->name('frontend.notices.show');
+    Route::get('committees/{id}', [SchoolCommitteeController::class, 'show'])->name('frontend.committees.show');
+});
+
 Route::get('/apply', [StudentApplicationController::class, 'create'])->name('apply');
 Route::post('/apply', [StudentApplicationController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -145,7 +87,15 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Profile
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 
     /*
     |------------------------------------------------------------------
@@ -189,34 +139,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     */
 
 
+    // Fee Invoice Route    
+    Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');
+
     // Leave Application Routes
     Route::prefix('leave')->name('leave.')->group(function () {
         Route::get('index', [LeaveApplicationController::class, 'index'])->name('index');
         Route::get('show/{id}', [LeaveApplicationController::class, 'show'])->name('show');
         Route::get('edit/{id}', [LeaveApplicationController::class, 'edit'])->name('edit');
-        Route::put('edit/{id}', [LeaveApplicationController::class, 'update'])->name('leave.update');
     });
-    // Profile
-    Route::prefix('profile')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-    });
-    // attendance
+
     Route::prefix('attendance')->name('attendance.')->group(function () {
         Route::get('get-students', [AttendanceController::class, 'getStudents'])->name('getStudents');
         Route::get('report', [AttendanceController::class, 'report'])->name('report');
         Route::get('monthly', [AttendanceController::class, 'dateRangeReport'])->name('monthly');
     });
-    // marksheet
+
     Route::prefix('marksheet')->name('marksheet.')->group(function () {
         Route::get('/', [MarkController::class, 'marksheetForm'])->name('index');
         Route::post('/view', [MarkController::class, 'viewMarksheet'])->name('view');
     });
-    
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');
+
     Route::get('applications', [StudentApplicationController::class, 'index'])->name('applications.index');
     Route::get('applications/{id}', [StudentApplicationController::class, 'show'])->name('applications.show');
     Route::get('applications/{id}/edit', [StudentApplicationController::class, 'edit'])->name('applications.edit');

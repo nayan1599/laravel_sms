@@ -35,6 +35,7 @@ use App\Http\Controllers\{
     CertificateController,
     UserController,
     StudentDashboardController,
+    LeaveApplicationController,
 };
  
  
@@ -50,12 +51,17 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/dashboard', [StudentDashboardController::class, 'index']) ->name('student.dashboard');
     Route::get('/student/fee', [StudentDashboardController::class, 'fee']) ->name('student.fee');
     Route::get('/student/results', [StudentDashboardController::class, 'results']) ->name('student.results');
+    Route::get('/student', [LeaveApplicationController::class, 'index'])->name('student.index');
+    Route::get('/student/create', [LeaveApplicationController::class, 'create'])->name('student.create');
+    Route::post('/student/store', [LeaveApplicationController::class, 'store'])->name('student.store');
 });
 
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/dashboard', fn () => view('teacher.dashboard')) ->name('teacher.dashboard');
 });
+
+
 
 
 /*

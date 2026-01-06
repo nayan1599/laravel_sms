@@ -152,7 +152,7 @@
         @php
         use App\Models\Notice;
         use Illuminate\Support\Str;
-        $notices = Notice::latest()->take(2)->get();
+        $notices = Notice::orderby('created_at', 'desc')->latest()->take(1)->get();
         @endphp
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -165,7 +165,7 @@
         @if($notices->count())
         <div class="row g-4">
             @foreach($notices as $notice)
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card border-0 h-100">
                     <div class="row g-0 h-100">
 
@@ -188,7 +188,7 @@
                                 </small>
 
                                 <p class="mt-2 mb-2 small">
-                                    {{ Str::limit(strip_tags($notice->description), 90) }}
+                                    {{ Str::limit(strip_tags($notice->description), 200) }}
                                 </p>
 
                                 <a href="{{ route('notices.show', $notice->id) }}" class="btn btn-primary btn-sm">

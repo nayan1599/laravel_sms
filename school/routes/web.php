@@ -45,8 +45,8 @@ use App\Http\Controllers\{
 ================================================
 */
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+ 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // posts section 
     Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
@@ -59,7 +59,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
+ 
 /*
 ================================================
                 Student role

@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         return redirect()->route('teacher.dashboard');
     }
 
-    return redirect()->route('admin.dashboard');
+    return redirect()->route('dashboard');
 }
 
 

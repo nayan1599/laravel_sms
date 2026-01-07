@@ -1,15 +1,9 @@
   <aside class="sidebar">
       <div class="sidebar-start">
-
-
-
           @auth
           @php
           $user = auth()->user();
           @endphp
-
-
-
           <div class="sidebar-head">
               <a href="{{ route('student.dashboard') }}" class="logo-wrapper gap-3" title="Home">
                   <span class="sr-only">Home</span>
@@ -19,28 +13,17 @@
                   {{-- Default avatar --}}
                   <img src="{{ asset('img/avatar/avatar-illustrated-01.png') }}" alt="Default Avatar" class="rounded-circle" style="width:40px; height:40px;">
                   @endif
-
-
-
                   <div class="logo-text">
                       <span class="logo-title">{{ $user->name }}</span>
                       <span class="logo-subtitle">Dashboard</span>
                   </div>
-
               </a>
               <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
                   <span class="sr-only">Toggle menu</span>
                   <span class="icon menu-toggle" aria-hidden="true"></span>
               </button>
           </div>
-
-
-
           @endauth
-
-
-
-
           <div class="sidebar-body">
               <ul class="sidebar-body-menu">
                   <li>
@@ -49,20 +32,36 @@
                       </a>
                   </li>
               </ul>
+              <ul class="sidebar-body-menu">
+
+                  <li>
+                      <a class="show-cat-btn" href="##">
+                          <i class="fa-solid fa-graduation-cap"></i> Students
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Open list</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
+                      <ul class="cat-sub-menu">
+                          <li><a class="{{ request()->is('students') || request()->is('students/*') ? 'active' : '' }}" href="{{ route('students.index') }}">All Students</a></li>
+                      </ul>
+                  </li>
+              </ul>
+
 
               <span class="system-menu__title"><i class="fa-solid fa-square-poll-vertical icon"></i> Exam Result</span>
               <ul class="sidebar-body-menu">
                   <!-- exam section -->
-                   <li> <a class="{{ request()->is('marks') || request()->is('marks/*') ? 'active' : '' }}" href="{{route('student.results')}}">Mark List</a> </li>
-               </ul>
+                  <li> <a class="{{ request()->is('marks') || request()->is('marks/*') ? 'active' : '' }}" href="{{route('student.results')}}">Mark List</a> </li>
+              </ul>
 
-            
 
-            
-             
+
+
+
               <span class="system-menu__title">** Fees</span>
               <ul class="sidebar-body-menu">
-                   <li> <a class="{{ request()->is('fees') ? 'active' : '' }}" href="{{route('student.fee')}}">Fees</a> </li>
+                  <li> <a class="{{ request()->is('fees') ? 'active' : '' }}" href="{{route('student.fee')}}">Fees</a> </li>
               </ul>
           </div>
       </div>

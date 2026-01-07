@@ -9,6 +9,7 @@ class LeaveApplication extends Model
     protected $fillable = [
         'student_id',
         'class_id',
+        'teacher_id',
         'from_date',
         'to_date',
         'reason',

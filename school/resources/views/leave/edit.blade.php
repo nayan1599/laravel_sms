@@ -37,19 +37,19 @@
                         @method('PUT') <!-- Important! -->
 
                         <!-- From Date -->
-                        <input type="date" name="from_date" value="{{ old('from_date', $leave->from_date) }}" required>
+                        <input class="form-control"   type="date" name="from_date" value="{{ old('from_date', $leave->from_date) }}" required>
 
                         <!-- To Date -->
-                        <input type="date" name="to_date" value="{{ old('to_date', $leave->to_date) }}" required>
+                        <input class="form-control"   type="date" name="to_date" value="{{ old('to_date', $leave->to_date) }}" required>
 
                         <!-- stutas  -->
-   <div class="mb-3">
-        <label>Status</label>
-        <select name="status" class="form-control" required>
-            <option value="approved" {{ $leave->status=='approved' ? 'selected' : '' }}>Approve</option>
-            <option value="rejected" {{ $leave->status=='rejected' ? 'selected' : '' }}>Reject</option>
-        </select>
-    </div>
+                        <div class="mb-3">
+                            <label>Status</label>
+                            <select name="status" class="form-select" required>
+                                <option value="approved" {{ $leave->status=='approved' ? 'selected' : '' }}>Approve</option>
+                                <option value="rejected" {{ $leave->status=='rejected' ? 'selected' : '' }}>Reject</option>
+                            </select>
+                        </div>
 
                         <!-- Reason -->
                         <textarea name="reason" required>{{ old('reason', $leave->reason) }}</textarea>

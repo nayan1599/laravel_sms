@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('leave_applications', function (Blueprint $table) {
-    $table->id();
-    $table->unsignedBigInteger('student_id');
-     $table->unsignedBigInteger('class_id');
-    $table->date('from_date');
-    $table->date('to_date');
-    $table->text('reason');
-    $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-    $table->foreignId('approved_by')->nullable()->references('id')->on('users');
-    $table->timestamps();
-});
-
+        Schema::create('leave_applications', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('teacher_id');
+            $table->date('from_date');
+            $table->date('to_date');
+            $table->text('reason');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->foreignId('approved_by')->nullable()->references('id')->on('users');
+            $table->timestamps();
+        });
     }
 
     /**

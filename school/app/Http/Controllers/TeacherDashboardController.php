@@ -22,14 +22,10 @@ class TeacherDashboardController extends Controller
     {
 
         $teacher = Auth::user();
-
-       
-       
-
-        $totalStudents = Student::all();
+        $totalStudents = Student::count();
         $pendingLeaves = LeaveApplication::where('status', 'pending')->count();
         $totalNotices = Notice::count();
-        $totalSubjects = Subject::where('teacher_id', $teacher->id)->count();
+        $totalSubjects = Subject::where('subject_teacher_id', $teacher->id)->count();
         $totalClasses = ClassModel::count();
 
         return view('teacher.dashboard', compact(

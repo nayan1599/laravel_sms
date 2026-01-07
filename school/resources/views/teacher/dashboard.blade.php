@@ -6,8 +6,8 @@
 <div class="container-fluid py-4">
 
     <div class="text-center mb-4">
-        <h4 class="fw-bold">Welcome, {{ auth()->user()->name }}</h4>
-        <small class="text-muted">Teacher Dashboard</small>
+        <h4 class="fw-bold main-title">Welcome, {{ auth()->user()->name }}</h4>
+        <small class="">Teacher Dashboard</small>
     </div>
 
     <div class="row g-4">

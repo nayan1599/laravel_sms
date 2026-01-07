@@ -32,6 +32,7 @@ use App\Http\Controllers\{
     UserController,
     StudentDashboardController,
     LeaveApplicationController,
+    TeacherDashboardController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -79,12 +80,15 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 ================================================
 */
 Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->name('teacher.dashboard');
+    Route::prefix('leave')->name('leave.')->group(function () {
+        Route::get('index', [LeaveApplicationController::class, 'index'])->name('index');
+        Route::get('show/{id}', [LeaveApplicationController::class, 'show'])->name('show');
+        Route::get('edit/{id}', [LeaveApplicationController::class, 'edit'])->name('edit');
+        Route::put('edit/{id}', [LeaveApplicationController::class, 'update'])->name('leave.update');
+    });
 
-    Route::get('/student/dashboard', [TeacherDashboardController::class, 'index'])->name('student.dashboard');
-
-
-    Route::get('/teacher/dashboard', fn() => view('teacher.dashboard'))->name('teacher.dashboard');
-});
+ });
 
 
 
@@ -180,6 +184,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'certificates'   => CertificateController::class,
         'users'          => UserController::class,
         'students'       => StudentController::class,
+        'leave'         => LeaveApplicationController::class,
     ]);
 
     /*Route::resource('users', UserController::class);

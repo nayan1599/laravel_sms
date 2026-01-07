@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeaveApplication;
+use App\Models\Teachers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,13 +14,15 @@ class LeaveApplicationController extends Controller
     public function userlist()
     {
         $user = Auth::user();
+        $teacher = Teachers::all();
         $leaves = LeaveApplication::where('student_id', $user->student->id)->latest()->get();
-        return view('student.userlist', compact('leaves'));
+        return view('student.userlist', compact('leaves','teacher'));
     }
 
     public function create()
     {
-        return view('student.create');
+              $teacher = Teachers::all();
+        return view('student.create',compact('teacher'));
     }
 
     public function store(Request $request)
@@ -28,6 +31,7 @@ class LeaveApplicationController extends Controller
             'from_date' => 'required|date',
             'to_date'   => 'required|date|after_or_equal:from_date',
             'reason'    => 'required',
+            'teacher_id'=> 'required',
         ]);
         $user = Auth::user();
         $class_id = $user->student->class_id;
@@ -37,10 +41,11 @@ class LeaveApplicationController extends Controller
             'to_date'    => $request->to_date,
             'reason'     => $request->reason,
             'class_id'   => $class_id,
+            'teacher_id' => $request->teacher_id,
             'status'     => 'Pending',
         ]);
 
-        return redirect()->route('student.index')->with('success', 'Leave Application Submitted');
+        return redirect()->route('student.userlist')->with('success', 'Leave Application Submitted');
     }
 
 

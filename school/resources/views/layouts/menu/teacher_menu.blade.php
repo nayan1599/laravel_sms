@@ -50,7 +50,7 @@
                   </li>
               </ul>
 
-              <span class="system-menu__title">** Exam Result</span>
+              <span class="system-menu__title"><i class="fa-solid fa-square-poll-vertical icon"></i> Exam Result</span>
               <ul class="sidebar-body-menu">
                   <!-- exam section -->
                    <li> <a class="{{ request()->is('marks') || request()->is('marks/*') ? 'active' : '' }}" href="{{route('student.results')}}">Mark List</a> </li>

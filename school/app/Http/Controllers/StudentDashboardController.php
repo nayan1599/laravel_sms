@@ -53,4 +53,6 @@ class StudentDashboardController extends Controller
 
         return view('student.results', compact('student', 'classModel', 'results', 'average', 'passed', 'passMarks', 'exam'));
     }
+
+    
 }

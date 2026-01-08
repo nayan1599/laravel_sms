@@ -1,5 +1,5 @@
 <?php
-
+     use App\Models\Student;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
@@ -208,9 +208,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
     // attendance
+
+Route::get('attendance/by-class-section/{class}/{section}', function($class, $section){
+    return Student::where('class_id', $class)
+                  ->where('section_id', $section)
+                  ->orderBy('name')
+                  ->get(['id','name']);
+});
+
     Route::prefix('attendance')->name('attendance.')->group(function () {
-        Route::get('get-students', [AttendanceController::class, 'getStudents'])->name('getStudents');
-        Route::get('report', [AttendanceController::class, 'report'])->name('report');
+
+
+
+
+         Route::get('report', [AttendanceController::class, 'report'])->name('report');
         Route::get('monthly', [AttendanceController::class, 'dateRangeReport'])->name('monthly');
     });
     // marksheet

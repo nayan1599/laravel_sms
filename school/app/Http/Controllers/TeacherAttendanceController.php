@@ -8,82 +8,108 @@ use Illuminate\Http\Request;
 
 class TeacherAttendanceController extends Controller
 {
-    // Attendance list with pagination and date filter
+    /**
+     * Attendance list with date filter
+     */
     public function index(Request $request)
     {
-        $date = $request->get('created_at', date('Y-m-d'));
+        $date = $request->get('date', date('Y-m-d'));
 
         $attendances = TeacherAttendance::with('teacher')
-            ->where('created_at', $date)
+            ->where('attendance_date', $date)
             ->orderBy('teacher_id')
             ->paginate(10)
-            ->appends(['created_at' => $date]);
+            ->appends(['date' => $date]);
 
         return view('teacherattendance.index', compact('attendances', 'date'));
     }
 
-    // Show form to create attendance (new date)
+    /**
+     * Show attendance create form
+     */
     public function create()
     {
-        $teachers = Teachers::all();
+        $teachers = Teachers::orderBy('name')->get();
         return view('teacherattendance.create', compact('teachers'));
     }
 
-    // Store attendance (new or update)
+    /**
+     * Store attendance (bulk insert/update)
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'created_at' => 'required|created_at',
-            'attendances' => 'required|array',
+            'attendance_date' => 'required|date',
+            'attendances'     => 'required|array',
         ]);
 
         foreach ($request->attendances as $teacher_id => $status) {
             TeacherAttendance::updateOrCreate(
-                ['teacher_id' => $teacher_id, 'created_at' => $request->date],
-                ['status' => $status]
+                [
+                    'teacher_id'      => $teacher_id,
+                    'attendance_date' => $request->attendance_date,
+                ],
+                [
+                    'status' => $status,
+                ]
             );
         }
 
-        return redirect()->route('teacherattendance.index', ['date' => $request->date])
-                         ->with('success', 'Attendance saved successfully!');
+        return redirect()
+            ->route('teacherattendance.index', ['date' => $request->attendance_date])
+            ->with('success', 'Teacher attendance saved successfully!');
     }
 
-    // Show specific attendance record
+    /**
+     * Show single attendance
+     */
     public function show($id)
     {
         $attendance = TeacherAttendance::with('teacher')->findOrFail($id);
         return view('teacherattendance.show', compact('attendance'));
     }
 
-    // Edit attendance for a specific record
+    /**
+     * Edit attendance
+     */
     public function edit($id)
     {
         $attendance = TeacherAttendance::findOrFail($id);
-        $teachers = Teachers::all();
+        $teachers   = Teachers::orderBy('name')->get();
+
         return view('teacherattendance.edit', compact('attendance', 'teachers'));
     }
 
-    // Update attendance record
+    /**
+     * Update attendance
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'date' => 'required|date',
-            'teacher_id' => 'required|exists:teachers,id',
-            'status' => 'required|in:present,absent,late',
+            'attendance_date' => 'required|date',
+            'teacher_id'      => 'required|exists:teachers,id',
+            'status'          => 'required|in:present,absent',
         ]);
 
         $attendance = TeacherAttendance::findOrFail($id);
-        $attendance->update($request->only(['date', 'teacher_id', 'status']));
 
-        return redirect()->route('teacherattendance.index', ['date' => $request->date])
-                         ->with('success', 'Attendance updated successfully!');
+        $attendance->update([
+            'attendance_date' => $request->attendance_date,
+            'teacher_id'      => $request->teacher_id,
+            'status'          => $request->status,
+        ]);
+
+        return redirect()
+            ->route('teacherattendance.index', ['date' => $request->attendance_date])
+            ->with('success', 'Attendance updated successfully!');
     }
 
-    // Delete attendance record
+    /**
+     * Delete attendance
+     */
     public function destroy($id)
     {
-        $attendance = TeacherAttendance::findOrFail($id);
-        $attendance->delete();
+        TeacherAttendance::findOrFail($id)->delete();
 
         return redirect()->back()->with('success', 'Attendance deleted successfully!');
     }

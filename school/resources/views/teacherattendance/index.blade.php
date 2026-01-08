@@ -1,55 +1,82 @@
-@extends('layouts.layouts')
+@extends('layouts.app')
+
+@section('title', 'Teacher Attendance List')
 
 @section('content')
-<div class="container py-4">
-    <h2 class="main-title">Teacher Attendance</h2>
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+            <h5 class="mb-0">Teacher Attendance</h5>
+            <a href="{{ route('teacherattendance.create') }}" class="btn btn-light btn-sm">
+                + Take Attendance
+            </a>
+        </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+        <div class="card-body">
 
-    <form method="GET" action="{{ route('teacherattendance.index') }}" class="mb-3 d-flex gap-2 align-items-center">
-        <label for="date">Filter by Date:</label>
-        <input type="date" id="date" name="date" value="{{ $date }}" class="form-control" style="max-width: 200px;">
-        <button type="submit" class="btn btn-primary">Filter</button>
-        <a href="{{ route('teacherattendance.create') }}" class="btn btn-success ms-auto">
-            <i class="bi bi-plus-circle"></i> Add Attendance
-        </a>
-    </form>
+            {{-- Date Filter --}}
+            <form method="GET" class="row mb-3">
+                <div class="col-md-4">
+                    <input type="date" name="date" class="form-control"
+                           value="{{ $date }}">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary">Filter</button>
+                </div>
+            </form>
 
-<table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Teacher Name</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($attendances as $attendance)
-            <tr>
-                <td>{{ $attendance->teacher->name }}</td>
-                <td>{{ $attendance->date }}</td>
-                <td>{{ ucfirst($attendance->status) }}</td>
-                <td>
-                    <a href="{{ route('teacherattendance.show', $attendance->id) }}" class="btn btn-info btn-sm">View</a>
-                    <a href="{{ route('teacherattendance.edit', $attendance->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('teacherattendance.destroy', $attendance->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure to delete this attendance?')">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="4" class="text-center">No attendance records found for {{ $date }}.</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+            {{-- Success --}}
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-    {{ $attendances->links() }}
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Teacher</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th width="160">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($attendances as $key => $attendance)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $attendance->teacher->name }}</td>
+                        <td>{{ $attendance->attendance_date }}</td>
+                        <td>
+                            <span class="badge 
+                                {{ $attendance->status == 'present' ? 'bg-success' : 'bg-danger' }}">
+                                {{ ucfirst($attendance->status) }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('teacherattendance.show', $attendance->id) }}"
+                               class="btn btn-info btn-sm">View</a>
+
+                            <form action="{{ route('teacherattendance.destroy', $attendance->id) }}"
+                                  method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button onclick="return confirm('Delete?')"
+                                        class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5">No attendance found</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{ $attendances->links() }}
+        </div>
+    </div>
 </div>
 @endsection

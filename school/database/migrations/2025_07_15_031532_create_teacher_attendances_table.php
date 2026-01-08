@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('teacher_attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('teacher_id');
+            $table->date('attendance_date');
+            $table->enum('status', ['present', 'absent'])->default('present');
             $table->timestamps();
         });
     }

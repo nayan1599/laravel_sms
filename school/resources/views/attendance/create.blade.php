@@ -1,127 +1,124 @@
-@extends('layouts.layouts')
- 
+@extends('layouts.app')
+
+@section('title','Add Attendance for Class')
+
 @section('content')
 <div class="container py-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Take Student Attendance</h4>
+
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="bi bi-journal-check me-1"></i> Add Attendance for a Class</h5>
         </div>
-        <div class="card-body">
 
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach
-                    </ul>
-                </div>
-            @endif
+        <form method="POST" action="{{ route('attendance.store') }}">
+            @csrf
+            <div class="card-body">
 
-            <form action="{{ route('attendance.store') }}" method="POST" id="attendanceForm">
-                @csrf
-
-                <div class="row g-3 mb-3">
+                {{-- Select Class, Section, Subject, Date --}}
+                <div class="row mb-3">
                     <div class="col-md-3">
-                        <label class="form-label">Date <span class="text-danger">*</span></label>
-                        <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label">Class <span class="text-danger">*</span></label>
-                        <select name="class_id" id="class_id" class="form-select" required>
+                        <label>Class</label>
+                        <select name="class_id" class="form-select" id="class_select" required>
                             <option value="">Select Class</option>
-                            @foreach ($classes as $class)
+                            @foreach($classes as $class)
                                 <option value="{{ $class->id }}">{{ $class->class_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label">Section <span class="text-danger">*</span></label>
-                        <select name="section_id" id="section_id" class="form-select" required>
+                        <label>Section</label>
+                        <select name="section_id" class="form-select" id="section_select" required>
                             <option value="">Select Section</option>
-                            @foreach ($sections as $section)
+                            @foreach($sections as $section)
                                 <option value="{{ $section->id }}">{{ $section->section_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label">Subject <span class="text-danger">*</span></label>
-                        <select name="subject_id" id="subject_id" class="form-select" required>
+                        <label>Subject (Optional)</label>
+                        <select name="subject_id" class="form-select">
                             <option value="">Select Subject</option>
-                            @foreach ($subjects as $subject)
+                            @foreach($subjects as $subject)
                                 <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="col-md-3">
+                        <label>Date</label>
+                        <input type="date" name="attendance_date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                    </div>
                 </div>
 
-                <div id="studentList" class="mt-4"></div>
-
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Back</a>
-                    <button type="submit" class="btn btn-success">Save Attendance</button>
+                {{-- Student List --}}
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student_table">
+                            {{-- Students will load via JS based on class & section --}}
+                        </tbody>
+                    </table>
                 </div>
-            </form>
-        </div>
+
+            </div>
+
+            <div class="card-footer text-end">
+                <a href="{{ route('attendance.index') }}" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-success">Save Attendance</button>
+            </div>
+        </form>
     </div>
+
 </div>
-@endsection
 
-@section('scripts')
+{{-- JS to load students dynamically --}}
 <script>
-    document.getElementById('section_id').addEventListener('change', function () {
-        const classId = document.getElementById('class_id').value;
-        const sectionId = this.value;
+document.addEventListener('DOMContentLoaded', function () {
+    const classSelect = document.getElementById('class_select');
+    const sectionSelect = document.getElementById('section_select');
+    const studentTable = document.getElementById('student_table');
 
-        if (classId && sectionId) {
-            fetch(`/get-students?class_id=${classId}&section_id=${sectionId}`)
+    function loadStudents() {
+        const classId = classSelect.value;
+        const sectionId = sectionSelect.value;
+
+        if(classId && sectionId){
+            fetch(`/attendance/by-class-section/${classId}/${sectionId}`)
                 .then(res => res.json())
                 .then(data => {
-                    let html = `
-                        <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Student Name</th>
-                                    <th class="text-center">Present</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-                    if (data.length > 0) {
-                        data.forEach(student => {
-                            html += `
-                                <tr>
-                                    <td>${student.name}</td>
-                                    <td class="text-center">
-                                        <input type="checkbox" name="present_students[]" value="${student.id}" checked>
-                                    </td>
-                                </tr>
-                            `;
-                        });
-                    } else {
-                        html += `
+                    studentTable.innerHTML = '';
+                    data.forEach((student, index) => {
+                        studentTable.innerHTML += `
                             <tr>
-                                <td colspan="2" class="text-center text-muted">No students found for selected class and section.</td>
+                                <td class="text-center">${index+1}</td>
+                                <td>${student.name}</td>
+                                <td>
+                                    <select name="statuses[${student.id}]" class="form-select">
+                                        <option value="present">Present</option>
+                                        <option value="absent">Absent</option>
+                                        <option value="late">Late</option>
+                                        <option value="leave">Leave</option>
+                                    </select>
+                                </td>
                             </tr>
                         `;
-                    }
-
-                    html += `
-                            </tbody>
-                        </table>
-                        </div>
-                    `;
-
-                    document.getElementById('studentList').innerHTML = html;
-                })
-                .catch(err => {
-                    document.getElementById('studentList').innerHTML = '<div class="alert alert-danger">Error loading students.</div>';
+                    });
                 });
         } else {
-            document.getElementById('studentList').innerHTML = '';
+            studentTable.innerHTML = '';
         }
-    });
+    }
+
+    classSelect.addEventListener('change', loadStudents);
+    sectionSelect.addEventListener('change', loadStudents);
+});
 </script>
 @endsection

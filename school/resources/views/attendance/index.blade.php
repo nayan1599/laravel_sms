@@ -1,5 +1,5 @@
-@extends('layouts.layouts')
-
+@extends('layouts.app')
+@section('title','Attendance List')
 @section('content')
 <div class="container">
     <h2 class="main-title">Attendance List</h2>

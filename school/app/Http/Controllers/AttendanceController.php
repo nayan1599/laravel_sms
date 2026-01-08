@@ -45,9 +45,7 @@ class AttendanceController extends Controller
 
     public function getStudents(Request $request)
     {
-        $students = Student::where('class_id', $request->class_id)
-                    ->where('section_id', $request->section_id)
-                    ->get(['id', 'name']);
+        $students = Student::where('class_id', $request->class_id)->where('section_id', $request->section_id)->get(['id', 'name']);
 
         return response()->json($students);
     }

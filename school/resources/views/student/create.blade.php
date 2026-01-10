@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Apply .leave')
+@section('title', 'Apply Leave')
 
 @section('content')
 <div class="container-fluid py-4">
 
     {{-- Page Header --}}
     <div class="mb-4">
-        <h4 class="fw-bold mb-1">Apply for .leave</h4>
+        <h4 class="fw-bold mb-1">Apply for Leave</h4>
         <small class="text-muted">
             ছুটির জন্য নিচের ফর্মটি পূরণ করুন
         </small>
@@ -19,56 +19,71 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
 
-                    <form action="{{ route('student.store') }}" method="POST">
+                    <form action="{{ route('leave.store') }}" method="POST">
                         @csrf
 
-                        {{-- .leave From Date --}}
+                        {{-- Leave Type --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">
-                                .leave From <span class="text-danger">*</span>
+                                Leave Type <span class="text-danger">*</span>
                             </label>
-                            <input type="date" name="from_date"
-                                class="form-control @error('from_date') is-invalid @enderror"
-                                value="{{ old('from_date') }}">
-                            @error('from_date')
+                            <select name="leave_type"
+                                class="form-select @error('leave_type') is-invalid @enderror" required>
+                                <option value="">-- Select Leave Type --</option>
+                                <option value="Sick" {{ old('leave_type') == 'Sick' ? 'selected' : '' }}>Sick</option>
+                                <option value="Casual" {{ old('leave_type') == 'Casual' ? 'selected' : '' }}>Casual</option>
+                                <option value="Emergency" {{ old('leave_type') == 'Emergency' ? 'selected' : '' }}>Emergency</option>
+                            </select>
+                            @error('leave_type')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- .leave To Date --}}
+                        {{-- Leave From Date --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">
-                                .leave To <span class="text-danger">*</span>
+                                Leave From <span class="text-danger">*</span>
                             </label>
-                            <input type="date" name="to_date"
-                                class="form-control @error('to_date') is-invalid @enderror"
-                                value="{{ old('to_date') }}">
-                            @error('to_date')
+                            <input type="date" name="start_date"
+                                class="form-control @error('start_date') is-invalid @enderror"
+                                value="{{ old('start_date') }}" required>
+                            @error('start_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <!-- {{$teacher}} -->
+                        {{-- Leave To Date --}}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Leave To <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" name="end_date"
+                                class="form-control @error('end_date') is-invalid @enderror"
+                                value="{{ old('end_date') }}" required>
+                            @error('end_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
+                        {{-- Teacher Select --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">
                                 Teacher Select করুন <span class="text-danger">*</span>
                             </label>
-
-
-
-                            <select name="teacher_id" class="form-select" required>
+                            <select name="teacher_id"
+                                class="form-select @error('teacher_id') is-invalid @enderror" required>
                                 <option value="">-- Teacher Select করুন --</option>
- 
-                                @foreach ($teacher as $bloodgroup)
-                                <option value="{{ $bloodgroup->id }}"
-                                    {{ old('blood_group', $student->blood_group ?? '') == $bloodgroup->name ? 'selected' : '' }}>
-                                    {{ $bloodgroup->name }}
-                                </option>
+                                @foreach ($teacher as $teachers)
+                                    <option value="{{ $teachers->id }}"
+                                        {{ old('teacher_id') == $teachers->id ? 'selected' : '' }}>
+                                        {{ $teachers->name }}
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('teacher_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-
 
                         {{-- Reason --}}
                         <div class="mb-3">
@@ -77,7 +92,7 @@
                             </label>
                             <textarea name="reason" rows="4"
                                 class="form-control @error('reason') is-invalid @enderror"
-                                placeholder="ছুটির কারণ লিখুন...">{{ old('reason') }}</textarea>
+                                placeholder="ছুটির কারণ লিখুন..." required>{{ old('reason') }}</textarea>
                             @error('reason')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -92,7 +107,7 @@
 
                         {{-- Buttons --}}
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('student.userlist') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('leave.index') }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left"></i> Back
                             </a>
                             <button type="submit" class="btn btn-primary">

@@ -148,16 +148,18 @@
                                 <th>User</th>
                                 <th>Type</th>
                                 <th>Status</th>
+                                <th>Day</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($pendingLeaves ?? [] as $leave)
                                 <tr>
-                                    <td>{{ $leave->user->name }}</td>
-                                    <td>{{ ucfirst($leave->type) }}</td>
+                                    <td>{{ $leave->student->name }}</td>
+                                    <td>{{ ucfirst($leave->leave_type) }}</td>
                                     <td>
                                         <span class="badge bg-warning">Pending</span>
                                     </td>
+                                    <th>{{$leave->total_days}}</th>
                                 </tr>
                             @empty
                                 <tr>

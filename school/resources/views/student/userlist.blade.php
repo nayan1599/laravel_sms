@@ -8,17 +8,18 @@
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="fw-bold mb-0 main-title ">My Leave Applications</h4>
-            <small>আপনার জমা দেওয়া সব ছুটির দরখাস্ত</small>
+            <h4 class="fw-bold mb-0 main-title">My Leave Applications</h4>
+            <small class="text-muted">আপনার জমা দেওয়া সব ছুটির দরখাস্ত</small>
         </div>
-        <a href="{{ route('student.create') }}" class="btn btn-primary">
+        <a href="{{ route('leave.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Apply Leave
         </a>
     </div>
- 
+
     {{-- Success Message --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
@@ -39,30 +40,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($leaves as $key => $leave)
+                        @forelse($leaves as $index => $leave)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $index + 1 }}</td>
 
+                                {{-- Leave Date --}}
                                 <td>
                                     <span class="fw-semibold">
-                                        {{ \Carbon\Carbon::parse($leave->from_date)->format('d M Y') }}
+                                        {{ $leave->start_date->format('d M Y') }}
                                     </span>
                                     <br>
                                     <small class="text-muted">
-                                        to {{ \Carbon\Carbon::parse($leave->to_date)->format('d M Y') }}
+                                        to {{ $leave->end_date->format('d M Y') }}
                                     </small>
                                 </td>
 
+                                {{-- Reason --}}
                                 <td style="max-width: 300px;">
-                                    {{ Str::limit($leave->reason, 60) }}
+                                    {{ \Illuminate\Support\Str::limit($leave->reason, 60) }}
                                 </td>
 
+                                {{-- Status --}}
                                 <td>
-                                    @if($leave->status == 'pending')
+                                    @if($leave->status === 'pending')
                                         <span class="badge bg-warning text-dark">
                                             <i class="bi bi-clock"></i> Pending
                                         </span>
-                                    @elseif($leave->status == 'approved')
+                                    @elseif($leave->status === 'approved')
                                         <span class="badge bg-success">
                                             <i class="bi bi-check-circle"></i> Approved
                                         </span>
@@ -73,8 +77,9 @@
                                     @endif
                                 </td>
 
+                                {{-- Applied Date --}}
                                 <td>
-                                    {{ $leave->created_at->format('d M Y') }}
+                                    {{ $leave->applied_at?->format('d M Y') ?? $leave->created_at->format('d M Y') }}
                                 </td>
                             </tr>
                         @empty

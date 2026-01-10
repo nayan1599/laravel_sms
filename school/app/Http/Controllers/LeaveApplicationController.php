@@ -6,43 +6,47 @@ use App\Models\LeaveApplication;
 use App\Models\Teachers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 class LeaveApplicationController extends Controller
 {
 
     public function userlist()
     {
+
         $user = Auth::user();
         $teacher = Teachers::all();
         $leaves = LeaveApplication::where('student_id', $user->student->id)->latest()->get();
-        return view('student.userlist', compact('leaves','teacher'));
+        return view('student.userlist', compact('leaves', 'teacher'));
     }
 
     public function create()
     {
-              $teacher = Teachers::all();
-        return view('student.create',compact('teacher'));
+        $teacher = Teachers::all();
+        return view('student.create', compact('teacher'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'from_date' => 'required|date',
-            'to_date'   => 'required|date|after_or_equal:from_date',
-            'reason'    => 'required',
-            'teacher_id'=> 'required',
+            'leave_type' => 'required|string',
+            'reason'     => 'required|string',
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
+
+        $totalDays = Carbon::parse($request->start_date)
+            ->diffInDays(Carbon::parse($request->end_date)) + 1;
         $user = Auth::user();
-        $class_id = $user->student->class_id;
         LeaveApplication::create([
             'student_id' => $user->student->id,
-            'from_date'  => $request->from_date,
-            'to_date'    => $request->to_date,
+            'leave_type' => $request->leave_type,
             'reason'     => $request->reason,
-            'class_id'   => $class_id,
-            'teacher_id' => $request->teacher_id,
-            'status'     => 'Pending',
+            'start_date' => $request->start_date,
+            'end_date'   => $request->end_date,
+            'total_days' => $totalDays,
+            'status'     => 'pending',
+            'applied_at' => now(),
         ]);
 
         return redirect()->route('student.userlist')->with('success', 'Leave Application Submitted');
@@ -50,7 +54,7 @@ class LeaveApplicationController extends Controller
 
 
 
-     // Admin - All leave list
+    // Admin - All leave list
     public function index()
     {
         $leaves = LeaveApplication::latest()->get();
@@ -75,18 +79,17 @@ class LeaveApplicationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'from_date' => 'required|date',
-            'to_date'   => 'required|date|after_or_equal:from_date',
-            'reason'    => 'required|string',
+            'status' => 'required|in:approved,rejected',
+            'teacher_remark' => 'nullable|string'
         ]);
 
         $leave = LeaveApplication::findOrFail($id);
-
+        $user = Auth::user();
         $leave->update([
-            'from_date' => $request->from_date,
-            'to_date'   => $request->to_date,
-            'reason'    => $request->reason,
-            'status'    => 'approved', // lowercase recommended
+            'teacher_id' => $user->teacher->id,
+            'status' => $request->status,
+            'teacher_remark' => $request->teacher_remark,
+            'approved_at' => now(),
         ]);
 
         return redirect()

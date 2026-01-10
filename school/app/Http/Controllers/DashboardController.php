@@ -29,6 +29,9 @@ class DashboardController extends Controller
             return Student::whereMonth('created_at', Carbon::now()->subMonths($i)->month)
                 ->count();
         });
+        // LeaveApplication
+
+        $pendingLeaves = LeaveApplication::all();
 
         // Attendance summary
         $attendanceData = [
@@ -41,6 +44,7 @@ class DashboardController extends Controller
             'totalTeachers',
             'totalClasses',
             'pendingFees',
+            'pendingLeaves',
             'months',
             'studentCounts',
             'attendanceData'

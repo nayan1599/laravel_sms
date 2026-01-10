@@ -12,15 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leave_applications', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('class_id');
-            $table->unsignedBigInteger('teacher_id');
-            $table->date('from_date');
-            $table->date('to_date');
+             $table->id();
+            $table->foreignId('student_id');
+            $table->foreignId('teacher_id');
+            $table->string('leave_type'); // Sick, Casual, Emergency
             $table->text('reason');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('total_days');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->foreignId('approved_by')->nullable()->references('id')->on('users');
+            $table->text('teacher_remark')->nullable();
+            $table->timestamp('applied_at')->useCurrent();
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });
     }

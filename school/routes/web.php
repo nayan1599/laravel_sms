@@ -73,6 +73,10 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/student/userlist', [LeaveApplicationController::class, 'userlist'])->name('student.userlist');
     Route::get('/student/create', [LeaveApplicationController::class, 'create'])->name('student.create');
     Route::post('/student/store', [LeaveApplicationController::class, 'store'])->name('student.store');
+    Route::get('/student/attendance', [StudentDashboardController::class, 'attendance'])->name('student.attendance');
+    Route::get('/student/attendanceview', [StudentDashboardController::class, 'attendanceview'])->name('student.attendanceview');
+
+
 });
 /*
 ================================================

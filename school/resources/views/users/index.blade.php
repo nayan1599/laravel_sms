@@ -1,6 +1,10 @@
+
+
+
+
 @extends('layouts.layouts')
 @section('title', 'User Management')
-
+@if(auth()->user()->role === 'admin')
 @section('content')
 <div class="container-fluid py-4">
 
@@ -17,10 +21,10 @@
 
     {{-- Success Alert --}}
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show shadow-sm">
-            <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
-            <button class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+    <div class="alert alert-success alert-dismissible fade show shadow-sm">
+        <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
+        <button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
     @endif
 
     {{-- Card --}}
@@ -37,12 +41,12 @@
                 <div class="col-md-6">
                     <form method="GET" class="d-flex justify-content-end">
                         <input type="text"
-                               name="search"
-                               value="{{ request('search') }}"
-                               class="form-control form-control-sm w-50 me-2"
-                               placeholder="Search name or email">
+                            name="search"
+                            value="{{ request('search') }}"
+                            class="form-control form-control-sm w-50 me-2"
+                            placeholder="Search name or email">
                         <button class="btn btn-sm btn-outline-primary">
-                           Search
+                            Search
                         </button>
                     </form>
                 </div>
@@ -70,8 +74,8 @@
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <img src="{{ asset($user->photo) }}"
-                                         class="rounded-circle"
-                                         width="40" height="40">
+                                        class="rounded-circle"
+                                        width="40" height="40">
                                     <div>
                                         <div class="fw-semibold">{{ $user->name }}</div>
                                         <small class="text-muted">{{ $user->email }}</small>
@@ -90,27 +94,27 @@
 
                             {{-- Actions --}}
                             <td class="text-center">
-                                <a href="{{ route('users.show',$user->id) }}"
-                                   class="btn btn-sm btn-outline-info me-1"
-                                   title="View">
+                                <a href="{{ route('users.show', encrypt($user->id)) }}"
+                                    class="btn btn-sm btn-outline-info me-1"
+                                    title="View">
                                     View
                                 </a>
 
-                                <a href="{{ route('users.edit',$user->id) }}"
-                                   class="btn btn-sm btn-outline-warning me-1"
-                                   title="Edit">
-                                     Edit
+                                <a href="{{ route('users.edit', encrypt($user->id)) }}"
+                                    class="btn btn-sm btn-outline-warning me-1"
+                                    title="Edit">
+                                    Edit
                                 </a>
 
-                                <form action="{{ route('users.destroy',$user->id) }}"
-                                      method="POST"
-                                      class="d-inline">
+                                <form action="{{ route('users.destroy', encrypt($user->id)) }}"
+                                    method="POST"
+                                    class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button onclick="return confirm('Are you sure?')"
-                                            class="btn btn-sm btn-outline-danger"
-                                            title="Delete">
-                                       delete
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Delete">
+                                        delete
                                     </button>
                                 </form>
                             </td>
@@ -138,4 +142,20 @@
     </div>
 
 </div>
+
 @endsection
+@endif
+ @section('content')
+<div class="container-fluid py-4">
+
+ <div class="alert alert-danger d-flex align-items-center mb-3">
+    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+    <div>
+        <strong>অনুমতি সীমাবদ্ধ!</strong>
+        এই পেজটি শুধুমাত্র <b>Admin</b> ব্যবহারকারীর জন্য।
+    </div>
+</div>
+
+</div>
+@endsection
+

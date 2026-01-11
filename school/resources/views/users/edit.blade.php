@@ -10,7 +10,7 @@
         
     </div>
 
-    <div class="card shadow-sm border-0">
+    <div class="shadow-sm border-0">
         <div class="card-body">
             <form method="POST"
                   action="{{ route('users.update', $user->id) }}"

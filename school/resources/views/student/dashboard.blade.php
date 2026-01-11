@@ -113,36 +113,7 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @forelse($fees as $fee)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $fee->fee_type }}</td>
-                        <td>
-                            <span class="fw-semibold">
-                                {{ number_format($fee->amount, 2) }} ৳
-                            </span>
-                        </td>
-
-                        <td>{{ \Carbon\Carbon::parse($fee->expiry_date)->format('d M Y') }}</td>
-                        <td>
-                            @if($fee->status === 'paid')
-                            <span class="badge bg-success">Paid</span>
-                            @elseif($fee->status === 'partial')
-                            <span class="badge bg-warning">Partial</span>
-                            @else
-                            <span class="badge bg-danger">Due</span>
-                            @endif
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-4">
-                            No fee records found.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
+             
             </table>
 
     </section>

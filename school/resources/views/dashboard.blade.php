@@ -72,33 +72,33 @@
 
     </div>
 
- 
- {{-- Charts --}}
-<div class="row mb-4">
 
-    <div class="col-lg-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white fw-bold">
-                Student Admission (Last 6 Months)
-            </div>
-            <div class="card-body">
-                <canvas id="studentChart" height="120"></canvas>
+    {{-- Charts --}}
+    <div class="row mb-4">
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white fw-bold">
+                    Student Admission (Last 6 Months)
+                </div>
+                <div class="card-body">
+                    <canvas id="studentChart" height="120"></canvas>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-lg-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-white fw-bold">
-                Attendance Overview
-            </div>
-            <div class="card-body">
-                <canvas id="attendanceChart"></canvas>
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white fw-bold">
+                    Attendance Overview
+                </div>
+                <div class="card-body">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 
 
     {{-- Recent Tables --}}
@@ -120,15 +120,15 @@
                         </thead>
                         <tbody>
                             @forelse($recentStudents ?? [] as $student)
-                                <tr>
-                                    <td>{{ $student->name }}</td>
-                                    <td>{{ $student->class->name ?? '-' }}</td>
-                                    <td>{{ $student->created_at->format('d M Y') }}</td>
-                                </tr>
+                            <tr>
+                                <td>{{ $student->name }}</td>
+                                <td>{{ $student->class->name ?? '-' }}</td>
+                                <td>{{ $student->created_at->format('d M Y') }}</td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="3" class="text-center text-muted">No data found</td>
-                                </tr>
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">No data found</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -153,18 +153,27 @@
                         </thead>
                         <tbody>
                             @forelse($pendingLeaves ?? [] as $leave)
-                                <tr>
-                                    <td>{{ $leave->student->name }}</td>
-                                    <td>{{ ucfirst($leave->leave_type) }}</td>
-                                    <td>
-                                        <span class="badge bg-warning">Pending</span>
-                                    </td>
-                                    <th>{{$leave->total_days}}</th>
-                                </tr>
+                            <tr>
+                                <td>{{ $leave->student->name }}</td>
+                                <td>{{ ucfirst($leave->leave_type) }}</td>
+                                <td>
+                                <td>
+                                    @if($leave->status === 'approved')
+                                    <span class="badge bg-success">Approved</span>
+                                    @elseif($leave->status === 'pending')
+                                    <span class="badge bg-warning">Pending</span>
+                                    @else
+                                    <span class="badge bg-danger">Rejected</span>
+                                    @endif
+                                </td>
+                                <span class="badge bg-warning">Pending</span>
+                                </td>
+                                <th>{{$leave->total_days}}</th>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="3" class="text-center text-muted">No pending leave</td>
-                                </tr>
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">No pending leave</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -180,47 +189,51 @@
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
 
-    // Student Line Chart
-    new Chart(document.getElementById('studentChart'), {
-        type: 'line',
-        data: {
-            labels: @json($months),
-            datasets: [{
-                label: 'Students',
-                data: @json($studentCounts),
-                fill: true,
-                tension: 0.4,
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false }
+        // Student Line Chart
+        new Chart(document.getElementById('studentChart'), {
+            type: 'line',
+            data: {
+                labels: @json($months),
+                datasets: [{
+                    label: 'Students',
+                    data: @json($studentCounts),
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
             }
-        }
-    });
+        });
 
-    // Attendance Doughnut Chart
-    new Chart(document.getElementById('attendanceChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Present', 'Absent'],
-            datasets: [{
-                data: @json($attendanceData),
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '70%',
-            plugins: {
-                legend: { position: 'bottom' }
+        // Attendance Doughnut Chart
+        new Chart(document.getElementById('attendanceChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    data: @json($attendanceData),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
             }
-        }
-    });
+        });
 
-});
+    });
 </script>

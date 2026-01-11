@@ -88,7 +88,7 @@
 
               {{-- Profile --}}
               <li>
-                <a href="{{ route('users.show', $user->id) }}">
+                <a href="{{ route('users.show', encrypt($user->id)) }}">
                   <i data-feather="user"></i>
                   <span>{{ $user->name }}</span>
                 </a>
@@ -108,16 +108,16 @@
               <li>
                 <a href="{{ route('users.index') }}">
                   <i data-feather="user"></i>
-                  <span> settings</span>
+                  <span> Settings</span>
                 </a>
               </li>
               @endif
 
               {{-- Account Settings --}}
               <li>
-                <a href="{{ route('users.edit', $user->id) }}">
-                  <i data-feather="settings"></i>
-                  <span>user settings</span>
+                <a href="{{ route('users.edit',encrypt($user->id)) }}">
+                  <i class="fa-solid fa-pen-to-square"></i>  
+                  <span class="m-2"> User Settings</span>
                 </a>
               </li>
 

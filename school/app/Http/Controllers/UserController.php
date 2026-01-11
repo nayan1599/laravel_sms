@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
- 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,9 +28,10 @@ class UserController extends Controller
 
 
 
-    public function show(User $user)
+    public function show($id)
     {
-        $users = User::all();
+        $userId = decrypt($id); // decode
+        $user = User::findOrFail($userId);
         $student = $user->student;
         return view('users.show', compact('user', 'users', 'student'));
     }
@@ -55,7 +56,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
- 
+
 
 
         if ($request->hasFile('photo')) {
@@ -68,10 +69,22 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
 
-    public function edit(User $user)
+    // public function edit(User $user)
+    // {
+    //     return view('users.edit', compact('user'));
+    // }
+
+
+
+    public function edit($id)
     {
+        $userId = decrypt($id); // decode
+        $user = User::findOrFail($userId);
+
         return view('users.edit', compact('user'));
     }
+
+
 
     public function update(Request $request, User $user)
     {
@@ -106,9 +119,17 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
+
+        $userId = decrypt($id); // decode encrypted id
+
+
+        $user = User::findOrFail($userId);
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+
+        return redirect()
+            ->route('users.index')
+            ->with('success', 'User deleted successfully');
     }
 }

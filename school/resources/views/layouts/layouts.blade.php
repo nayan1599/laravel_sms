@@ -21,7 +21,14 @@
   <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
   <div class="page-flex">
     <!-- ! Sidebar -->
+
+    @if(auth()->user()->role === 'teacher')
+    @include('layouts.menu.teacher_menu')
+    @elseif(auth()->user()->role === 'student')
+    @include('layouts.menu.student_menu')
+    @else
     @include('layouts.menu.sidebar')
+    @endif
     <div class="main-wrapper">
       <!-- ! Main nav -->
       @include('layouts.menu.top')

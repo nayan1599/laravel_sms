@@ -3,11 +3,14 @@
 @section('title','Student Attendance')
 
 @section('content')
-<div class="container py-4">
+<div class="container-fluid py-4">
 
-    <div class="card shadow">
+    {{-- ================= Header ================= --}}
+    <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0"><i class="bi bi-journal-check me-1"></i> Student Attendance</h5>
+            <h5 class="mb-0">
+                <i class="bi bi-journal-check me-1"></i> Student Attendance
+            </h5>
             <a href="{{ route('attendance.create') }}" class="btn btn-light btn-sm">
                 <i class="bi bi-plus-circle"></i> Add Attendance
             </a>
@@ -15,27 +18,75 @@
 
         <div class="card-body">
 
-            {{-- Filter by Date --}}
-            <form method="GET" class="row mb-3">
+            {{-- ================= Date Filter ================= --}}
+            <form method="GET" class="row g-2 align-items-end mb-4">
                 <div class="col-md-3">
+                    <label class="form-label fw-semibold">Select Date</label>
                     <input type="date" name="date" class="form-control" value="{{ $date }}">
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-primary">Filter</button>
+                    <button class="btn btn-primary w-100">
+                        <i class="bi bi-funnel"></i> Filter
+                    </button>
                 </div>
             </form>
 
-            {{-- Success Message --}}
+            {{-- ================= Success Message ================= --}}
             @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle me-1"></i>
+                    {{ session('success') }}
+                </div>
             @endif
 
+            {{-- ================= Class Wise Attendance Cards ================= --}}
+            @if(!empty($classAttendance) && count($classAttendance))
+            <div class="row g-4 mb-4">
+
+                @foreach($classAttendance as $row)
+                    <div class="col-xl-3 col-md-4 col-sm-6">
+                        <div class="card attendance-card shadow-sm border-0 h-100">
+                            <div class="card-body">
+
+                                <h6 class="fw-bold text-primary mb-3">
+                                    <i class="bi bi-book"></i>
+                                    Class {{ $row->class_name }}
+                                </h6>
+
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Total Students</span>
+                                    <span class="fw-bold">{{ $row->total_students }}</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-success">Present</span>
+                                    <span class="fw-bold text-success">
+                                        {{ $row->present_students }}
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-danger">Absent</span>
+                                    <span class="fw-bold text-danger">
+                                        {{ $row->absent_students }}
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
+            @endif
+
+            {{-- ================= Attendance Table ================= --}}
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center">
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Student</th>
+                            <th class="text-start">Student</th>
                             <th>Class / Section</th>
                             <th>Subject</th>
                             <th>Status</th>
@@ -49,7 +100,9 @@
                         @forelse($attendances as $key => $attendance)
                         <tr>
                             <td>{{ $attendances->firstItem() + $key }}</td>
-                            <td class="text-start">{{ $attendance->student->name }}</td>
+                            <td class="text-start">
+                                {{ $attendance->student->name ?? '-' }}
+                            </td>
                             <td>
                                 {{ $attendance->class->class_name ?? '-' }}
                                 /
@@ -64,7 +117,7 @@
                                         'absent' => 'danger',
                                         'late'   => 'warning',
                                         'leave'  => 'info',
-                                        default => 'secondary'
+                                        default  => 'secondary'
                                     };
                                 @endphp
                                 <span class="badge bg-{{ $color }}">
@@ -95,9 +148,11 @@
                         @empty
                         <tr>
                             <td colspan="9">
-                                <div class="py-4 text-muted">
+                                <div class="py-4 text-muted text-center">
                                     <i class="bi bi-clipboard-x fs-1"></i>
-                                    <p class="mt-2 mb-0">No attendance records found for this date.</p>
+                                    <p class="mt-2 mb-0">
+                                        No attendance records found for this date.
+                                    </p>
                                 </div>
                             </td>
                         </tr>
@@ -106,10 +161,11 @@
                 </table>
             </div>
 
-            {{-- Pagination --}}
+            {{-- ================= Pagination ================= --}}
             <div class="d-flex justify-content-end mt-3">
-                {{ $attendances->links() }}
+                {{ $attendances->withQueryString()->links() }}
             </div>
+
         </div>
     </div>
 

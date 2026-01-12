@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -14,11 +15,16 @@ class StudentController extends Controller
     public function index()
     {
 
-$totalStudents = Student::count();
-$studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.id')
-    ->select('classes.class_name as class_names', DB::raw('COUNT(students.id) as total'))
-    ->groupBy('classes.class_name')
-    ->get();
+        $totalStudents = Student::count();
+        $studentsByClass =
+        $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.id')
+            ->select(
+                'classes.id as class_id',
+                'classes.class_name as class_names',
+                DB::raw('COUNT(students.id) as total')
+            )
+            ->groupBy('classes.id', 'classes.class_name')
+            ->get();
 
         $students = Student::latest()->paginate(10);
         return view('students.index', compact('students', 'totalStudents', 'studentsByClass'));
@@ -74,10 +80,32 @@ $studentsByClass = Student::join('classes', 'students.class_id', '=', 'classes.i
         return redirect()->route('students.index')->with('success', 'Student Added Successfully!');
     }
 
+    public function studentsByClass(Request $request, $class_id)
+    {
+        $class = ClassModel::findOrFail($class_id);
+        $query = Student::where('class_id', $class_id);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('roll', 'like', "%{$search}%");
+                  
+            });
+        }
+
+        $students = $query->orderBy('roll')->paginate(10); // pagination professional
+
+        return view('students.byclass', compact('students', 'class'));
+    }
+
+
+
+
+
     public function show($id)
     {
         $org_settings = OrganizationSetting::first();
- 
+
         $student = Student::findOrFail($id);
         return view('students.show', compact('student', 'org_settings'));
     }

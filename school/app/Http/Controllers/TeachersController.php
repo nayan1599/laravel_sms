@@ -13,11 +13,33 @@ class TeachersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $teachers = Teachers::latest()->paginate(10);
-        return view('teachers.index', compact('teachers'));
+public function index(Request $request)
+{
+    // Active / Inactive Teacher Count
+    $activeTeachers = Teachers::where('status', 'active')->count();
+    $inactiveTeachers = Teachers::where('status', 'inactive')->count();
+
+    // Paginated Teacher List (searchable)
+    $query = Teachers::latest();
+
+    // Optional: Search filter
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search){
+            $q->where('name', 'like', "%{$search}%");
+            
+        });
     }
+
+    $teachers = $query->paginate(10);
+
+    return view('teachers.index', compact('teachers','activeTeachers','inactiveTeachers'));
+}
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,25 +75,25 @@ class TeachersController extends Controller
             'emergency_contact_phone' => 'nullable|string|max:20',
             'status' => 'required|in:active,on_leave,resigned,retired',
         ]);
-    DB::transaction(function () use ($validated) {
+        DB::transaction(function () use ($validated) {
 
-        // 1️⃣ Create User
-        $user = User::create([
-            'name'     => $validated['name'],     // ✅ array access
-            'email'    => $validated['email'] ?? null,
-            'phone_number'    => $validated['emergency_contact_phone'],
-            'password' => bcrypt($validated['emergency_contact_phone']),
-            'role'     => 'teacher',
-        ]);
+            // 1️⃣ Create User
+            $user = User::create([
+                'name'     => $validated['name'],     // ✅ array access
+                'email'    => $validated['email'] ?? null,
+                'phone_number'    => $validated['emergency_contact_phone'],
+                'password' => bcrypt($validated['emergency_contact_phone']),
+                'role'     => 'teacher',
+            ]);
 
-        // 2️⃣ Attach user_id with application
-        $validated['user_id'] = $user->id;
-         
- Teachers::create($validated);
-        // 3️⃣ Create Student Application
-    
-    });
-       
+            // 2️⃣ Attach user_id with application
+            $validated['user_id'] = $user->id;
+
+            Teachers::create($validated);
+            // 3️⃣ Create Student Application
+
+        });
+
 
         return redirect()->route('teachers.index')->with('success', 'Teacher added successfully.');
     }

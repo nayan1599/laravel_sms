@@ -1,110 +1,34 @@
-<style>
-    .class-card {
-        border-radius: 14px;
-        position: relative;
-        transition: all 0.3s ease;
-        background: #fff;
-    }
+@extends('layouts.app')
 
-    .class-card::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 5px;
-        background: linear-gradient(180deg, #0d6efd, #6ea8fe);
-        border-radius: 14px 0 0 14px;
-    }
-
-    .class-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .class-icon {
-        width: 55px;
-        height: 55px;
-        background: rgba(13, 110, 253, 0.1);
-        color: #0d6efd;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
-    }
-</style>
-
-
-@extends('layouts.layouts')
 @section('title', 'Students List')
+
 @section('content')
 <div class="container-fluid py-4">
 
-    <!-- dd($studentsByClass); -->
-
-
-
-
-
-    {{-- Page Header --}}
-    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <h2 class="fw-bold mb-1 main-title">Students</h2>
-            <p class="mb-0 ">Manage all registered students</p>
+            <h5 class="fw-bold mb-0 main-title">
+                👥 Students of Class {{ $class->class_name }}
+            </h5>
+            <small class="text-muted">
+                Total: {{ $students->total() }} Students
+            </small>
         </div>
-        <a href="{{ route('students.create') }}" class="btn btn-success">
-            <i class="bi bi-plus-circle me-1"></i> Add New Student
-        </a>
+
+        <form method="GET" class="d-flex" style="max-width: 260px;">
+            <input type="text"
+                name="search"
+                value="{{ request('search') }}"
+                class="form-control form-control-sm me-2"
+                placeholder="Search name / roll ">
+            <button class="btn btn-sm btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+
     </div>
 
 
-    <!-- students / -->
-    <div class="row mb-4 g-4">
-        @foreach($studentsByClass as $row)
-
-        <div class="col-xl-3 col-md-4 col-sm-6">
-            <a href="{{ url('students/class/'.$row->class_id.'/'.$row->class_names) }}" class="text-decoration-none text-dark">
-
-
-                <div class="card class-card h-100 border-0 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-
-                        <div class="class-icon me-3">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-
-                        <div>
-                            <small class="text-muted">Class</small>
-                            <h6 class="fw-semibold mb-1">
-                                {{ $row->class_names }}
-                            </h6>
-                            <h3 class="fw-bold text-primary mb-0">
-                                {{ $row->total }}
-                            </h3>
-                            <small class="text-muted">Students</small>
-                        </div>
-
-                    </div>
-                </div>
-
-            </a>
-        </div>
-        @endforeach
-    </div>
-
-
-
-
-    {{-- Flash Message --}}
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    @endif
-
-    {{-- Card --}}
     <div class="card shadow-sm border-0">
         <div class="card-body">
             {{-- Table --}}
@@ -208,11 +132,9 @@
                 </table>
             </div>
 
-            {{-- Pagination --}}
-            <div class="d-flex justify-content-end mt-3">
-                {{ $students->links() }}
-            </div>
+
         </div>
     </div>
+
 </div>
 @endsection

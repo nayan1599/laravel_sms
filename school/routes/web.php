@@ -197,6 +197,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |------------------------------------------------------------------
     */
 
+// Other 
+
+
+Route::get('/students/class/{id}/{name}',[StudentController::class, 'studentsByClass']);
+ 
+
+
+
+// other end 
+
+
+
 
     // Leave Application Routes
     Route::prefix('leave')->name('leave.')->group(function () {

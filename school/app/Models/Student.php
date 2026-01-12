@@ -44,6 +44,10 @@ class Student extends Model
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
+     public function class()
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id');
+    }
 
     public function section()
     {

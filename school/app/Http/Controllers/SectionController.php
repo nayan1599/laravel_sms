@@ -1,19 +1,38 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Section;
 use App\Models\ClassModel;
 use App\Models\Teachers;
 use Illuminate\Http\Request;
- 
+use Illuminate\Support\Facades\DB;
+
 class SectionController extends Controller
 {
 
-    public function index()
-    {
-        $sections = Section::with(['class', 'teacher'])->paginate(10);
-        return view('sections.index', compact('sections'));
-    }
+
+
+public function index()
+{
+    // 🔹 Section wise total students
+    $sectioncount = DB::table('sections')
+        ->leftJoin('students', 'students.section_id', '=', 'sections.id')
+        ->select(
+            'sections.id',
+            'sections.section_name',
+            DB::raw('COUNT(students.id) as total_students')
+        )
+        ->groupBy('sections.id', 'sections.section_name')
+        ->get();
+
+    // 🔹 Section list with class & teacher
+    $sections = Section::with(['class', 'teacher'])
+        ->latest()
+        ->paginate(10);
+
+    return view('sections.index', compact('sections', 'sectioncount'));
+}
 
     public function create()
     {

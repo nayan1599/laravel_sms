@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Dashboard')
-
 @section('content')
 <div class="container-fluid">
 
@@ -13,7 +11,6 @@
 
     {{-- Summary Cards --}}
     <div class="row g-3 mb-4">
-
         <div class="col-xl-3 col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
@@ -27,7 +24,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-xl-3 col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
@@ -41,7 +37,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-xl-3 col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
@@ -55,7 +50,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-xl-3 col-md-6">
             <div class="card shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
@@ -69,13 +63,11 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 
     {{-- Charts --}}
     <div class="row mb-4">
-
         <div class="col-lg-8">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white fw-bold">
@@ -86,7 +78,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-4">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white fw-bold">
@@ -97,13 +88,9 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
     {{-- Recent Tables --}}
     <div class="row">
-
         <div class="col-lg-6">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white fw-bold">
@@ -157,7 +144,6 @@
                                 <td>{{ $leave->student->name }}</td>
                                 <td>{{ ucfirst($leave->leave_type) }}</td>
                                 <td>
-                                <td>
                                     @if($leave->status === 'approved')
                                     <span class="badge bg-success">Approved</span>
                                     @elseif($leave->status === 'pending')
@@ -165,9 +151,7 @@
                                     @else
                                     <span class="badge bg-danger">Rejected</span>
                                     @endif
-                                </td>
-                                <span class="badge bg-warning">Pending</span>
-                                </td>
+                                </td>                                
                                 <th>{{$leave->total_days}}</th>
                             </tr>
                             @empty

@@ -11,6 +11,8 @@
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- icon  -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ asset('css/style.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/custom.css') }}">

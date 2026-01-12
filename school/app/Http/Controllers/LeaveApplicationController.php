@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\LeaveApplication;
 use App\Models\Teachers;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 
 class LeaveApplicationController extends Controller
 {
@@ -57,8 +59,14 @@ class LeaveApplicationController extends Controller
     // Admin - All leave list
     public function index()
     {
-        $leaves = LeaveApplication::latest()->get();
-        return view('leave.index', compact('leaves'));
+        $leaves = LeaveApplication::with([
+            'student.class'
+        ])
+            ->latest()
+            ->get();
+        $totalLeaves = $leaves->count(); // ✅ TOTAL
+
+        return view('leave.index', compact('leaves', 'totalLeaves'));
     }
 
     // Admin - View leave

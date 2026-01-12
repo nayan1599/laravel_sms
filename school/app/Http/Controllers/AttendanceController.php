@@ -8,22 +8,41 @@ use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 class AttendanceController extends Controller
 {
     // Index - list with date filter
-    public function index(Request $request)
-    {
-        $date = $request->get('date', date('Y-m-d'));
+public function index(Request $request)
+{
+    $date = $request->get('date', date('Y-m-d'));
 
-        $attendances = Attendance::with(['student', 'class', 'section', 'subject'])
-            ->where('attendance_date', $date)
-            ->orderBy('class_id')
-            ->paginate(10)
-            ->appends(['date' => $date]);
+    // 🔹 Class wise attendance summary
+    $classAttendance = DB::table('attendance')
+        ->join('classes', 'attendance.class_id', '=', 'classes.id')
+        ->where('attendance.attendance_date', $date)
+        ->select(
+            'classes.id as class_id',
+            'classes.class_name',
+            DB::raw('COUNT(attendance.student_id) as total_students'),
+            DB::raw("SUM(CASE WHEN attendance.status = 'present' THEN 1 ELSE 0 END) as present_students"),
+            DB::raw("SUM(CASE WHEN attendance.status = 'absent' THEN 1 ELSE 0 END) as absent_students")
+        )
+        ->groupBy('classes.id', 'classes.class_name')
+        ->get();
 
-        return view('attendance.index', compact('attendances', 'date'));
-    }
+    // 🔹 Attendance list (existing)
+    $attendances = Attendance::with(['student', 'class', 'section', 'subject'])
+        ->where('attendance_date', $date)
+        ->orderBy('class_id')
+        ->paginate(10)
+        ->appends(['date' => $date]);
+
+    return view('attendance.index', compact(
+        'attendances',
+        'date',
+        'classAttendance'
+    ));
+}
 
     // Show form for a whole class
 public function create()

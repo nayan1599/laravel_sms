@@ -10,8 +10,15 @@ class ClassController extends Controller
 {
     public function index()
     {
+        $bangla = ClassModel::where('medium', 'bangla')->count();
+        $english = ClassModel::where('medium', 'english')->count();
+        // shift
+        $morning = ClassModel::where('shift', 'morning')->count();
+        $day = ClassModel::where('shift', 'day')->count();
+        $evening = ClassModel::where('shift', 'evening')->count();
+
         $classes = ClassModel::with('teacher')->paginate(10);
-        return view('classes.index', compact('classes'));
+        return view('classes.index', compact('classes','bangla','english','morning','day','evening'));
     }
 
     public function create()
@@ -31,7 +38,7 @@ class ClassController extends Controller
             'class_teacher_id' => 'nullable|exists:teachers,id',
             'status' => 'required|in:active,inactive',
         ]);
-   
+
         ClassModel::create($request->all());
         return redirect()->route('classes.index')->with('success', 'Class created successfully.');
     }

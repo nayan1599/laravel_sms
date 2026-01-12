@@ -1,11 +1,88 @@
-@extends('layouts.app')
+<style>
+    .teacher-card {
+    border-radius: 14px;
+    transition: all 0.3s ease;
+}
 
+.teacher-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.teacher-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+</style>
+
+
+@extends('layouts.app')
+@section('title','All Teacher')
 @section('content')
 <div class="container">
+
+
+
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="main-title">All Teachers</h2>
-        <a href="{{ route('teachers.create') }}" class="btn btn-primary">+ Add New Teacher</a>
+        <a href="{{ route('teachers.create') }}" class="btn btn-sm btn-success">+ Add New Teacher</a>
     </div>
+ 
+
+    <!-- Teacher Dashboard Cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Active Teachers -->
+        <div class="col-md-6">
+            <a   class="text-decoration-none">
+                <div class="card shadow-sm border-0 teacher-card">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-success fw-semibold">Active Teachers</small>
+                            <h2 class="fw-bold mb-0">{{ $activeTeachers }}</h2>
+                        </div>
+                        <div class="teacher-icon bg-success-subtle text-success">
+                            <i class="bi bi-person-check-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Inactive Teachers -->
+        <div class="col-md-6">
+            <a   class="text-decoration-none">
+                <div class="card shadow-sm border-0 teacher-card">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-danger fw-semibold">Inactive Teachers</small>
+                            <h2 class="fw-bold mb-0">{{ $inactiveTeachers }}</h2>
+                        </div>
+                        <div class="teacher-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-person-x-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+<div class="text-end">   
+      <form method="GET" class="d-flex mb-3" style="max-width: 300px;">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control form-control-sm me-2" placeholder="Search Teacher">
+        <button class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+    <!-- Search Form -->
+
+
+
 
     @if(session('success'))
         <div class="alert alert-success">

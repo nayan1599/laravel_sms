@@ -33,6 +33,9 @@ use App\Http\Controllers\{
     StudentDashboardController,
     LeaveApplicationController,
     TeacherDashboardController,
+    AccountController,
+    AccountCategoryController,
+    SalaryController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -189,6 +192,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'users'          => UserController::class,
         'students'       => StudentController::class,
         'leave'         => LeaveApplicationController::class,
+        'accounts'      => AccountController::class,
+        'salaries'        => SalaryController::class,
+       
     ]);
 
     /*Route::resource('users', UserController::class);
@@ -201,9 +207,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::get('/students/class/{id}/{name}',[StudentController::class, 'studentsByClass']);
- 
-
-
+Route::get('fees/{feeType}/{class}',[FeeController::class, 'details'])->name('fees.details');
+Route::get('account-categories', [AccountCategoryController::class, 'index'])
+    ->name('account-categories.index');
+Route::get('account-categories/create', [AccountCategoryController::class,'create'])->name('account-categories.create');
+Route::post('account-categories', [AccountCategoryController::class,'store'])->name('account-categories.store');
+Route::get('account-categories/{id}/edit', [AccountCategoryController::class,'edit'])->name('account-categories.edit');
+Route::put('account-categories/{id}', [AccountCategoryController::class,'update'])->name('account-categories.update');
+Route::delete('account-categories/{id}', [AccountCategoryController::class,'destroy'])->name('account-categories.destroy');
 
 // other end 
 

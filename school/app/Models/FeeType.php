@@ -12,4 +12,9 @@ class FeeType extends Model
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
+
+    public function fees()
+{
+    return $this->hasMany(Fee::class);
+}
 }

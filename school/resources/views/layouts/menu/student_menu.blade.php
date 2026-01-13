@@ -41,8 +41,8 @@
             <!-- Profile -->
             <ul class="sidebar-body-menu">
                 <li>
-                    <a class="{{ request()->routeIs('users.edit', $user->id) ? 'active' : '' }}"
-                       href="{{ route('users.edit', $user->id) }}">
+                    <a class="{{ request()->routeIs('users.edit',  encrypt($user->id)) ? 'active' : '' }}"
+                       href="{{ route('users.edit',  encrypt($user->id)) }}">
                         <i class="fa-solid fa-user"></i> My Profile
                     </a>
                 </li>

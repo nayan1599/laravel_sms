@@ -229,7 +229,45 @@
                   </li>
               </ul>
 
+<!-- accounting  -->
+<ul class="sidebar-body-menu">
 
+    {{-- Accounting --}}
+    <li>
+        <a class="show-cat-btn" href="##">
+            <i class="fa-solid fa-calculator"></i>
+            Accounting
+            <span class="category__btn transparent-btn" title="Open list">
+                <span class="sr-only">Open list</span>
+                <span class="icon arrow-down" aria-hidden="true"></span>
+            </span>
+        </a>
+
+        <ul class="cat-sub-menu">
+            <li>
+                <a href="{{ route('accounts.index') }}">
+                    All Transactions
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('accounts.create') }}">
+                    Add Transaction
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('account-categories.index') }}">
+                    Categories
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    {{-- Reports --}}
+ 
+
+</ul>
 
 
 

@@ -174,11 +174,7 @@ public function store(Request $request)
     public function destroy($id)
     {
         $application = StudentApplication::findOrFail($id);
-
-        if ($application->status === 'approved') {
-            return back()->with('error', 'Approved application cannot be deleted.');
-        }
-
+       
         $application->delete();
 
         return back()->with('success', 'Application deleted successfully');

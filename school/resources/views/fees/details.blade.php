@@ -1,81 +1,39 @@
-
-<style>
-    .icon-shape{
-    width:55px;
-    height:55px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-</style>
-
-@extends('layouts.layouts')
-@section('title','Fees List')
+@extends('layouts.app')
+@section('title', 'Fee Details')
 @section('content')
-<div class="container-fluid">
-    <h2 class="mb-4 main-title">Fees List</h2>
+<div class="container-fluid py-4">
+    <div class="mb-4">
+        <h4 class="fw-bold">
 
-    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-
-
-    <!-- Action Buttons -->
-    <div class="mb-3 text-end">
-        <a href="{{ route('fees.create') }}" class="btn btn-success">+ Add Fee</a>
-
+            — Class {{ $fees->first()->class->name ?? '' }}
+        </h4>
+        <small class="text-muted">All fee records</small>
     </div>
 
+    <!-- Filter Form -->
+    <form method="GET"
+        action="{{ route('fees.details', [
+            'feeType' => request()->route('feeType'),
+            'class'   => request()->route('class')
+      ]) }}"
+        class="row g-3 mb-4">
 
-
-<!-- totalamount  -->
-<div class="row">
-@foreach($totalamount as $item)
-
- 
-
-   <div class="col-xl-4 col-md-6 mb-4">
-    <a href="{{ route('fees.details', [$item->fee_type, $item->class_id]) }}"
-       class="text-decoration-none text-dark">
-
-        <div class="card border-0 shadow-sm h-100 card-hover">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <h6 class="fw-semibold mb-1">
-                        {{ $item->fee_type }}
-                    </h6>
-
-                    <small class="text-muted">
-                        Class: {{ $item->class->class_name }}
-                    </small>
-
-                    <h4 class="fw-bold text-primary mt-2 mb-0">
-                        ৳ {{ number_format($item->total_amount, 2) }}
-                    </h4>
-                </div>
-
-                <div class="icon-shape bg-primary text-white rounded-circle">
-                    <i class="fas fa-eye"></i>
-                </div>
-
-            </div>
+        <div class="col-md-4">
+            <input type="text"
+                name="search"
+                value="{{ request('search') }}"
+                class="form-control"
+                placeholder="Student name search করুন">
         </div>
-    </a>
-</div>
 
-@endforeach
-</div>
-
-
-
-
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">
+                🔍 Search
+            </button>
+        </div>
+    </form>
 
 
-
-    <!-- Fee Table -->
     <div class="shadow">
         <div class="card-body">
             <table class="table table-bordered table-hover table-striped">
@@ -145,20 +103,14 @@
 
             </table>
 
-            <!-- Pagination -->
-            <div class="mt-3">
-                {{ $fees->links() }}
-            </div>
+
 
 
         </div>
     </div>
+
+    <div class="py-3 text-end">
+        <a href="{{ route('fees.index') }}" class="btn btn-secondary">Back to Fees List</a>
+    </div>
 </div>
-
-
-
-
-
-
-
 @endsection

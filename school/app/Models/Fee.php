@@ -31,4 +31,10 @@ class Fee extends Model
     {
         return $this->belongsTo(ClassModel::class);  // Assuming your class model name is ClassModel
     }
+    public function feeType()
+{
+    return $this->belongsTo(FeeType::class);
+}
+
+ 
 }

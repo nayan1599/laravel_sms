@@ -23,8 +23,6 @@ class FeeController extends Controller
             });
         }
 
- 
-
         if ($request->class_id) {
             $query->where('class_id', $request->class_id);
         }
@@ -39,17 +37,39 @@ class FeeController extends Controller
                 ->whereYear('due_date', $month->year);
         }
 
+        $totalamount = Fee::selectRaw('fee_type, class_id, SUM(amount) as total_amount')
+            ->groupBy('fee_type', 'class_id')
+            ->with(['feeType', 'class'])
+            ->get();
+
+
+
         $fees = $query->latest()->paginate(10);
         $classes = ClassModel::all();
 
-        return view('fees.index', compact('fees', 'classes'));
+        return view('fees.index', compact('fees', 'classes', 'totalamount'));
     }
+    public function details(Request $request, $feeType, $class)
+    {
 
+    $fees = Fee::with(['student','feeType','class'])
+        ->where('fee_type', $feeType)
+        ->where('class_id', $class)
+        ->when(request('search'), function ($q) {
+            $q->whereHas('student', function ($s) {
+                $s->where('name', 'like', '%' . request('search') . '%');
+            });
+        })
+        ->latest()
+        ->get();
+
+        return view('fees.details', compact('fees'));
+    }
     // ===================== [ Create Form ] =====================
     public function create()
     {
         $feetypes = FeeType::whereNull('expiry_date')->orWhere('expiry_date', '>=', \Carbon\Carbon::today())
-    ->get();
+            ->get();
         $students = Student::all();
         $classes = ClassModel::all();
         return view('fees.create', compact('students', 'classes', 'feetypes'));

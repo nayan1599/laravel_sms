@@ -1,164 +1,134 @@
-
 <style>
-    .icon-shape{
+.icon-shape{
     width:55px;
     height:55px;
     display:flex;
     align-items:center;
     justify-content:center;
 }
-
 </style>
 
 @extends('layouts.layouts')
 @section('title','Fees List')
+
 @section('content')
 <div class="container-fluid">
-    <h2 class="mb-4 main-title">Fees List</h2>
 
-    @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-
-
-    <!-- Action Buttons -->
-    <div class="mb-3 text-end">
-        <a href="{{ route('fees.create') }}" class="btn btn-success">+ Add Fee</a>
-
+    {{-- Header --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="main-title mb-0">Fees List</h3>
+        <a href="{{ route('fees.create') }}" class="btn btn-success">
+            + Add Fee
+        </a>
     </div>
 
+    {{-- Success --}}
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-
-<!-- totalamount  -->
-<div class="row">
-@foreach($totalamount as $item)
-
- 
-
-   <div class="col-xl-4 col-md-6 mb-4">
-    <a href="{{ route('fees.details', [$item->fee_type, $item->class_id]) }}"
-       class="text-decoration-none text-dark">
-
-        <div class="card border-0 shadow-sm h-100 card-hover">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <h6 class="fw-semibold mb-1">
-                        {{ $item->fee_type }}
-                    </h6>
-
-                    <small class="text-muted">
-                        Class: {{ $item->class->class_name }}
-                    </small>
-
-                    <h4 class="fw-bold text-primary mt-2 mb-0">
-                        ৳ {{ number_format($item->total_amount, 2) }}
-                    </h4>
-                </div>
-
-                <div class="icon-shape bg-primary text-white rounded-circle">
-                    <i class="fas fa-eye"></i>
-                </div>
-
-            </div>
-        </div>
-    </a>
-</div>
-
-@endforeach
-</div>
-
-
-
-
-
-
-
-    <!-- Fee Table -->
-    <div class="shadow">
-        <div class="card-body">
-            <table class="table table-bordered table-hover table-striped">
+    {{-- Fee Table --}}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-hover table-striped mb-0 align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
                         <th>Student</th>
-                        <th>Class</th>
                         <th>Fee Type</th>
-                        <th>Payment Date</th>
+                        <th>Month</th>
+                        <th>Due Date</th>
                         <th>Status</th>
+                        <th>Due Amount</th>
                         <th>Paid Amount</th>
-                        <th>Receipt No.</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse($fees as $index => $fee)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $fee->student->name ?? 'N/A' }}</td>
-                        <td>{{ $fee->class->class_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->fee_type }}</td>
-                        <td>{{ $fee->payment_date ? \Carbon\Carbon::parse($fee->payment_date)->format('d M Y') : '-' }}</td>
-                        <td>
-                            @php
-                            $statusClass = [
-                            'pending' => 'badge bg-warning text-dark',
-                            'paid' => 'badge bg-success',
-                            'partial' => 'badge bg-info text-dark',
-                            'overdue' => 'badge bg-danger',
-                            ];
-                            @endphp
-                            <span class="{{ $statusClass[$fee->payment_status] ?? 'badge bg-secondary' }}">
-                                {{ ucfirst($fee->payment_status) }}
-                            </span>
-                        </td>
-                        <td>{{ number_format($fee->paid_amount, 2) }}</td>
-                        <td>{{ $fee->receipt_number ?? '-' }}</td>
-                        <td>
-                            @php if(($fee->payment_status == 'paid')){
-                            $disabled = 'disabled';
-                            } else {
-                            $disabled = '';
-                            } @endphp
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
 
+                            <td>
+                                {{ $fee->student->name ?? 'N/A' }}
+                            </td>
 
-                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-sm btn-warning {{ $disabled }}">Edit</a>
+                            <td>
+                                {{ $fee->feeType->name ?? 'N/A' }}
+                            </td>
 
-                            <a href="{{ route('fees.invoice',$fee->id) }}" class="btn btn-sm btn-info"> Invoice</a>
+                            <td>
+                                {{ $fee->month_year }}
+                            </td>
 
-                            <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" class="d-inline-block"
-                                onsubmit="return confirm('Are you sure you want to delete this fee record?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                            <td>
+                                {{ \Carbon\Carbon::parse($fee->due_date)->format('d M Y') }}
+                            </td>
+
+                            <td>
+                                @php
+                                    $statusClass = [
+                                        'PENDING' => 'badge bg-warning text-dark',
+                                        'PARTIAL' => 'badge bg-info text-dark',
+                                        'PAID'    => 'badge bg-success',
+                                        'OVERDUE' => 'badge bg-danger',
+                                    ];
+                                @endphp
+
+                                <span class="{{ $statusClass[$fee->status] ?? 'badge bg-secondary' }}">
+                                    {{ ucfirst(strtolower($fee->status)) }}
+                                </span>
+                            </td>
+
+                            <td>
+                                ৳ {{ number_format($fee->amount_due, 2) }}
+                            </td>
+
+                            <td>
+                                ৳ {{ number_format($fee->amount_paid, 2) }}
+                            </td>
+
+                            <td>
+                                <a href="{{ route('fees.edit', $fee->id) }}"
+                                   class="btn btn-sm btn-warning
+                                   {{ $fee->status === 'PAID' ? 'disabled' : '' }}">
+                                    Edit
+                                </a>
+
+                                <a href="{{ route('fees.invoice', $fee->id) }}"
+                                   class="btn btn-sm btn-info">
+                                    Invoice
+                                </a>
+
+                                <form action="{{ route('fees.destroy', $fee->id) }}"
+                                      method="POST"
+                                      class="d-inline-block"
+                                      onsubmit="return confirm('Are you sure?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
                     @empty
-                    <tr>
-                        <td colspan="12" class="text-center">No fee records found.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="9" class="text-center py-4">
+                                No fee records found.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
-
-
             </table>
-
-            <!-- Pagination -->
-            <div class="mt-3">
-                {{ $fees->links() }}
-            </div>
-
-
         </div>
     </div>
+
+    {{-- Pagination --}}
+    <div class="mt-3">
+        {{ $fees->links() }}
+    </div>
+
 </div>
-
-
-
-
-
-
-
 @endsection

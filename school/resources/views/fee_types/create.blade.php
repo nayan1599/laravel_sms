@@ -1,53 +1,113 @@
 @extends('layouts.layouts')
 
 @section('content')
-<div class="container">
-    <h2 class="main-title mb-4">Add Fee Type</h2>
+<div class="container-fluid py-4">
 
-    <form action="{{ route('fee-types.store') }}" method="POST">
-        @csrf
-        <div class="row g-3">
-            <div class="col-md-6 col-sm-12">
-                <label for="name" class="form-label">Fee Type Name <span class="text-danger">*</span></label>
-                <input type="text" name="name" id="name" class="form-control" required value="{{ old('name') }}">
-            </div>
+    {{-- Page Header --}}
+    <div class="mb-4">
+        <h3 class="fw-bold main-title">Add Fee Type</h3>
+        <small class="text-muted">নতুন ফি টাইপ যোগ করুন</small>
+    </div>
 
-            <!-- class -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('fee-types.store') }}" method="POST">
+                @csrf
 
-            <div class="col-md-6 col-sm-12">
-                <label for="class_id" class="form-label">Class <span class="text-danger">*</span></label>
-                <select name="class_id" id="class_id" class="form-select" required>
-                    <option value="">-- Select Class --</option>
-                    @foreach($classModel as $class)
-                    <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
-                        {{ $class->class_name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
+                <div class="row g-3">
 
-            <!-- expiry_date -->
-            <div class="col-md-6 col-sm-12">
-                <label for="expiry_date" class="form-label">Expiry Date</label>
-                <input type="date" name="expiry_date" id="expiry_date" class="form-control" value="{{ old('expiry_date') }}">
-            </div>
+                    {{-- Fee Name --}}
+                    <div class="col-md-6">
+                        <label class="form-label">Fee Type Name <span class="text-danger">*</span></label>
+                        <input type="text"
+                               name="name"
+                               class="form-control"
+                               value="{{ old('name') }}"
+                               required>
+                    </div>
 
+                    {{-- Fee Name Bangla --}}
+                    <div class="col-md-6">
+                        <label class="form-label">Fee Name (বাংলা)</label>
+                        <input type="text"
+                               name="name_bn"
+                               class="form-control"
+                               value="{{ old('name_bn') }}">
+                    </div>
 
-            <div class="col-md-6 col-sm-12">
-                <label for="default_amount" class="form-label">Default Amount (৳) <span class="text-danger">*</span></label>
-                <input type="number" step="0.01" name="default_amount" id="default_amount" class="form-control" required value="{{ old('default_amount') }}">
-            </div>
+                    {{-- Code --}}
+                    <div class="col-md-4">
+                        <label class="form-label">Code</label>
+                        <input type="text"
+                               name="code"
+                               class="form-control"
+                               placeholder="ADM / TUI"
+                               value="{{ old('code') }}">
+                    </div>
 
-            <div class="col-12">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" rows="4" class="form-control" placeholder="Optional description about this fee type">{{ old('description') }}</textarea>
-            </div>
+                    {{-- Frequency --}}
+                    <div class="col-md-4">
+                        <label class="form-label">Frequency <span class="text-danger">*</span></label>
+                        <select name="frequency" class="form-select" required>
+                            <option value="">-- Select Frequency --</option>
+                            @foreach(['ONE_TIME','MONTHLY','QUARTERLY','ANNUAL','PER_TERM','AS_NEEDED'] as $freq)
+                                <option value="{{ $freq }}"
+                                    {{ old('frequency') == $freq ? 'selected' : '' }}>
+                                    {{ str_replace('_',' ',$freq) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-            <div class="col-12">
-                <button type="submit" class="btn btn-success me-2">Save</button>
-                <a href="{{ route('fee-types.index') }}" class="btn btn-secondary">Back</a>
-            </div>
+                    {{-- Recurring --}}
+                    <div class="col-md-4">
+                        <label class="form-label">Recurring? <span class="text-danger">*</span></label>
+                        <select name="is_recurring" class="form-select" required>
+                            <option value="0" {{ old('is_recurring') == '0' ? 'selected' : '' }}>No</option>
+                            <option value="1" {{ old('is_recurring') == '1' ? 'selected' : '' }}>Yes</option>
+                        </select>
+                    </div>
+
+                    {{-- Refundable --}}
+                    <div class="col-md-4">
+                        <label class="form-label">Refundable? <span class="text-danger">*</span></label>
+                        <select name="is_refundable" class="form-select" required>
+                            <option value="0" {{ old('is_refundable') == '0' ? 'selected' : '' }}>No</option>
+                            <option value="1" {{ old('is_refundable') == '1' ? 'selected' : '' }}>Yes</option>
+                        </select>
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="col-md-4">
+                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                        <select name="is_active" class="form-select" required>
+                            <option value="1" selected>Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    {{-- Description --}}
+                    <div class="col-12">
+                        <label class="form-label">Description</label>
+                        <textarea name="description"
+                                  rows="3"
+                                  class="form-control">{{ old('description') }}</textarea>
+                    </div>
+
+                    {{-- Buttons --}}
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">
+                            Save Fee Type
+                        </button>
+                        <a href="{{ route('fee-types.index') }}"
+                           class="btn btn-secondary ms-2">
+                            Back
+                        </a>
+                    </div>
+
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 @endsection

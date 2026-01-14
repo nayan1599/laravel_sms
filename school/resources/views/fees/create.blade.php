@@ -4,6 +4,7 @@
 <div class="container">
     <h2 class="main-title">➕ Add New Fee</h2>
 
+    {{-- Validation Errors --}}
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul class="mb-0">
@@ -17,140 +18,111 @@
     <form action="{{ route('fees.store') }}" method="POST" class="row g-3">
         @csrf
 
-        <!-- Student & Class -->
+        {{-- Student --}}
         <div class="col-md-6">
             <label class="form-label">👨‍🎓 Student</label>
             <select name="student_id" class="form-select" required>
                 <option value="">-- Select Student --</option>
                 @foreach($students as $student)
-                <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                <option value="{{ $student->id }}" {{ old('student_id')==$student->id?'selected':'' }}>
                     {{ $student->name }}
                 </option>
                 @endforeach
             </select>
         </div>
 
-        <div class="col-md-6">
-            <label class="form-label">🏫 Class</label>
-            <select name="class_id" class="form-select" required>
-                <option value="">-- Select Class --</option>
-                @foreach($classes as $class)
-                <option value="{{ $class->id }}" {{ old('class_id') == $class->id ? 'selected' : '' }}>
-                    {{ $class->class_name }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Fee Type & Amount -->
+        {{-- Fee Type --}}
         <div class="col-md-6">
             <label class="form-label">💳 Fee Type</label>
-            <select name="fee_type" class="form-select" id="fee_type_select" required>
-                <option value="">-- Select Type --</option>
-                @foreach($feetypes as $feetype)
-                <option
-                    value="{{ $feetype->name }}"
-                    data-amount="{{ $feetype->default_amount }}"
-                    {{ old('fee_type') == $feetype->name ? 'selected' : '' }}>
-                    {{ $feetype->name }}
+            <select name="fee_type_id" id="fee_type_select" class="form-select" required>
+                <option value="">-- Select Fee Type --</option>
+                @foreach($feeTypes as $type)
+                <option value="{{ $type->id }}"
+                    data-amount="{{ $type->default_amount ?? 0 }}"
+                    {{ old('fee_type_id')==$type->id?'selected':'' }}>
+                    {{ $type->name }}
                 </option>
                 @endforeach
             </select>
         </div>
 
+        {{-- Month-Year --}}
         <div class="col-md-6">
-            <label class="form-label">💰 Amount (৳)</label>
-            <input type="number" name="amount" step="0.01" id="amount_field" class="form-control" value="{{ old('amount') }}" placeholder="e.g. 1500" required>
+            <label class="form-label">📅 Month-Year</label>
+            <input type="month" name="month_year" class="form-control"
+                value="{{ old('month_year', now()->format('Y-m')) }}" required>
+        </div>
+        {{-- Amount Due ফিল্ডটা required করলাম --}}
+        <div class="col-md-6">
+            <label class="form-label">💰 Amount Due (৳) <span class="text-danger">*</span></label>
+            <input type="number" name="amount_due" id="amount_due" class="form-control"
+                step="0.01" value="{{ old('amount_due', 0) }}" placeholder="e.g. 1500" required>
         </div>
 
-        <!-- Due Date & Payment Date -->
+        {{-- Discount ফিল্ডের পাশে হিন্ট যোগ করলাম (ইউজার বুঝতে সুবিধা হবে) --}}
+        <div class="col-md-6">
+            <label class="form-label"> Discount <small class="text-muted">(৳)</small></label>
+            <input type="number" name="discount" id="discount" class="form-control"
+                step="0.01" value="{{ old('discount', 0) }}" placeholder="e.g. 50 or">
+        </div>
+
+        {{-- Fine --}}
+        <div class="col-md-6">
+            <label class="form-label">⚠ Fine (৳)</label>
+            <input type="number" name="fine" id="fine" class="form-control"
+                step="0.01" value="{{ old('fine', 0) }}" placeholder="0">
+        </div>
+
+
+
+        {{-- Due Date --}}
         <div class="col-md-6">
             <label class="form-label">📅 Due Date</label>
-            <input type="date" name="due_date" class="form-control" value="{{ old('due_date') }}" required>
+            <input type="date" name="due_date" class="form-control"
+                value="{{ old('due_date', now()->toDateString()) }}" required>
         </div>
 
+        {{-- Payment Date --}}
         <div class="col-md-6">
-            <label class="form-label">💳 Payment Date (optional)</label>
-            <input type="date" name="payment_date" class="form-control" value="{{ old('payment_date') }}">
+            <label class="form-label">💳 Payment Date</label>
+            <input type="date" name="payment_date" class="form-control"
+                value="{{ old('payment_date',now()->toDateString()) }}">
         </div>
 
-        <!-- Payment Status & Paid Amount -->
+        {{-- Payment Method --}}
         <div class="col-md-6">
-            <label class="form-label">📌 Payment Status</label>
-            <select name="payment_status" class="form-select" required>
-                <option value="pending" {{ old('payment_status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                <option value="paid" {{ old('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
-                <option value="partial" {{ old('payment_status') == 'partial' ? 'selected' : '' }}>Partial</option>
-                <option value="overdue" {{ old('payment_status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
+            <label class="form-label">💰 Payment Method</label>
+            <select name="payment_method" class="form-select">
+                @foreach(['CASH','BKASH','NAGAD','BANK','CARD','OTHER'] as $method)
+                <option value="{{ $method }}" {{ old('payment_method')==$method?'selected':'' }}>
+                    {{ $method }}
+                </option>
+                @endforeach
             </select>
         </div>
 
+        {{-- Transaction ID --}}
         <div class="col-md-6">
-            <label class="form-label">💵 Paid Amount (৳)</label>
-            <input type="number" name="paid_amount" step="0.01" class="form-control" value="{{ old('paid_amount', 0) }}">
+            <label class="form-label">🆔 Transaction ID</label>
+            <input type="text" name="transaction_id" class="form-control"
+                value="{{ old('transaction_id') }}" placeholder="Optional">
         </div>
 
-        <!-- Receipt & Remarks -->
-        <!-- <div class="col-md-6">
-            <label class="form-label">🧾 Receipt Number</label>
-            <input type="text" name="receipt_number" class="form-control" value="{{ old('receipt_number') }}" placeholder="e.g. RCV-2025001">
-        </div> -->
-
-        <div class="col-md-6">
-            <label class="form-label">📝 Remarks (optional)</label>
-            <textarea name="remarks" class="form-control" rows="2" placeholder="Any notes...">{{ old('remarks') }}</textarea>
+        {{-- Remarks --}}
+        <div class="col-md-12">
+            <label class="form-label">📝 Remarks</label>
+            <textarea name="remarks" class="form-control" rows="2" placeholder="Optional">{{ old('remarks') }}</textarea>
         </div>
 
-        <!-- Buttons -->
+        {{-- Submit Buttons --}}
         <div class="col-12 d-flex justify-content-between mt-4">
-            <a href="{{ route('fees.index') }}" class="btn btn-secondary"><i class="bi bi-arrow-left-circle"></i> Back</a>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i> Save Fee</button>
+            <a href="{{ route('fees.index') }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Back
+            </a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save2"></i> Save Fee
+            </button>
         </div>
     </form>
 </div>
 @endsection
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const feeTypeSelect = document.getElementById('fee_type_select');
-        const amountField = document.getElementById('amount_field');
-        const paymentDateInput = document.querySelector('input[name="payment_date"]');
-        const dueDateInput = document.querySelector('input[name="due_date"]');
-
-        // Fee type change → auto fill amount
-        if (feeTypeSelect && amountField) {
-            feeTypeSelect.addEventListener('change', function() {
-                const selectedOption = feeTypeSelect.options[feeTypeSelect.selectedIndex];
-                const defaultAmount = selectedOption.getAttribute('data-amount');
-                amountField.value = defaultAmount || '';
-            });
-        }
-
-        // Payment Date → Auto-fill Due Date (add 30 days)
-        if (paymentDateInput && dueDateInput) {
-            paymentDateInput.addEventListener('change', function() {
-                const paymentDate = new Date(paymentDateInput.value);
-                if (!isNaN(paymentDate.getTime())) {
-                    const dueDate = new Date(paymentDate);
-                    dueDate.setDate(dueDate.getDate() + 30); // Add 30 days
-
-                    // Format YYYY-MM-DD
-                    const yyyy = dueDate.getFullYear();
-                    const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
-                    const dd = String(dueDate.getDate()).padStart(2, '0');
-                    dueDateInput.value = `${yyyy}-${mm}-${dd}`;
-                }
-            });
-        }
-        // Set Payment Date to today if empty on load
-        const dates = document.querySelectorAll(
-            'input[name="payment_date"], input[name="due_date"]'
-        );
-
-        dates.forEach(input => {
-            if (!input.value) {
-                input.value = new Date().toISOString().split('T')[0];
-            }
-        });
-    });
-</script>

@@ -18,4 +18,5 @@ class AccountCategory extends Model
     {
         return $this->hasMany(Account::class, 'category_id');
     }
+    
 }

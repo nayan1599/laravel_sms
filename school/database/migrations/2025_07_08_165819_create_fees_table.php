@@ -11,23 +11,59 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fees', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('class_id');
-            $table->string('fee_type', 50);
-            $table->decimal('amount', 10, 2);
-            $table->date('due_date');
-            $table->date('payment_date')->nullable();
-            $table->enum('payment_status', ['pending', 'paid', 'partial', 'overdue'])->default('pending');
-            $table->decimal('paid_amount', 10, 2)->default(0.00);
-            $table->string('receipt_number', 50)->unique()->nullable();
-            $table->string('remarks', 255)->nullable();
-            $table->timestamps();
+      Schema::create('fees', function (Blueprint $table) {
+    $table->id();
 
-          
-       
-        });
+    // Relations
+    $table->unsignedBigInteger('student_id');   // students.id
+    $table->unsignedBigInteger('fee_type_id');  // fee_types.id
+
+    // Fee period
+    $table->string('month_year', 7); // 2025-01, 2025-02
+
+    // Amounts
+    $table->decimal('amount_due', 10, 2);
+    $table->decimal('amount_paid', 10, 2)->default(0.00);
+    $table->decimal('discount', 10, 2)->default(0.00);
+    $table->decimal('fine', 10, 2)->default(0.00);
+
+    // Dates
+    $table->date('due_date');
+    $table->date('payment_date')->nullable();
+
+    // Payment info
+    $table->enum('payment_method', [
+        'CASH',
+        'BKASH',
+        'NAGAD',
+        'BANK',
+        'CARD',
+        'OTHER'
+    ])->nullable();
+
+    $table->string('transaction_id', 50)->nullable();
+
+    // Status
+    $table->enum('status', [
+        'PENDING',
+        'PARTIAL',
+        'PAID',
+        'OVERDUE'
+    ])->default('PENDING');
+
+    $table->string('remarks', 255)->nullable();
+
+    $table->timestamps();
+
+    // Index & Foreign keys
+    $table->foreign('fee_type_id')
+          ->references('id')
+          ->on('fee_types')
+          ->onDelete('cascade');
+
+    $table->index(['student_id', 'month_year'], 'idx_student_month');
+});
+
     }
 
     /**

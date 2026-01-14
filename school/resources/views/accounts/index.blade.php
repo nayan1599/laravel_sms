@@ -4,6 +4,13 @@
 @section('content')
 <div class="container-fluid py-4">
 
+
+<div class="text-end">
+    <a href="{{ route('accounts.create') }}" class="btn btn-sm btn-success mb-3">
+    + Add Record
+</a>
+</div>
+
 <div class="row mb-3">
     <div class="col-md-3">
         <div class="card bg-success text-white">
@@ -24,9 +31,7 @@
     </div>
 </div>
 
-<a href="{{ route('accounts.create') }}" class="btn btn-primary mb-3">
-    + Add Record
-</a>
+
 
 <table class="table table-bordered">
     <thead>
@@ -44,13 +49,13 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>
-                <span class="badge {{ $item->type=='income'?'bg-success':'bg-danger' }}">
-                    {{ ucfirst($item->type) }}
+                <span class="badge {{ $item->transaction_type=='income'?'bg-success':'bg-danger' }}">
+                    {{ ucfirst($item->transaction_type) }}
                 </span>
             </td>
             <td>{{ $item->title }}</td>
             <td>৳ {{ $item->amount }}</td>
-            <td>{{ $item->date }}</td>
+            <td>{{ $item->transaction_date }}</td>
             <td>
                 <a href="{{ route('accounts.edit',$item->id) }}" class="btn btn-sm btn-warning">Edit</a>
                 <form action="{{ route('accounts.destroy',$item->id) }}"

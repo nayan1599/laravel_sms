@@ -5,150 +5,203 @@ namespace App\Http\Controllers;
 use App\Models\Fee;
 use App\Models\Student;
 use App\Models\FeeType;
+use App\Models\ClassModel;
+use App\Models\Account;
+use App\Models\AccountCategory;
 use App\Models\OrganizationSetting;
-use App\Models\ClassModel; // adjust if your model name is different
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class FeeController extends Controller
 {
-    // ===================== [ Fee List + Filters ] =====================
+    /* =====================================================
+        Fee List + Filters
+    ===================================================== */
     public function index(Request $request)
     {
-        $query = Fee::with(['student', 'class']);
+        $query = Fee::with(['student', 'feeType']);
 
-        // Filtering
         if ($request->student_name) {
             $query->whereHas('student', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->student_name . '%');
             });
         }
 
-        if ($request->class_id) {
-            $query->where('class_id', $request->class_id);
-        }
-
         if ($request->status) {
-            $query->where('payment_status', $request->status);
+            $query->where('status', $request->status);
         }
 
-        if ($request->month) {
-            $month = \Carbon\Carbon::parse($request->month);
-            $query->whereMonth('due_date', $month->month)
-                ->whereYear('due_date', $month->year);
+        if ($request->month_year) {
+            $query->where('month_year', $request->month_year);
         }
 
-        $totalamount = Fee::selectRaw('fee_type, class_id, SUM(amount) as total_amount')
-            ->groupBy('fee_type', 'class_id')
-            ->with(['feeType', 'class'])
-            ->get();
+        $fees = $query->latest()->paginate(15);
 
-
-
-        $fees = $query->latest()->paginate(10);
-        $classes = ClassModel::all();
-
-        return view('fees.index', compact('fees', 'classes', 'totalamount'));
+        return view('fees.index', compact('fees'));
     }
-    public function details(Request $request, $feeType, $class)
-    {
 
-    $fees = Fee::with(['student','feeType','class'])
-        ->where('fee_type', $feeType)
-        ->where('class_id', $class)
-        ->when(request('search'), function ($q) {
-            $q->whereHas('student', function ($s) {
-                $s->where('name', 'like', '%' . request('search') . '%');
-            });
-        })
-        ->latest()
-        ->get();
-
-        return view('fees.details', compact('fees'));
-    }
-    // ===================== [ Create Form ] =====================
+    /* =====================================================
+        Create Form
+    ===================================================== */
     public function create()
     {
-        $feetypes = FeeType::whereNull('expiry_date')->orWhere('expiry_date', '>=', \Carbon\Carbon::today())
-            ->get();
-        $students = Student::all();
-        $classes = ClassModel::all();
-        return view('fees.create', compact('students', 'classes', 'feetypes'));
+        $students  = Student::all();
+        $feeTypes  = FeeType::where('is_active', 1)->get();
+
+        return view('fees.create', compact('students', 'feeTypes'));
     }
 
-    // ===================== [ Store Fee ] =====================
+    /* =====================================================
+        Store Fee + Accounting
+    ===================================================== */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'student_id'     => 'required|exists:students,id',
-            'class_id'       => 'required|exists:classes,id',
-            'fee_type'       => 'required|string|max:50',
-            'amount'         => 'required|numeric|min:0',
+            'fee_type_id'    => 'required|exists:fee_types,id',
+            'month_year'     => 'required|date_format:Y-m',
+            'amount_due'     => 'required|numeric|min:0',
+            'amount_paid'    => 'nullable|numeric|min:0',
+            'discount'       => 'nullable|numeric|min:0',
+            'fine'           => 'nullable|numeric|min:0',
             'due_date'       => 'required|date',
             'payment_date'   => 'nullable|date',
-            'payment_status' => 'required|in:pending,paid,partial,overdue',
-            'paid_amount'    => 'nullable|numeric|min:0',
+            'payment_method' => 'nullable|in:CASH,BKASH,NAGAD,BANK,CARD,OTHER',
             'remarks'        => 'nullable|string|max:255',
         ]);
 
-        // 🔹 Auto Receipt Number Generate
-        $lastFee = Fee::latest('id')->first();
-        $nextNumber = $lastFee ? $lastFee->id + 1 : 1;
+        DB::transaction(function () use ($validated) {
 
-        $validated['receipt_number'] = 'RCPT-' . now()->year . '-' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
-        $validated['payment_date'] = $validated['payment_date'] ?? now()->toDateString();
-        Fee::create($validated);
-        return redirect()->route('fees.index')->with('success', 'Fee record added successfully.');
+            // 🔹 Calculate Paid Amount = Due - Discount
+            $amountDue = $validated['amount_due'] ?? 0;
+            $discount   = $validated['discount'] ?? 0;
+
+            $paid = max($amountDue - $discount, 0);
+
+
+            $update = $paid + $discount;
+
+            // 🔹 Determine status
+            if ($paid <= 0) {
+                $status = 'PENDING';
+            } elseif ($paid < $amountDue) {
+                $status = 'PARTIAL';
+            } elseif ($update <= 0) {
+                $status = 'PAID';
+            } {
+                $status = 'PAID';
+            }
+
+            // 🔹 Auto generate transaction_id (invoice number)
+            $lastFee = Fee::latest('id')->first();
+            $nextId = $lastFee ? $lastFee->id + 1 : 1;
+            $transactionId = 'INV-' . now()->format('Ymd') . '-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+
+            // 🔹 Create Fee
+            $fee = Fee::create(array_merge($validated, [
+                'amount_paid'    => $paid,
+                'status'         => $status,
+                'transaction_id' => $transactionId,
+            ]));
+
+            // 🔹 Create accounting entry only if paid
+            if ($paid > 0) {
+                $category = AccountCategory::where('type', 'income')
+                    ->where('name', 'Fee')
+                    ->first();
+
+                Account::create([
+                    'category_id'      => $category->id ?? null,
+                    'transaction_type' => 'income',
+                    'title'            => $fee->feeType->name,
+                    'amount'           => $paid,
+                    'reference_no'     => $fee->transaction_id,
+                    'transaction_date' => $validated['payment_date'] ?? now(),
+                    'description'      => $validated['remarks'],
+                    'created_by'       => Auth::id(),
+                ]);
+            }
+        });
+
+        return redirect()
+            ->route('fees.index')
+            ->with('success', 'Fee record created successfully.');
     }
 
 
-    // ===================== [ Edit Form ] =====================
-    public function edit($id)
+
+    /* =====================================================
+        Edit Form
+    ===================================================== */
+    public function edit(Fee $fee)
     {
-        $feetypes = FeeType::all();
-        $fee = Fee::findOrFail($id);
         $students = Student::all();
-        $classes = ClassModel::all();
-        return view('fees.edit', compact('fee', 'students', 'classes',  'feetypes'));
+        $feeTypes = FeeType::all();
+
+        return view('fees.edit', compact('fee', 'students', 'feeTypes'));
     }
 
-    // ===================== [ Update Fee ] =====================
+    /* =====================================================
+        Update Fee
+    ===================================================== */
     public function update(Request $request, Fee $fee)
     {
-        $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'class_id' => 'required|exists:classes,id',
-            'fee_type' => 'required|string|max:50',
-            'amount' => 'required|numeric|min:0',
-            'due_date' => 'required|date',
-            'payment_date' => 'nullable|date', // Remove after_or_equal rule
-            'payment_status' => 'required|in:pending,paid,partial,overdue',
-            'paid_amount' => 'nullable|numeric|min:0',
-            'receipt_number' => 'nullable|string|max:50|unique:fees,receipt_number',
-            'remarks' => 'nullable|string|max:255',
+        $validated = $request->validate([
+            'student_id'     => 'required|exists:students,id',
+            'fee_type_id'    => 'required|exists:fee_types,id',
+            'month_year'     => 'required|date_format:Y-m',
+            'amount_due'     => 'required|numeric|min:0',
+            'amount_paid'    => 'nullable|numeric|min:0',
+            'discount'       => 'nullable|numeric|min:0',
+            'fine'           => 'nullable|numeric|min:0',
+            'due_date'       => 'required|date',
+            'payment_date'   => 'nullable|date',
+            'payment_method' => 'nullable|in:CASH,BKASH,NAGAD,BANK,CARD,OTHER',
+            'transaction_id' => 'nullable|string|max:50',
+            'remarks'        => 'nullable|string|max:255',
         ]);
 
-        $fee->update($request->all());
+        $paid = $validated['amount_paid'] ?? 0;
 
-        return redirect()->route('fees.index')->with('success', 'Fee record updated successfully.');
+        if ($paid <= 0) {
+            $validated['status'] = 'PENDING';
+        } elseif ($paid < $validated['amount_due']) {
+            $validated['status'] = 'PARTIAL';
+        } else {
+            $validated['status'] = 'PAID';
+        }
+
+        $fee->update($validated);
+
+        return redirect()
+            ->route('fees.index')
+            ->with('success', 'Fee record updated successfully.');
     }
 
-    // ==============================[ Invoice ]==============================
-
-
-
+    /* =====================================================
+        Invoice
+    ===================================================== */
     public function invoice($id)
     {
-        $fee = Fee::findOrFail($id);
+        $fee = Fee::with(['student', 'class', 'account'])->findOrFail($id);
         $classes = ClassModel::all();
         $org_settings = OrganizationSetting::first();
 
         return view('fees.invoice', compact('fee', 'org_settings', 'classes'));
     }
 
-    // ===================== [ Delete Fee ] =====================
+
+    /* =====================================================
+        Delete Fee
+    ===================================================== */
     public function destroy(Fee $fee)
     {
         $fee->delete();
-        return redirect()->route('fees.index')->with('success', 'Fee record deleted successfully.');
+
+        return redirect()
+            ->route('fees.index')
+            ->with('success', 'Fee record deleted successfully.');
     }
 }

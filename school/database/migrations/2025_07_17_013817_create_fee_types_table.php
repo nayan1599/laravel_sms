@@ -11,14 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('fee_types', function (Blueprint $table) {
+        Schema::create('fee_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->decimal('default_amount', 10, 2);
+            $table->string('name', 100)->unique();          // Admission Fee, Tuition Fee
+            $table->string('name_bn', 100)->nullable();     // বাংলা নাম
+            $table->string('code', 20)->nullable()->unique(); // ADM, TUI
+            $table->boolean('is_recurring')->default(false); // 0 = One-time, 1 = Recurring
+            $table->enum('frequency', [
+                'ONE_TIME',
+                'MONTHLY',
+                'QUARTERLY',
+                'ANNUAL',
+                'PER_TERM',
+                'AS_NEEDED'
+            ])->default('ONE_TIME');
+            $table->boolean('is_refundable')->default(false); // Security deposit etc.
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('class_id');
-            $table->date('expiry_date')->nullable();
-            $table->timestamps();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps(); // created_at & updated_at
         });
     }
 

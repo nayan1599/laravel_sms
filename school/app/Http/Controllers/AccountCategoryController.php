@@ -16,10 +16,14 @@ class AccountCategoryController extends Controller
         return view('account_categories.index', compact('categories'));
     }
 
-    public function create()
-    {
-        return view('account_categories.create');
-    }
+   public function create()
+{
+    $incomeCategories = AccountCategory::where('type', 'income')->get();
+    $expenseCategories = AccountCategory::where('type', 'expense')->get();
+
+    return view('accounts.create', compact('incomeCategories', 'expenseCategories'));
+}
+
 
     public function store(Request $request)
     {

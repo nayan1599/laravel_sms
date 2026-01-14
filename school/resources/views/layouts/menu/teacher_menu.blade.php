@@ -5,19 +5,7 @@
           $user = auth()->user();
           @endphp
           <div class="sidebar-head">
-              <a href="{{ route('student.dashboard') }}" class="logo-wrapper gap-3" title="Home">
-                  <span class="sr-only">Home</span>
-                  @if($user->photo)
-                  <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="rounded-circle" style="width:40px; height:40px; object-fit:cover;">
-                  @else
-                  {{-- Default avatar --}}
-                  <img src="{{ asset('img/avatar/avatar-illustrated-01.png') }}" alt="Default Avatar" class="rounded-circle" style="width:40px; height:40px;">
-                  @endif
-                  <div class="logo-text">
-                      <span class="logo-title">{{ $user->name }}</span>
-                      <span class="logo-subtitle">Dashboard</span>
-                  </div>
-              </a>
+
               <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
                   <span class="sr-only">Toggle menu</span>
                   <span class="icon menu-toggle" aria-hidden="true"></span>
@@ -25,44 +13,75 @@
           </div>
           @endauth
           <div class="sidebar-body">
-              <ul class="sidebar-body-menu">
-                  <li>
-                      <a class="{{ request()->is('dashboard') ? 'active' : '' }}" href="{{ route('student.dashboard') }}">
-                          <span class="icon home" aria-hidden="true"></span>Dashboard
-                      </a>
-                  </li>
-              </ul>
-              <ul class="sidebar-body-menu">
+           <ul class="sidebar-body-menu">
 
-                  <li>
-                      <a class="show-cat-btn" href="##">
-                          <i class="fa-solid fa-graduation-cap"></i> Students
-                          <span class="category__btn transparent-btn" title="Open list">
-                              <span class="sr-only">Open list</span>
-                              <span class="icon arrow-down" aria-hidden="true"></span>
-                          </span>
-                      </a>
-                      <ul class="cat-sub-menu">
-                          <li><a class="{{ request()->is('students') || request()->is('students/*') ? 'active' : '' }}" href="{{ route('students.index') }}">All Students</a></li>
-                      </ul>
-                  </li>
-              </ul>
+    <!-- Dashboard -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.dashboard') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+    </li>
+
+    <!-- My Classes -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.classes*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-easel-fill me-2"></i> My Classes
+        </a>
+    </li>
+
+    <!-- Student List -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.students*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-people-fill me-2"></i> Student List
+        </a>
+    </li>
+
+    <!-- Attendance -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.attendance*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-calendar-check-fill me-2"></i> Attendance
+        </a>
+    </li>
+
+    <!-- Marks Entry -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.marks*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-pencil-square me-2"></i> Marks Entry
+        </a>
+    </li>
+
+    <!-- Leave Approval -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.leaves*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-envelope-check-fill me-2"></i> Leave Approval
+        </a>
+    </li>
+
+    <!-- Profile -->
+    <li>
+        <a class="{{ request()->routeIs('teacher.profile*') ? 'active' : '' }}"
+           href="{{ route('teacher.dashboard') }}">
+            <i class="bi bi-person-circle me-2"></i> Profile
+        </a>
+    </li>
+
+</ul>
 
 
-              <span class="system-menu__title"><i class="fa-solid fa-square-poll-vertical icon"></i> Exam Result</span>
-              <ul class="sidebar-body-menu">
-                  <!-- exam section -->
-                  <li> <a class="{{ request()->is('marks') || request()->is('marks/*') ? 'active' : '' }}" href="{{route('student.results')}}">Mark List</a> </li>
-              </ul>
 
 
 
 
 
-              <span class="system-menu__title">** Fees</span>
-              <ul class="sidebar-body-menu">
-                  <li> <a class="{{ request()->is('fees') ? 'active' : '' }}" href="{{route('student.fee')}}">Fees</a> </li>
-              </ul>
+
+
+
           </div>
       </div>
 
@@ -71,9 +90,6 @@
       use App\Models\OrganizationSetting;
       $settings = OrganizationSetting::all();
       @endphp
-
-
-
       @forelse($settings as $setting)
       <div class="sidebar-footer">
           <a href="" class="sidebar-user d-flex align-items-center text-decoration-none">

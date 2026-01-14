@@ -1,5 +1,6 @@
 <?php
-     use App\Models\Student;
+
+use App\Models\Student;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
@@ -37,6 +38,8 @@ use App\Http\Controllers\{
     AccountCategoryController,
     SalaryController,
 };
+use Symfony\Component\Routing\Router;
+
 /*
 |--------------------------------------------------------------------------
 | User Role / Backend Routes
@@ -48,21 +51,21 @@ use App\Http\Controllers\{
 ================================================
 */
 
- 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    // posts section 
-    Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
-    Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-    // category section 
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
-    Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
- 
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// posts section 
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::post('posts', [PostController::class, 'store'])->name('posts.store');
+Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
+Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+// category section 
+Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
+Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
+Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
 /*
 ================================================
                 Student role
@@ -78,8 +81,6 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/student/store', [LeaveApplicationController::class, 'store'])->name('student.store');
     Route::get('/student/attendance', [StudentDashboardController::class, 'attendance'])->name('student.attendance');
     Route::get('/student/attendanceview', [StudentDashboardController::class, 'attendanceview'])->name('student.attendanceview');
-
-
 });
 /*
 ================================================
@@ -88,14 +89,15 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 */
 Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->name('teacher.dashboard');
+    Route::get('/teacher/classes', [TeacherDashboardController::class, 'classlist'])->name('teacher.classlist');
     Route::prefix('leave')->name('leave.')->group(function () {
         Route::get('index', [LeaveApplicationController::class, 'index'])->name('index');
         Route::get('show/{id}', [LeaveApplicationController::class, 'show'])->name('show');
         Route::get('edit/{id}', [LeaveApplicationController::class, 'edit'])->name('edit');
         Route::put('edit/{id}', [LeaveApplicationController::class, 'update'])->name('leave.update');
+        
     });
-
- });
+});
 
 
 
@@ -194,7 +196,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'leave'         => LeaveApplicationController::class,
         'accounts'      => AccountController::class,
         'salaries'        => SalaryController::class,
-       
+
     ]);
 
     /*Route::resource('users', UserController::class);
@@ -203,20 +205,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |------------------------------------------------------------------
     */
 
-// Other 
+    // Other 
 
 
-Route::get('/students/class/{id}/{name}',[StudentController::class, 'studentsByClass']);
-Route::get('fees/{feeType}/{class}',[FeeController::class, 'details'])->name('fees.details');
-Route::get('account-categories', [AccountCategoryController::class, 'index'])
-    ->name('account-categories.index');
-Route::get('account-categories/create', [AccountCategoryController::class,'create'])->name('account-categories.create');
-Route::post('account-categories', [AccountCategoryController::class,'store'])->name('account-categories.store');
-Route::get('account-categories/{id}/edit', [AccountCategoryController::class,'edit'])->name('account-categories.edit');
-Route::put('account-categories/{id}', [AccountCategoryController::class,'update'])->name('account-categories.update');
-Route::delete('account-categories/{id}', [AccountCategoryController::class,'destroy'])->name('account-categories.destroy');
+    Route::get('/students/class/{id}/{name}', [StudentController::class, 'studentsByClass']);
+    Route::get('fees/{feeType}/{class}', [FeeController::class, 'details'])->name('fees.details');
+    Route::get('account-categories', [AccountCategoryController::class, 'index'])
+        ->name('account-categories.index');
+    Route::get('account-categories/create', [AccountCategoryController::class, 'create'])->name('account-categories.create');
+    Route::post('account-categories', [AccountCategoryController::class, 'store'])->name('account-categories.store');
+    Route::get('account-categories/{id}/edit', [AccountCategoryController::class, 'edit'])->name('account-categories.edit');
+    Route::put('account-categories/{id}', [AccountCategoryController::class, 'update'])->name('account-categories.update');
+    Route::delete('account-categories/{id}', [AccountCategoryController::class, 'destroy'])->name('account-categories.destroy');
 
-// other end 
+    // other end 
 
 
 
@@ -236,19 +238,19 @@ Route::delete('account-categories/{id}', [AccountCategoryController::class,'dest
     });
     // attendance
 
-Route::get('attendance/by-class-section/{class}/{section}', function($class, $section){
-    return Student::where('class_id', $class)
-                  ->where('section_id', $section)
-                  ->orderBy('name')
-                  ->get(['id','name']);
-});
+    Route::get('attendance/by-class-section/{class}/{section}', function ($class, $section) {
+        return Student::where('class_id', $class)
+            ->where('section_id', $section)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+    });
 
     Route::prefix('attendance')->name('attendance.')->group(function () {
 
 
 
 
-         Route::get('report', [AttendanceController::class, 'report'])->name('report');
+        Route::get('report', [AttendanceController::class, 'report'])->name('report');
         Route::get('monthly', [AttendanceController::class, 'dateRangeReport'])->name('monthly');
     });
     // marksheet
@@ -256,7 +258,7 @@ Route::get('attendance/by-class-section/{class}/{section}', function($class, $se
         Route::get('/', [MarkController::class, 'marksheetForm'])->name('index');
         Route::post('/view', [MarkController::class, 'viewMarksheet'])->name('view');
     });
-    
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('invoice/{id}', [FeeController::class, 'invoice'])->name('fees.invoice');

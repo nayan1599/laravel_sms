@@ -99,6 +99,7 @@
 
         <div class="col-xl-3 col-md-6">
             <div class="card dashboard-card border-0">
+                <a href="{{ url('teacher/classes') }}">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
                         <small class="text-muted">Total Classes</small>
@@ -108,6 +109,7 @@
                         <i class="bi bi-easel-fill"></i>
                     </div>
                 </div>
+                </a>
             </div>
         </div>
 

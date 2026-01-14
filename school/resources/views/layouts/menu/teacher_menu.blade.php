@@ -25,8 +25,8 @@
 
     <!-- My Classes -->
     <li>
-        <a class="{{ request()->routeIs('teacher.classes*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('teacher.classes') ? 'active' : '' }}"
+           href="{{ url('teacher/classes') }}">
             <i class="bi bi-easel-fill me-2"></i> My Classes
         </a>
     </li>

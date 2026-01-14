@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $totalStudents  = Student::count();
         $totalTeachers  = Teachers::count();
         $totalClasses   = ClassModel::count();
-        $pendingFees    = Fee::where('payment_status', 'pending')->sum('amount');
+        $pendingFees    = Fee::where('status', 'pending')->sum('amount_paid');
 
         // Monthly Students (Last 6 months)
         $months = collect(range(5, 0))->map(function ($i) {

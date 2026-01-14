@@ -6,7 +6,7 @@
         <div>
             <div class="  border-0 rounded">
                 <div class="card-header text-white">
-                    <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Create New Class</h4>
+                    <h4 class="mb-0 main-title"><i class="bi bi-plus-circle"></i> Create New Class</h4>
                 </div>
                 <div class="card-body">
 

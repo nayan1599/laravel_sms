@@ -26,4 +26,19 @@ class Teachers extends Model
         'emergency_contact_phone',
         'status',
     ];
+
+
+    public function subjects()
+{
+    return $this->hasMany(Subject::class, 'teacher_id');
+}
+
+public function classes()
+{
+    return $this->hasMany(ClassModel::class, 'teacher_id');
+}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -6,7 +6,14 @@
 
 
 @section('content')
-<div class="container bg-white p-4 shadow-sm" id="print-area">
+
+<div class="text-end">
+     <button class="btn btn-success no-print" onclick="printInvoice('printArea')">
+            <i class="bi bi-printer"></i> Print
+        </button>
+</div>
+
+<div class="container bg-white p-4 shadow-sm" id="printArea">
     <div class="text-center mb-4">
         <h3 class="fw-bold">Student Admission Form</h3>
         <p><strong>School Name:</strong> {{ $org_settings->organization_name ?? 'My School' }}</p>
@@ -125,11 +132,7 @@
 
     <h5 class="mt-4">Remarks</h5>
     <p>{{ $student->remarks ?? 'N/A' }}</p>
-
-    <div class="text-end mt-5">
-        <button onclick="window.print()" class="btn btn-primary">🖨️ Print Form</button>
-        <a href="{{ route('students.index') }}" class="btn btn-secondary">← Back to List</a>
-    </div>
+    
 </div>
 
 <style>

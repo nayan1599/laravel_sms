@@ -49,7 +49,7 @@ class LeaveApplication extends Model
     {
         return $this->belongsTo(Teachers::class);
     }
-
+ 
     /**
      * Scopes (professional use)
      */

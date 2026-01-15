@@ -23,7 +23,7 @@ class ClassModel extends Model
 {
     return $this->belongsTo(Teachers::class, 'class_teacher_id');
 }
-
+  
 public function fees()
 {
     return $this->hasMany(Fee::class);

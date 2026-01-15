@@ -7,6 +7,7 @@ use App\Models\Teachers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 
@@ -59,11 +60,16 @@ class LeaveApplicationController extends Controller
     // Admin - All leave list
     public function index()
     {
-        $leaves = LeaveApplication::with([
-            'student.class'
-        ])
-            ->latest()
-            ->get();
+        $userId = Auth::id();
+        $teacher = Teachers::where('user_id', $userId)->first();
+        $teacherId = $teacher->id ?? Null;
+
+        if ($teacherId) {
+            $leaves = LeaveApplication::where('teacher_id', $teacherId)->latest()->get();
+        } else {
+            $leaves = LeaveApplication::with(['student.class'])->latest()->get();
+        }
+
         $totalLeaves = $leaves->count(); // ✅ TOTAL
 
         return view('leave.index', compact('leaves', 'totalLeaves'));

@@ -4,7 +4,7 @@
     <div class="row mb-3">
         <div class="col-lg-6 margin-tb">
             <div class="pull-left">
-                <h2>Marks Management</h2>
+                <h2 class="main-title">Marks Management</h2>
             </div>
 
         </div>

@@ -6,29 +6,62 @@ use App\Models\Mark;
 use App\Models\Student;
 use App\Models\Exam;
 use App\Models\Subject;
+use App\Models\Teachers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MarkController extends Controller
 {
     public function index()
     {
+        $userId = Auth::id();
 
+        $teacher = Teachers::where('user_id', $userId)->first();
 
-        $marks = Mark::latest()->paginate(10);
+        if ($teacher) {
+            // Teacher → only own students marks
+            $marks = Mark::whereHas('student.class', function ($q) use ($teacher) {
+                $q->where('class_teacher_id', $teacher->id);
+            })
+                ->with([
+                    'student:id,name,class_id',
+                    'student.class:id,class_name'
+                ])
+                ->latest()
+                ->paginate(10);
+        } else {
+            // Admin → all marks
+            $marks = Mark::latest()->paginate(10);
+        }
+
         return view('marks.index', compact('marks'));
-
-        // $marks = Mark::latest()->paginate(10);
-        // return view('marks.index', compact('marks'));
     }
+
 
 
     public function create()
-    {
-        $students = Student::all();
-        $exams = Exam::whereIn('status', ['scheduled'])->get(); // Example IDs
-        $subjects = Subject::all();
-        return view('marks.create', compact('students', 'exams', 'subjects'));
+{
+    $userId = Auth::id();
+    $teacher = Teachers::where('user_id', $userId)->first();
+
+    if ($teacher) {
+        $students = Student::whereHas('class', function ($q) use ($teacher) {
+                $q->where('class_teacher_id', $teacher->id);
+            })
+            ->orderBy('name')
+            ->get();
+    } else {
+        $students = Student::orderBy('name')->get();
     }
+
+    $exams = Exam::where('status', 'scheduled')->get();
+    $subjects = Subject::all();
+
+    return view('marks.create', compact('students', 'exams', 'subjects'));
+}
+
+
 
     public function store(Request $request)
     {

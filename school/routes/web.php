@@ -90,6 +90,10 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/dashboard', [TeacherDashboardController::class, 'index'])->name('teacher.dashboard');
     Route::get('/teacher/classes', [TeacherDashboardController::class, 'classlist'])->name('teacher.classlist');
+    Route::get('/teacher/studentlist', [TeacherDashboardController::class, 'studentlist'])->name('teacher.studentlist');
+
+    
+    
     Route::prefix('leave')->name('leave.')->group(function () {
         Route::get('index', [LeaveApplicationController::class, 'index'])->name('index');
         Route::get('show/{id}', [LeaveApplicationController::class, 'show'])->name('show');

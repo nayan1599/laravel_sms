@@ -28,12 +28,11 @@ class StudentDashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $feetype = FeeType::where('class_id', $user->student->class_id)->get(); // fee type table data get
-        $fees = Fee::orderBy('created_at', 'desc')->where('student_id', $user->student->id)->take(10)->get(); // fee table data get
+         $fees = Fee::orderBy('created_at', 'desc')->where('student_id', $user->student->id)->take(10)->get(); // fee table data get
         // class name show student dashboard
         $classModel = ClassModel::where('id', $user->student->class_id)->first();
         $student = Student::where('user_id', $user->id)->first(); // student table data get
-        return view('student.dashboard', compact('student', 'classModel', 'fees', 'feetype'));
+        return view('student.dashboard', compact('student', 'classModel', 'fees'));
     }
 
     public function fee()

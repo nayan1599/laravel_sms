@@ -36,6 +36,7 @@ class Mark extends Model
     {
         return $this->belongsTo(Exam::class);
     }
+ 
 
     public function subject()
     {

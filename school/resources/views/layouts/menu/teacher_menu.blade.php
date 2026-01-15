@@ -25,7 +25,7 @@
 
     <!-- My Classes -->
     <li>
-        <a class="{{ request()->routeIs('teacher.classes') ? 'active' : '' }}"
+        <a class="{{ request()->routeIs('teacher.classlist*') ? 'active' : '' }}"
            href="{{ url('teacher/classes') }}">
             <i class="bi bi-easel-fill me-2"></i> My Classes
         </a>
@@ -33,40 +33,40 @@
 
     <!-- Student List -->
     <li>
-        <a class="{{ request()->routeIs('teacher.students*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('teacher.studentlist*') ? 'active' : '' }}"
+           href="{{ url('teacher/studentlist') }}">
             <i class="bi bi-people-fill me-2"></i> Student List
         </a>
     </li>
 
     <!-- Attendance -->
     <li>
-        <a class="{{ request()->routeIs('teacher.attendance*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('attendance.create*') ? 'active' : '' }}"
+           href="{{ url('attendance/create') }}">
             <i class="bi bi-calendar-check-fill me-2"></i> Attendance
         </a>
     </li>
 
     <!-- Marks Entry -->
     <li>
-        <a class="{{ request()->routeIs('teacher.marks*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('marks*') ? 'active' : '' }}"
+           href="{{ url('marks') }}">
             <i class="bi bi-pencil-square me-2"></i> Marks Entry
         </a>
     </li>
 
     <!-- Leave Approval -->
     <li>
-        <a class="{{ request()->routeIs('teacher.leaves*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('leave.index*') ? 'active' : '' }}"
+           href="{{ url('leave/index') }}">
             <i class="bi bi-envelope-check-fill me-2"></i> Leave Approval
         </a>
     </li>
 
     <!-- Profile -->
     <li>
-        <a class="{{ request()->routeIs('teacher.profile*') ? 'active' : '' }}"
-           href="{{ route('teacher.dashboard') }}">
+        <a class="{{ request()->routeIs('users.show*') ? 'active' : '' }}"
+           href="{{ route('users.show', encrypt($user->id))}}">
             <i class="bi bi-person-circle me-2"></i> Profile
         </a>
     </li>

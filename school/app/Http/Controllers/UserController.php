@@ -32,8 +32,8 @@ class UserController extends Controller
     {
         $userId = decrypt($id); // decode
         $user = User::findOrFail($userId);
-        $student = $user->student;
-        return view('users.show', compact('user', 'users', 'student'));
+        // $student = $user->student;
+        return view('users.show', compact('user',));
     }
 
     public function store(Request $request)

@@ -145,4 +145,9 @@
         {{ $teachers->links() }}
     </div>
 </div>
+
+
+
+
 @endsection
+

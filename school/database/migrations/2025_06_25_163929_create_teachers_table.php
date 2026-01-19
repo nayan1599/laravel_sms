@@ -11,37 +11,49 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teachers', function (Blueprint $table) {
-            $table->id();
+  Schema::create('teachers', function (Blueprint $table) {
+    $table->id();
 
-            $table->unsignedBigInteger('user_id');
-            $table->string('name', 150);
-            $table->string('email', 150);
-            $table->string('employee_id', 50)->unique();
-            $table->string('designation', 100);
-            $table->string('department', 100)->nullable();
+    $table->unsignedBigInteger('user_id');
 
-            $table->string('qualification', 255)->nullable();
-            $table->integer('experience_years')->default(0);
+    $table->string('name', 150);
+    $table->string('email', 150);
+    $table->string('phone', 20)->nullable();
 
-            $table->date('date_of_joining');
-            $table->date('date_of_leaving')->nullable();
+    $table->string('employee_id', 50)->unique();
+    $table->string('designation', 100);
+    $table->string('department', 100)->nullable();
 
-            $table->string('subject_specialization', 255)->nullable();
+    $table->enum('gender', ['male', 'female', 'other'])->nullable();
+    $table->date('date_of_birth')->nullable();
 
-            $table->decimal('salary', 10, 2)->default(0.00);
-            $table->enum('employment_type', ['permanent', 'contract', 'part-time'])->default('permanent');
-            $table->string('photo')->nullable();
-            $table->string('blood_group', 5)->nullable();
-            $table->string('emergency_contact_name', 100)->nullable();
-            $table->string('emergency_contact_phone', 20)->nullable();
+    $table->string('qualification', 255)->nullable();
+    $table->integer('experience_years')->default(0);
 
-            $table->enum('status', ['active', 'on_leave', 'resigned', 'retired'])->default('active');
+    // 🔹 NEW: Skills & Education
+    $table->json('skills')->nullable();      
+    $table->json('education')->nullable();   
 
-            $table->timestamps();
+    $table->date('date_of_joining');
+    $table->date('date_of_leaving')->nullable();
 
-            // Foreign key
-        });
+    $table->string('subject_specialization', 255)->nullable();
+
+    $table->decimal('salary', 10, 2)->default(0.00);
+
+    $table->enum('employment_type', ['permanent', 'contract', 'part-time'])
+          ->default('permanent');
+
+    $table->string('photo')->nullable();
+
+    $table->string('blood_group', 5)->nullable();
+
+    $table->enum('status', ['active', 'on_leave', 'resigned', 'retired'])
+          ->default('active');
+
+    $table->timestamps();
+});
+
     }
 
     /**

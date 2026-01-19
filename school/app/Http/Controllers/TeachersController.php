@@ -13,28 +13,27 @@ class TeachersController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index(Request $request)
-{
-    // Active / Inactive Teacher Count
-    $activeTeachers = Teachers::where('status', 'active')->count();
-    $inactiveTeachers = Teachers::where('status', 'inactive')->count();
+    public function index(Request $request)
+    {
+        // Active / Inactive Teacher Count
+        $activeTeachers = Teachers::where('status', 'active')->count();
+        $inactiveTeachers = Teachers::where('status', 'inactive')->count();
 
-    // Paginated Teacher List (searchable)
-    $query = Teachers::latest();
+        // Paginated Teacher List (searchable)
+        $query = Teachers::latest();
 
-    // Optional: Search filter
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where(function($q) use ($search){
-            $q->where('name', 'like', "%{$search}%");
-            
-        });
+        // Optional: Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        }
+
+        $teachers = $query->paginate(10);
+
+        return view('teachers.index', compact('teachers', 'activeTeachers', 'inactiveTeachers'));
     }
-
-    $teachers = $query->paginate(10);
-
-    return view('teachers.index', compact('teachers','activeTeachers','inactiveTeachers'));
-}
 
 
 
@@ -74,6 +73,19 @@ public function index(Request $request)
             'emergency_contact_name' => 'nullable|string|max:100',
             'emergency_contact_phone' => 'nullable|string|max:20',
             'status' => 'required|in:active,on_leave,resigned,retired',
+            // Education (array of objects)
+            'education'                => 'nullable|array',
+            'education.*.degree'       => 'required_with:education|string|max:100',
+            'education.*.subject'      => 'nullable|string|max:150',
+            'education.*.institute'    => 'nullable|string|max:200',
+            'education.*.year'         => 'nullable|string|max:10',
+
+
+            // Qualification & Skills
+            'skills'       => 'nullable|array',
+            'skills.*.company'     => 'string|max:100',
+            'skills.*.role'        => 'string|max:100',
+            'skills.*.duration'    => 'string|max:50',
         ]);
         DB::transaction(function () use ($validated) {
 

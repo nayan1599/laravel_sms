@@ -1,6 +1,6 @@
 <!-- resources/views/teachers/partials/form.blade.php -->
 <div class="row g-3">
-
+ 
     <div class="col-md-6">
         <label for="emergency_contact_name" class="form-label">Nick Name</label>
         <input type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $teacher->emergency_contact_name ?? '') }}" class="form-control">
@@ -10,11 +10,11 @@
         <input type="text" name="name" value="{{ old('name', $teacher->name ?? '') }}" class="form-control @error('name') is-invalid @enderror">
         @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
-    <div class="col-md-6">
+  <div class="col-md-6">
         <label for="emergency_contact_phone" class="form-label">Contact Phone</label>
         <input type="text" name="emergency_contact_phone" value="{{ old('emergency_contact_phone', $teacher->emergency_contact_phone ?? '') }}" class="form-control">
     </div>
-    <div class="col-md-6">
+      <div class="col-md-6">
         <label for="email" class="form-label">Email</label>
         <input type="text" name="email" value="{{ old('email', $teacher->email ?? '') }}" class="form-control">
     </div>
@@ -23,40 +23,41 @@
         <input type="text" name="employee_id" value="{{ old('employee_id', $teacher->employee_id ?? '') }}" class="form-control @error('employee_id') is-invalid @enderror">
         @error('employee_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
     </div>
+
     <div class="col-12">
 
         <label class="form-label">Education</label>
         @php
-        $educations = old('education', $teacher->education ?? [[]]);
+            $educations = old('education', $teacher->education ?? [[]]);
         @endphp
 
         <div id="education-wrapper">
             @foreach ($educations as $index => $edu)
-            <div class="row g-2 mb-2 education-row">
-                <div class="col-md-3">
-                    <input type="text" name="education[{{ $index }}][degree]"
-                        value="{{ $edu['degree'] ?? '' }}"
-                        class="form-control" placeholder="Degree">
+                <div class="row g-2 mb-2 education-row">
+                    <div class="col-md-3">
+                        <input type="text" name="education[{{ $index }}][degree]"
+                               value="{{ $edu['degree'] ?? '' }}"
+                               class="form-control" placeholder="Degree">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="education[{{ $index }}][subject]"
+                               value="{{ $edu['subject'] ?? '' }}"
+                               class="form-control" placeholder="Subject">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="education[{{ $index }}][institute]"
+                               value="{{ $edu['institute'] ?? '' }}"
+                               class="form-control" placeholder="Institute">
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="education[{{ $index }}][year]"
+                               value="{{ $edu['year'] ?? '' }}"
+                               class="form-control" placeholder="Year">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-danger remove-education">×</button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="text" name="education[{{ $index }}][subject]"
-                        value="{{ $edu['subject'] ?? '' }}"
-                        class="form-control" placeholder="Subject">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="education[{{ $index }}][institute]"
-                        value="{{ $edu['institute'] ?? '' }}"
-                        class="form-control" placeholder="Institute">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" name="education[{{ $index }}][year]"
-                        value="{{ $edu['year'] ?? '' }}"
-                        class="form-control" placeholder="Year">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger remove-education">×</button>
-                </div>
-            </div>
             @endforeach
         </div>
 
@@ -64,43 +65,6 @@
             + Add Education
         </button>
     </div>
-    <div class="col-12">
-
-        <label class="form-label">Skills</label>
-        @php
-        $skills = old('skills', $teacher->skills ?? [[]]);
-        @endphp
-
-        <div id="skills-wrapper">
-            @foreach ($skills as $index => $skill)
-            <div class="row g-2 mb-2 skills-row">
-                <div class="col-md-3">
-                    <input type="text" name="skills[{{ $index }}][company]"
-                        value="{{ $skill['company'] ?? '' }}"
-                        class="form-control" placeholder="Company">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="skills[{{ $index }}][role]"
-                        value="{{ $skill['role'] ?? '' }}"
-                        class="form-control" placeholder="Role">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="skills[{{ $index }}][duration]"
-                        value="{{ $skill['duration'] ?? '' }}"
-                        class="form-control" placeholder="Duration">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger remove-skills">×</button>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <button type="button" class="btn btn-sm btn-primary mt-2" id="add-skills">
-            + Add Skills
-        </button>
-    </div>
-
 
     <div class="col-md-6">
         <label for="designation" class="form-label">Designation</label>
@@ -181,42 +145,9 @@
 
 
 
-
+  
 </div>
 <script>
-  document.getElementById('add-skills').addEventListener('click', function() {
-        const wrapper = document.getElementById('skills-wrapper');
-        const index = wrapper.children.length;
-        const row = document.createElement('div');
-        row.classList.add('row', 'g-2', 'mb-2', 'skills-row');
-        row.innerHTML = `
-            <div class="col-md-3">
-                <input type="text" name="skills[${index}][company]" class="form-control" placeholder="Degree">
-            </div>
-            <div class="col-md-3">
-                <input type="text" name="skills[${index}][role]" class="form-control" placeholder="Subject">
-            </div>
-            <div class="col-md-3">
-                <input type="text" name="skills[${index}][duration]" class="form-control" placeholder="Institute">
-            </div>
-            
-            <div class="col-md-1">
-                <button type="button" class="btn btn-danger remove-skills">×</button>
-            </div>
-        `;
-        wrapper.appendChild(row);
-    });
-
-    document.getElementById('skills-wrapper').addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-skills')) {
-            e.target.closest('.skills-row').remove();
-        }
-    });
-
-
-
-
-
     document.getElementById('add-education').addEventListener('click', function() {
         const wrapper = document.getElementById('education-wrapper');
         const index = wrapper.children.length;

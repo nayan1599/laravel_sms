@@ -46,8 +46,9 @@ class TeachersController extends Controller
     public function create()
     {
         $bloodgroups = BloodGroup::all();
+        $departments = \App\Models\Department::all();
         $users = User::where('role', 'teacher')->get();
-        return view('teachers.create', compact('bloodgroups', 'users'));
+        return view('teachers.create', compact('bloodgroups', 'departments', 'users'));
     }
 
     /**
@@ -57,22 +58,23 @@ class TeachersController extends Controller
     {
         $validated = $request->validate([
 
-            'name' => 'required|string|max:150',
-            'employee_id' => 'required|unique:teachers,employee_id',
+            // Basic Info
+            'name'        => 'required|string|max:150',
+            'email'       => 'required|email|max:150|unique:users,email',
+            'phone'       => 'nullable|string|max:20',
+            'alternate_phone' => 'nullable|string|max:20',
+
+            // Employee Info
+            'employee_id' => 'required|string|max:50|unique:teachers,employee_id',
             'designation' => 'required|string|max:100',
-            'email'       => 'required|string|max:100',
-            'department' => 'nullable|string|max:100',
-            'qualification' => 'nullable|string|max:255',
-            'experience_years' => 'nullable|integer|min:0',
-            'date_of_joining' => 'required|date',
-            'date_of_leaving' => 'nullable|date',
-            'subject_specialization' => 'nullable|string|max:255',
-            'salary' => 'nullable|numeric|min:0',
-            'employment_type' => 'required|in:permanent,contract,part-time',
+            'department'  => 'nullable|string|max:100',
+
+            // Personal Info
+            'gender'      => 'nullable|in:male,female,other',
+            'date_of_birth' => 'nullable|date',
             'blood_group' => 'nullable|string|max:5',
-            'emergency_contact_name' => 'nullable|string|max:100',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'status' => 'required|in:active,on_leave,resigned,retired',
+            'national_id' => 'nullable|string|max:30',
+            'marital_status' => 'nullable|in:single,married,divorced,widowed',
             // Education (array of objects)
             'education'                => 'nullable|array',
             'education.*.degree'       => 'required_with:education|string|max:100',
@@ -86,6 +88,26 @@ class TeachersController extends Controller
             'skills.*.company'     => 'string|max:100',
             'skills.*.role'        => 'string|max:100',
             'skills.*.duration'    => 'string|max:50',
+
+            // Job Info
+            'date_of_joining' => 'required|date',
+            'date_of_leaving' => 'nullable|date|after_or_equal:date_of_joining',
+            'subject_specialization' => 'nullable|string|max:255',
+            'salary' => 'nullable|numeric|min:0',
+            'last_increment_date' => 'nullable|date',
+            'employment_type' => 'required|in:permanent,contract,part-time',
+
+            // Address
+            'present_address' => 'nullable|string',
+            'permanent_address' => 'nullable|string',
+
+            // Emergency
+            'emergency_contact_name' => 'nullable|string|max:100',
+            'emergency_contact_phone' => 'nullable|string|max:20',
+
+            // System
+            'status' => 'required|in:active,on_leave,resigned,retired',
+            'remarks' => 'nullable|string',
         ]);
         DB::transaction(function () use ($validated) {
 
@@ -93,8 +115,8 @@ class TeachersController extends Controller
             $user = User::create([
                 'name'     => $validated['name'],     // ✅ array access
                 'email'    => $validated['email'] ?? null,
-                'phone_number'    => $validated['emergency_contact_phone'],
-                'password' => bcrypt($validated['emergency_contact_phone']),
+                'phone_number'    => $validated['phone'],
+                'password' => bcrypt($validated['phone']), // Default password as phone number
                 'role'     => 'teacher',
             ]);
 
@@ -125,9 +147,9 @@ class TeachersController extends Controller
     public function edit($id)
     {
         $teacher = Teachers::findOrFail($id);
+        $departments = \App\Models\Department::all();
         $users = User::all();
-        return view('teachers.edit', compact('teacher', 'users'));
-        // return view('teachers.edit', compact('teacher'));
+        return view('teachers.edit', compact('teacher', 'users', 'departments'));
     }
 
     /**
@@ -138,22 +160,56 @@ class TeachersController extends Controller
         $teacher = Teachers::findOrFail($id);
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'name' => 'required|string|max:150',
-            'employee_id' => 'required|unique:teachers,employee_id,' . $teacher->id,
+            // Basic Info
+            'name'        => 'required|string|max:150',
+            'email'       => 'required|email|max:150|unique:users,email',
+            'phone'       => 'nullable|string|max:20',
+            'alternate_phone' => 'nullable|string|max:20',
+
+            // Employee Info
+            'employee_id' => 'required|string|max:50|unique:teachers,employee_id',
             'designation' => 'required|string|max:100',
-            'department' => 'nullable|string|max:100',
-            'qualification' => 'nullable|string|max:255',
-            'experience_years' => 'nullable|integer|min:0',
+            'department'  => 'nullable|string|max:100',
+
+            // Personal Info
+            'gender'      => 'nullable|in:male,female,other',
+            'date_of_birth' => 'nullable|date',
+            'blood_group' => 'nullable|string|max:5',
+            'national_id' => 'nullable|string|max:30',
+            'marital_status' => 'nullable|in:single,married,divorced,widowed',
+            // Education (array of objects)
+            'education'                => 'nullable|array',
+            'education.*.degree'       => 'required_with:education|string|max:100',
+            'education.*.subject'      => 'nullable|string|max:150',
+            'education.*.institute'    => 'nullable|string|max:200',
+            'education.*.year'         => 'nullable|string|max:10',
+
+
+            // Qualification & Skills
+            'skills'       => 'nullable|array',
+            'skills.*.company'     => 'string|max:100',
+            'skills.*.role'        => 'string|max:100',
+            'skills.*.duration'    => 'string|max:50',
+
+            // Job Info
             'date_of_joining' => 'required|date',
-            'date_of_leaving' => 'nullable|date',
+            'date_of_leaving' => 'nullable|date|after_or_equal:date_of_joining',
             'subject_specialization' => 'nullable|string|max:255',
             'salary' => 'nullable|numeric|min:0',
+            'last_increment_date' => 'nullable|date',
             'employment_type' => 'required|in:permanent,contract,part-time',
-            'blood_group' => 'nullable|string|max:5',
+
+            // Address
+            'present_address' => 'nullable|string',
+            'permanent_address' => 'nullable|string',
+
+            // Emergency
             'emergency_contact_name' => 'nullable|string|max:100',
             'emergency_contact_phone' => 'nullable|string|max:20',
+
+            // System
             'status' => 'required|in:active,on_leave,resigned,retired',
+            'remarks' => 'nullable|string',
         ]);
 
         $teacher->update($validated);

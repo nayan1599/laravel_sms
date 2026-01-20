@@ -37,6 +37,8 @@ use App\Http\Controllers\{
     AccountController,
     AccountCategoryController,
     SalaryController,
+    TagController,
+    TagTypeController,
 };
 use Symfony\Component\Routing\Router;
 
@@ -92,14 +94,13 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/classes', [TeacherDashboardController::class, 'classlist'])->name('teacher.classlist');
     Route::get('/teacher/studentlist', [TeacherDashboardController::class, 'studentlist'])->name('teacher.studentlist');
 
-    
-    
+
+
     Route::prefix('leave')->name('leave.')->group(function () {
         Route::get('index', [LeaveApplicationController::class, 'index'])->name('index');
         Route::get('show/{id}', [LeaveApplicationController::class, 'show'])->name('show');
         Route::get('edit/{id}', [LeaveApplicationController::class, 'edit'])->name('edit');
         Route::put('edit/{id}', [LeaveApplicationController::class, 'update'])->name('leave.update');
-        
     });
 });
 
@@ -200,6 +201,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'leave'         => LeaveApplicationController::class,
         'accounts'      => AccountController::class,
         'salaries'        => SalaryController::class,
+        'tags' => TagController::class,
+        'types' => TagTypeController::class,
 
     ]);
 

@@ -39,6 +39,7 @@ use App\Http\Controllers\{
     SalaryController,
     TagController,
     TagTypeController,
+    PeriodController,
 };
 use Symfony\Component\Routing\Router;
 
@@ -203,6 +204,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'salaries'        => SalaryController::class,
         'tags' => TagController::class,
         'types' => TagTypeController::class,
+        'periods' =>  PeriodController::class,
 
     ]);
 

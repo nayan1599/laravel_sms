@@ -27,7 +27,7 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li><a href="{{ route('students.index') }}">All Students</a></li>
-                           <li><a href="{{ route('students.create') }}">Add Students</a></li>
+                          <li><a href="{{ route('students.create') }}">Add Students</a></li>
                           <li> <a href="{{ url('student_applications') }}">Online apply</a></li>
                       </ul>
                   </li>
@@ -44,9 +44,9 @@
                       </a>
                       <ul class="cat-sub-menu">
                           <li><a href="{{ route('teachers.index') }}"> All Teachers</a></li>
-                           <li><a href="{{ route('teachers.create') }}"> Add Teachers</a></li>
+                          <li><a href="{{ route('teachers.create') }}"> Add Teachers</a></li>
                           <li><a href="{{ route('employees.index')}}"> All Employees</a></li>
-                           <li><a href="{{ route('employees.create')}}"> Add Employees</a></li>
+                          <li><a href="{{ route('employees.create')}}"> Add Employees</a></li>
                       </ul>
                   </li>
               </ul>
@@ -195,6 +195,25 @@
                       </ul>
                   </li>
               </ul>
+
+
+              <!-- class routing    -->
+              <ul class="sidebar-body-menu">
+                  <li>
+                      <a class="show-cat-btn" href="##">
+                          <i class="fa-solid fa-layer-group"></i> Class Routines
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Open list</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
+                      <ul class="cat-sub-menu">
+                          <li> <a href="{{route('periods.index')}}">Periods List</a> </li>
+                          <li> <a href="{{route('timetables.index')}}">Routines</a> </li>
+                         
+                      </ul>
+                  </li>
+              </ul>
               <!-- setting  -->
 
               <ul class="sidebar-body-menu">
@@ -231,45 +250,45 @@
                   </li>
               </ul>
 
-<!-- accounting  -->
-<ul class="sidebar-body-menu">
+              <!-- accounting  -->
+              <ul class="sidebar-body-menu">
 
-    {{-- Accounting --}}
-    <li>
-        <a class="show-cat-btn" href="##">
-            <i class="fa-solid fa-calculator"></i>
-            Accounting
-            <span class="category__btn transparent-btn" title="Open list">
-                <span class="sr-only">Open list</span>
-                <span class="icon arrow-down" aria-hidden="true"></span>
-            </span>
-        </a>
+                  {{-- Accounting --}}
+                  <li>
+                      <a class="show-cat-btn" href="##">
+                          <i class="fa-solid fa-calculator"></i>
+                          Accounting
+                          <span class="category__btn transparent-btn" title="Open list">
+                              <span class="sr-only">Open list</span>
+                              <span class="icon arrow-down" aria-hidden="true"></span>
+                          </span>
+                      </a>
 
-        <ul class="cat-sub-menu">
-            <li>
-                <a href="{{ route('accounts.index') }}">
-                    All Transactions
-                </a>
-            </li>
+                      <ul class="cat-sub-menu">
+                          <li>
+                              <a href="{{ route('accounts.index') }}">
+                                  All Transactions
+                              </a>
+                          </li>
 
-            <li>
-                <a href="{{ route('accounts.create') }}">
-                    Add Transaction
-                </a>
-            </li>
+                          <li>
+                              <a href="{{ route('accounts.create') }}">
+                                  Add Transaction
+                              </a>
+                          </li>
 
-            <li>
-                <a href="{{ route('account-categories.index') }}">
-                    Categories
-                </a>
-            </li>
-        </ul>
-    </li>
+                          <li>
+                              <a href="{{ route('account-categories.index') }}">
+                                  Categories
+                              </a>
+                          </li>
+                      </ul>
+                  </li>
 
-    {{-- Reports --}}
- 
+                  {{-- Reports --}}
 
-</ul>
+
+              </ul>
 
 
 

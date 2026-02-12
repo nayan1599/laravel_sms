@@ -7,36 +7,29 @@ use App\Models\Period;
 use App\Models\Subject;
 use App\Models\Teachers;
 use App\Models\ClassModel;
+use App\Models\Room;
+use App\Models\Week;
 use Illuminate\Http\Request;
 
 class TimetableController extends Controller
 {
     public function index()
     {
-        $timetables = Timetable::with([
-            'academicYear',
-            'class',
-            'period',
-            'subject',
-            'teacher',
-            'room'
-        ])
-        ->orderBy('day_of_week')
-        ->orderBy('period_id')
-        ->get();
-
-        return view('timetables.index', compact('timetables'));
+        $timetable = Timetable::latest()->paginate(10);
+        return view('timetables.index', compact('timetable'));
     }
 
     public function create()
     {
         return view('timetables.create', [
-            
+
             'classes' => ClassModel::all(),
             'periods' => Period::orderBy('sort_order')->get(),
             'subjects' => Subject::all(),
             'teachers' => Teachers::all(),
-        
+            'rooms' => Room::all(),
+            'weeks' => Week::all(),
+
         ]);
     }
 
@@ -62,12 +55,12 @@ class TimetableController extends Controller
     {
         return view('timetables.edit', [
             'timetable' => $timetable,
-            
+
             'classes' => ClassModel::all(),
             'periods' => Period::orderBy('sort_order')->get(),
             'subjects' => Subject::all(),
             'teachers' => Teachers::all(),
-         ]);
+        ]);
     }
 
     public function update(Request $request, Timetable $timetable)

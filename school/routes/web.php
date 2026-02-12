@@ -40,6 +40,8 @@ use App\Http\Controllers\{
     TagController,
     TagTypeController,
     PeriodController,
+    TimetableController,
+    RoomController,
 };
 use Symfony\Component\Routing\Router;
 
@@ -199,12 +201,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'certificates'   => CertificateController::class,
         'users'          => UserController::class,
         'students'       => StudentController::class,
-        'leave'         => LeaveApplicationController::class,
-        'accounts'      => AccountController::class,
-        'salaries'        => SalaryController::class,
-        'tags' => TagController::class,
-        'types' => TagTypeController::class,
-        'periods' =>  PeriodController::class,
+        'leave'          => LeaveApplicationController::class,
+        'accounts'       => AccountController::class,
+        'salaries'       => SalaryController::class,
+        'tags'           => TagController::class,
+        'types'          => TagTypeController::class,
+        'periods'        =>  PeriodController::class,
+        'timetables'     => TimetableController::class,
+        'rooms'          => RoomController::class,
 
     ]);
 

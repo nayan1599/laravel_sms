@@ -13,11 +13,17 @@ use Illuminate\Http\Request;
 
 class TimetableController extends Controller
 {
-    public function index()
-    {
-        $timetable = Timetable::latest()->paginate(10);
-        return view('timetables.index', compact('timetable'));
-    }
+public function index()
+{
+ 
+    $classes = Timetable::with('class', 'period')
+        ->select('class_id')
+        ->groupBy('class_id')
+        ->paginate(10);
+
+    return view('timetables.index', compact('classes'));
+}
+
 
     public function create()
     {
@@ -63,6 +69,29 @@ class TimetableController extends Controller
         ]);
     }
 
+
+
+
+  public function show($id)
+{
+    $timetable = Timetable::with([
+        'class',
+        'subject',
+        'teacher',
+        'period',
+        'weeks'
+        
+    ])
+    ->where('class_id', $id)
+    ->orderBy('day_of_week')
+    ->orderBy('period_id')
+    ->get();
+
+    $class = ClassModel::findOrFail($id);
+     $weeks = Week::orderBy('id')->get(); // dynamic days
+    return view('timetables.show', compact('timetable', 'class', 'weeks'));
+}
+
     public function update(Request $request, Timetable $timetable)
     {
         $timetable->update($request->all());
@@ -75,7 +104,6 @@ class TimetableController extends Controller
     public function destroy(Timetable $timetable)
     {
         $timetable->delete();
-
         return back()->with('success', 'Timetable deleted');
     }
 }

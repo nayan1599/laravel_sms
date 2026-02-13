@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 12, 2026 at 02:30 AM
+-- Generation Time: Feb 13, 2026 at 03:29 PM
 -- Server version: 10.11.14-MariaDB-0ubuntu0.24.04.1
 -- PHP Version: 8.3.6
 
@@ -20,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `school_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `academic_years`
+--
+
+CREATE TABLE `academic_years` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -269,24 +285,48 @@ CREATE TABLE `classes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `class_name` varchar(50) NOT NULL,
   `class_numeric` int(11) NOT NULL,
-  `class_code` varchar(10) DEFAULT NULL,
+  `class_code` varchar(100) DEFAULT NULL,
+  `section` varchar(10) DEFAULT NULL,
+  `group_name` varchar(20) DEFAULT NULL,
   `medium` enum('bangla','english','bilingual') NOT NULL DEFAULT 'bangla',
   `shift` enum('morning','day','evening') NOT NULL DEFAULT 'morning',
+  `session_year` smallint(5) UNSIGNED DEFAULT NULL,
+  `capacity` smallint(5) UNSIGNED DEFAULT 60,
+  `room_id` bigint(20) UNSIGNED DEFAULT NULL,
   `class_teacher_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  `exam_group` varchar(20) DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `classes`
 --
 
-INSERT INTO `classes` (`id`, `class_name`, `class_numeric`, `class_code`, `medium`, `shift`, `class_teacher_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'One', 1, NULL, 'bangla', 'evening', 12, 'active', '2025-12-22 11:05:45', '2026-01-14 11:31:27'),
-(2, 'Two', 2, NULL, 'bangla', 'morning', 12, 'active', '2025-12-22 11:06:02', '2026-01-14 11:31:35'),
-(3, 'Three', 3, NULL, 'bangla', 'morning', 1, 'active', '2025-12-22 11:06:25', '2026-01-14 11:31:43'),
-(4, 'Four', 4, NULL, 'bangla', 'morning', NULL, 'active', '2025-12-22 11:06:43', '2025-12-22 11:06:43');
+INSERT INTO `classes` (`id`, `class_name`, `class_numeric`, `class_code`, `section`, `group_name`, `medium`, `shift`, `session_year`, `capacity`, `room_id`, `class_teacher_id`, `exam_group`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'নবম শ্রেণি', 9, '9A-SCI', 'A', 'science', 'bangla', 'morning', 2025, 60, 12, 45, 'JSC-2025', 'active', NULL, NULL, NULL),
+(2, 'নবম শ্রেণি', 9, '9B-SCI', 'B', 'science', 'bangla', 'morning', 2025, 58, 14, 47, 'JSC-2025', 'active', NULL, NULL, NULL),
+(3, 'দশম শ্রেণি', 10, '10A-SCI', 'A', 'science', 'bangla', 'morning', 2025, 62, 13, 46, 'SSC-2025', 'active', NULL, NULL, NULL),
+(4, 'একাদশ শ্রেণি', 11, 'HSC-2025-SCI-A', 'A', 'science', 'bangla', 'morning', 2025, 65, 5, 32, 'HSC-2026', 'active', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `class_teachers`
+--
+
+CREATE TABLE `class_teachers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `class_id` bigint(20) UNSIGNED NOT NULL,
+  `section_id` bigint(20) UNSIGNED NOT NULL,
+  `teacher_id` bigint(20) UNSIGNED NOT NULL,
+  `academic_year` varchar(20) NOT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -745,17 +785,17 @@ CREATE TABLE `periods` (
 --
 
 INSERT INTO `periods` (`id`, `period_number`, `name`, `start_time`, `end_time`, `is_break`, `sort_order`, `created_at`, `updated_at`) VALUES
-(32, 0, 'Assembly / Morning Prayer', '09:45:00', '10:00:00', 1, 0, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(33, 1, '1st Period', '10:00:00', '10:45:00', 0, 1, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(34, 2, '2nd Period', '10:45:00', '11:30:00', 0, 2, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(35, 3, '3rd Period', '11:30:00', '12:15:00', 0, 3, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(36, 4, 'Tiffin / Short Break', '12:15:00', '12:30:00', 1, 4, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(37, 5, '4th Period', '12:30:00', '01:15:00', 0, 5, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(38, 6, '5th Period', '01:15:00', '02:00:00', 0, 6, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(39, 7, 'Lunch & Prayer Break', '02:00:00', '02:30:00', 1, 7, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(40, 8, '6th Period', '02:30:00', '03:15:00', 0, 8, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(41, 9, '7th Period', '03:15:00', '04:00:00', 0, 9, '2026-02-02 02:14:58', '2026-02-02 02:14:58'),
-(42, 10, 'Last Bell / Co-curricular', '04:00:00', '04:15:00', 1, 10, '2026-02-02 02:14:58', '2026-02-02 02:14:58');
+(1, 0, 'Assembly / Morning Prayer', '09:45:00', '10:00:00', 1, 0, '2026-02-02 02:14:58', '2026-02-12 15:45:55'),
+(2, 1, '1st Period', '10:00:00', '10:45:00', 0, 1, '2026-02-02 02:14:58', '2026-02-12 15:46:04'),
+(3, 2, '2nd Period', '10:45:00', '11:30:00', 0, 2, '2026-02-02 02:14:58', '2026-02-12 15:46:11'),
+(4, 3, '3rd Period', '11:30:00', '12:15:00', 0, 3, '2026-02-02 02:14:58', '2026-02-12 15:46:16'),
+(5, 4, 'Tiffin / Short Break', '12:15:00', '12:30:00', 1, 4, '2026-02-02 02:14:58', '2026-02-12 15:46:23'),
+(6, 5, '4th Period', '12:30:00', '01:15:00', 0, 5, '2026-02-02 02:14:58', '2026-02-12 15:46:27'),
+(8, 6, '5th Period', '01:15:00', '02:00:00', 0, 6, '2026-02-02 02:14:58', '2026-02-12 15:46:31'),
+(9, 7, 'Lunch & Prayer Break', '02:00:00', '02:30:00', 1, 7, '2026-02-02 02:14:58', '2026-02-12 15:46:33'),
+(10, 8, '6th Period', '02:30:00', '03:15:00', 0, 8, '2026-02-02 02:14:58', '2026-02-12 15:46:37'),
+(11, 9, '7th Period', '03:15:00', '04:00:00', 0, 9, '2026-02-02 02:14:58', '2026-02-12 15:46:40'),
+(12, 10, 'Last Bell / Co-curricular', '04:00:00', '04:15:00', 1, 10, '2026-02-02 02:14:58', '2026-02-12 15:46:49');
 
 -- --------------------------------------------------------
 
@@ -784,6 +824,45 @@ CREATE TABLE `posts` (
 INSERT INTO `posts` (`id`, `category_id`, `title`, `slug`, `excerpt`, `content`, `feature_image`, `status`, `published_at`, `created_at`, `updated_at`) VALUES
 (2, 1, 'sdfd sdfjd dfjdshfjd', 'sdfd-sdfjd-dfjdshfjd', NULL, NULL, NULL, 1, NULL, '2025-12-23 11:14:46', '2025-12-23 11:14:46'),
 (3, 2, 'weewrwwerwwer', 'weewrwwerwwer', 'werwerwrw', 'sdfsfsfdf', NULL, 1, NULL, '2026-01-06 11:25:39', '2026-01-06 11:25:39');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `room_name` varchar(100) NOT NULL,
+  `room_number` varchar(50) NOT NULL,
+  `capacity` int(10) UNSIGNED DEFAULT 0,
+  `floor` varchar(50) DEFAULT NULL,
+  `building` varchar(100) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rooms`
+--
+
+INSERT INTO `rooms` (`id`, `room_name`, `room_number`, `capacity`, `floor`, `building`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Lecture Hall A', 'A-101', 120, '1st Floor', 'Academic Building-1', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(2, 'Lecture Hall B', 'A-102', 100, '1st Floor', 'Academic Building-1', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(3, 'Lecture Theatre', 'A-201', 180, '2nd Floor', 'Academic Building-1', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(4, 'Computer Lab-1', 'C-301', 60, '3rd Floor', 'Computer Science Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(5, 'Computer Lab-2 (Advanced)', 'C-302', 40, '3rd Floor', 'Computer Science Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(6, 'Physics Lab', 'S-101', 50, 'Ground Floor', 'Science Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(7, 'Chemistry Lab', 'S-102', 45, 'Ground Floor', 'Science Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(8, 'Seminar Room', 'B-105', 35, '1st Floor', 'Business Studies Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(9, 'Library Reading Room', 'L-001', 80, 'Ground Floor', 'Central Library', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(10, 'Tutorial Room Small', 'A-305', 25, '3rd Floor', 'Academic Building-1', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(11, 'Tutorial Room Medium', 'A-306', 40, '3rd Floor', 'Academic Building-1', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(12, 'Auditorium', 'AUD-01', 350, 'Ground Floor', 'Auditorium Complex', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(13, 'Old Lecture Hall (Renovation)', 'A-005', 90, 'Ground Floor', 'Academic Building-1', 0, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(14, 'Drawing Studio', 'F-201', 55, '2nd Floor', 'Fine Arts Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59'),
+(15, 'Language Lab', 'H-110', 30, '1st Floor', 'Humanities Building', 1, '2026-02-12 14:32:59', '2026-02-12 14:32:59');
 
 -- --------------------------------------------------------
 
@@ -884,9 +963,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('1pleoYAoRXPNTqxXVjvXSU7V8r4MkMqSBOOBDct0', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQkdxVEF1VThZN1ByV1JraXRHbW40NFNoQW9mS3ZNeEI4d2FkaXRTZiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wZXJpb2RzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1770357913),
-('3Gv3xu64sXINaqM8DzAeqU6Hdq08kxzSmFw0L1Fk', NULL, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiM2Ewc0VjMFk4R0Y0M0RYU0pDSWJ3VWYwVTJyR1htM0ZoUkFYd09xaCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1770857193),
-('Y8WFKtqNsQ4wYSy0pp9TXwR7hnml0Xw4KMo7stoB', 1, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiclgyeThJZDlmUnBnaGZ2emZ6ZWpyeFcxOTdnU2VickhsdG54bThWdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wZXJpb2RzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1770863278);
+('e4Ki0tc4kfP0kAQtiyh2mvfv1XoJkUJJllR4TQtt', 15, '127.0.0.1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTVo4aU5PSDluQnJ2MmZmcnd6eEl0Slg4eThVcjlGc09TWGkyYmhCRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jbGFzcy10ZWFjaGVycy9jcmVhdGUiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxNTt9', 1770996533);
 
 -- --------------------------------------------------------
 
@@ -1157,27 +1234,27 @@ CREATE TABLE `timetables` (
 --
 
 INSERT INTO `timetables` (`id`, `academic_year_id`, `class_id`, `day_of_week`, `period_id`, `subject_id`, `teacher_id`, `room_id`, `is_active`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 1, 6, 101, 1, '1st period Bangla', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(2, 1, 1, 1, 2, 2, 6, 101, 1, 'English Grammar', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(3, 1, 1, 1, 4, 3, 5, 102, 1, 'Mathematics', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(4, 1, 1, 1, 5, 4, 7, 103, 1, 'Physics Theory', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(5, 1, 1, 1, 7, 5, 8, 104, 1, 'Chemistry', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(6, 1, 1, 1, 9, 6, 8, 104, 1, 'Biology last period', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(7, 1, 1, 2, 1, 3, 5, 102, 1, 'Math warm-up', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(8, 1, 1, 2, 2, 4, 7, 103, 1, 'Physics', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(9, 1, 1, 2, 4, 6, 8, 104, 1, 'Biology Lab', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(10, 1, 1, 2, 5, 2, 6, 101, 1, 'English 2nd paper', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(11, 1, 1, 2, 7, 1, 6, 101, 1, 'Bangla Literature', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(12, 1, 2, 3, 1, 2, 6, 101, 1, 'English for 9B', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(13, 1, 2, 3, 2, 1, 6, 101, 1, 'Bangla', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(14, 1, 2, 3, 4, 5, 8, 104, 1, 'Chemistry Practical', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(15, 1, 2, 3, 5, 3, 5, 102, 1, 'Higher Math', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(16, 1, 2, 3, 7, 4, 7, 103, 1, 'Physics Numericals', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(17, 1, 1, 4, 1, 6, 8, 104, 1, 'Biology Diagrams', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(18, 1, 1, 4, 2, 3, 5, 102, 1, 'Math Test Preparation', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(19, 1, 1, 4, 4, 2, 6, 101, 1, 'English Comprehension', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(20, 1, 1, 4, 5, 1, 6, 101, 1, 'Bangla Composition', '2026-02-02 02:13:16', '2026-02-02 02:13:16'),
-(21, 1, 1, 4, 7, 4, 7, 103, 1, 'Physics Revision', '2026-02-02 02:13:16', '2026-02-02 02:13:16');
+(1, 1, 1, 1, 1, 1, 1, 101, 1, '1st period Bangla', '2026-02-02 02:13:16', '2026-02-12 15:44:28'),
+(2, 1, 1, 1, 2, 2, 1, 101, 1, 'English Grammar', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(3, 1, 1, 1, 4, 3, 1, 102, 1, 'Mathematics', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(4, 1, 1, 1, 5, 4, 1, 103, 1, 'Physics Theory', '2026-02-02 02:13:16', '2026-02-12 15:44:46'),
+(5, 1, 1, 1, 7, 5, 1, 104, 1, 'Chemistry', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(6, 1, 1, 1, 9, 6, 1, 104, 1, 'Biology last period', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(7, 1, 1, 2, 1, 3, 1, 102, 1, 'Math warm-up', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(8, 1, 1, 2, 2, 4, 1, 103, 1, 'Physics', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(9, 1, 1, 2, 4, 6, 1, 104, 1, 'Biology Lab', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(10, 1, 1, 2, 5, 2, 1, 101, 1, 'English 2nd paper', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(11, 1, 1, 2, 7, 1, 1, 101, 1, 'Bangla Literature', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(12, 1, 2, 3, 1, 2, 1, 101, 1, 'English for 9B', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(13, 1, 2, 3, 2, 1, 1, 101, 1, 'Bangla', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(14, 1, 2, 3, 4, 5, 1, 104, 1, 'Chemistry Practical', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(15, 1, 2, 3, 5, 3, 1, 102, 1, 'Higher Math', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(16, 1, 2, 3, 7, 4, 1, 103, 1, 'Physics Numericals', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(17, 1, 1, 4, 1, 6, 1, 104, 1, 'Biology Diagrams', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(18, 1, 1, 4, 2, 3, 1, 102, 1, 'Math Test Preparation', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(19, 1, 1, 4, 4, 2, 1, 101, 1, 'English Comprehension', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(20, 1, 1, 4, 5, 1, 1, 101, 1, 'Bangla Composition', '2026-02-02 02:13:16', '2026-02-12 15:45:00'),
+(21, 1, 1, 4, 7, 4, 1, 103, 1, 'Physics Revision', '2026-02-02 02:13:16', '2026-02-12 15:45:00');
 
 -- --------------------------------------------------------
 
@@ -1204,7 +1281,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone_number`, `photo`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
-(1, 'Nayan', 'wsnayan6@gmail.com', NULL, 'uploads/user/1767454358.jpg', NULL, '$2y$12$Vi7lqBOz/JnKV48O3ByVvue7jIrCAW5RrQM8mkUmOyBHfd1X4JFdG', 'RJSM4ZyAWHV9xO5uIdIQyCC5vHPB5xgxCD417E1VfRUYgqTWc7S950oahiJh', '2025-12-22 10:45:21', '2026-01-03 09:32:38', 'admin'),
+(1, 'Nayan', 'wsnayan6@gmail.com', NULL, 'uploads/user/1767454358.jpg', NULL, '$2y$12$Vi7lqBOz/JnKV48O3ByVvue7jIrCAW5RrQM8mkUmOyBHfd1X4JFdG', 'dcozJys77o4hKlWgdV3mhlHUsRWFVnFmC7WZ1dj2REmIRvJ6friKjtk8D4ua', '2025-12-22 10:45:21', '2026-01-03 09:32:38', 'admin'),
 (2, 'sumaiya', 'sumaiya@gmail.com', '01621881846', NULL, NULL, '$2y$12$DtSmtbLCg2FhKbgFf3M6HuPeio92lm8ZnRqbsGDm5xBsYytnVH2R2', NULL, '2025-12-30 11:05:02', '2025-12-30 21:47:19', 'admin'),
 (3, 'Ripon', 'ripon@gmail.com', NULL, NULL, NULL, '$2y$12$YGSNOp15IG2T.7zW9ZwOrOLLQIb3U/TVySFgzgzXmRA3SK6oSB4EG', NULL, '2025-12-30 11:14:07', '2025-12-30 21:47:39', 'student'),
 (4, 'Foysal', 'foysal@gmail.com', NULL, NULL, NULL, '$2y$12$Zyb1MgNragvrEWeN/XkV.O8ksDYMMJAhjZn1eBspzO63O52AcNWc6', NULL, '2025-12-30 11:16:04', '2025-12-30 11:16:04', 'teacher'),
@@ -1215,9 +1292,43 @@ INSERT INTO `users` (`id`, `name`, `email`, `phone_number`, `photo`, `email_veri
 (15, 'pagorr', 'pagol@gmail.com', '01930502915', NULL, NULL, '$2y$12$Lrny4Y0AKP0USdTgvKEse.juL60teWQoMarw1v.angGFfoSrT.VBe', NULL, '2026-01-18 21:53:41', '2026-01-18 21:53:41', 'teacher'),
 (16, 'new teacher', 'new@gmail.com', '01621881846', NULL, NULL, '$2y$12$fH5N/dRPUUJJUzRLN/SQmOLCyq5G/zcWPXr4qPT.1iYnPIHOJ6lse', NULL, '2026-01-19 18:53:53', '2026-01-19 18:53:53', 'teacher');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `weeks`
+--
+
+CREATE TABLE `weeks` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
+  `day_name` varchar(20) NOT NULL,
+  `day_bn` varchar(20) NOT NULL,
+  `short_name` varchar(10) NOT NULL,
+  `is_working_day` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `weeks`
+--
+
+INSERT INTO `weeks` (`id`, `day_name`, `day_bn`, `short_name`, `is_working_day`) VALUES
+(1, 'Sunday', 'রবিবার', 'Sun', 1),
+(2, 'Monday', 'সোমবার', 'Mon', 1),
+(3, 'Tuesday', 'মঙ্গলবার', 'Tue', 1),
+(4, 'Wednesday', 'বুধবার', 'Wed', 1),
+(5, 'Thursday', 'বৃহস্পতিবার', 'Thu', 1),
+(6, 'Friday', 'শুক্রবার', 'Fri', 0),
+(7, 'Saturday', 'শনিবার', 'Sat', 1);
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `academic_years`
+--
+ALTER TABLE `academic_years`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `accounts`
@@ -1281,7 +1392,15 @@ ALTER TABLE `certificates`
 --
 ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `classes_class_code_unique` (`class_code`);
+  ADD UNIQUE KEY `classes_class_code_unique` (`class_code`),
+  ADD KEY `idx_class_search` (`class_numeric`,`section`,`shift`,`status`);
+
+--
+-- Indexes for table `class_teachers`
+--
+ALTER TABLE `class_teachers`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_class_section_year` (`class_id`,`section_id`,`academic_year`);
 
 --
 -- Indexes for table `departments`
@@ -1407,6 +1526,13 @@ ALTER TABLE `posts`
   ADD UNIQUE KEY `posts_slug_unique` (`slug`);
 
 --
+-- Indexes for table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `room_number` (`room_number`);
+
+--
 -- Indexes for table `salaries`
 --
 ALTER TABLE `salaries`
@@ -1509,8 +1635,22 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `weeks`
+--
+ALTER TABLE `weeks`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `day_name` (`day_name`),
+  ADD UNIQUE KEY `day_bn` (`day_bn`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `academic_years`
+--
+ALTER TABLE `academic_years`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `accounts`
@@ -1559,6 +1699,12 @@ ALTER TABLE `certificates`
 --
 ALTER TABLE `classes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `class_teachers`
+--
+ALTER TABLE `class_teachers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `departments`
@@ -1655,6 +1801,12 @@ ALTER TABLE `periods`
 --
 ALTER TABLE `posts`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `rooms`
+--
+ALTER TABLE `rooms`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `salaries`

@@ -1,78 +1,64 @@
-@extends('layouts.layouts')
+@extends('layouts.app')
 
 @section('content')
+
 <div class="container">
-    <h2 class="main-title mb-4">Time Table List</h2>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-<div class="text-end">
-    <a class="btn btn-primary" href="{{ route('timetables.create') }}">Create</a>
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-bold">
+            📘 Class Routine List
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Class Name</th>
+                   
+                        <th>Capacity</th>
+                        <th>Group Name</th>
+                        <th>Exam Group</th>
+                        <th>Medium</th>
+                        <th>Section</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($classes as $key => $row)
+                    <tr>
+                        <td>{{ $classes->firstItem() + $key }}</td>
+                        <td class="fw-semibold"> {{ $row->class->class_name ?? '' }}</td>
+                        <td>{{ $row->class->capacity }}</td>
+                        <td>{{ $row->class->group_name}}</td>
+                        <td>{{ $row->class->exam_group}}</td>
+                        <td>{{ $row->class->medium}}</td>
+                        <td>{{ $row->class->section}}</td>
+                        <td>
+                            <a href="{{ route('timetables.show', $row->class_id) }}"
+                                class="btn btn-sm btn-info text-white">
+                                View Full Routine
+                            </a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3">
+                            <div class="alert alert-warning mb-0">
+                                No Routine Found
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{ $classes->links() }}
+
+        </div>
+    </div>
+
 </div>
-    <table class="table table-bordered table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Academic Year</th>
-                <th>Class</th>
-                <th>Day</th>
-                <th>Period</th>
-                <th>Subject</th>
-                <th>Teacher</th>
-                <th>Room</th>
-                <th>Status</th>
-                <th width="120">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($timetable as $routine)
-            <tr>
-                <td>{{ $routine->academicYear->name ?? 'N/A' }}</td>
-                <td>{{ $routine->class->class_name ?? 'N/A' }}</td>
 
-                <td>
-                    @php
-                        $days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-                    @endphp
-                    {{ $days[$routine->day_of_week - 1] ?? 'N/A' }}
-                </td>
-
-                <td>{{ $routine->period->name ?? 'N/A' }}</td>
-                <td>{{ $routine->subject->subject_name ?? 'N/A' }}</td>
-                <td>{{ $routine->teacher->name ?? 'N/A' }}</td>
-                <td>{{ $routine->room->room_name ?? '-' }}</td>
-
-                <td>
-                    @if($routine->is_active)
-                        <span class="badge bg-success">Active</span>
-                    @else
-                        <span class="badge bg-danger">Inactive</span>
-                    @endif
-                </td>
-
-                <td>
-                    <a href="{{ route('timetables.edit', $routine->id) }}" class="btn btn-sm btn-warning">Edit</a>
-
-                    <form action="{{ route('timetables.destroy', $routine->id) }}" 
-                          method="POST" 
-                          style="display:inline-block">
-                        @csrf 
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" 
-                                onclick="return confirm('Delete this routine?')">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="9" class="text-center text-muted">
-                    No timetable data found.
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
-</div>
 @endsection

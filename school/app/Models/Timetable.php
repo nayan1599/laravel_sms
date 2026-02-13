@@ -25,7 +25,8 @@ class Timetable extends Model
 
     /* ================= Relationships ================= */
 
-  
+ 
+
 
     public function class()
     {
@@ -46,6 +47,8 @@ class Timetable extends Model
     {
         return $this->belongsTo(Teachers::class);
     }
-
+public function weeks(){
+    return $this->belongsTo(Week::class,  'day_of_week');
+}
     
 }

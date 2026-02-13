@@ -42,6 +42,7 @@ use App\Http\Controllers\{
     PeriodController,
     TimetableController,
     RoomController,
+    ClassTeacherController,
 };
 use Symfony\Component\Routing\Router;
 
@@ -209,6 +210,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'periods'        =>  PeriodController::class,
         'timetables'     => TimetableController::class,
         'rooms'          => RoomController::class,
+        'class-teachers' => ClassTeacherController::class
 
     ]);
 

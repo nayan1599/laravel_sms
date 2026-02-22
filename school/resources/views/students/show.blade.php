@@ -124,6 +124,11 @@
                 <td colspan="3">{{ $student->previous_school ?? 'N/A' }}</td>
             </tr>
             <tr>
+                <th>Residential Type</th>
+                <td colspan="3">{{ ucfirst(str_replace('_', ' ', $student->residential_type)) ?? 'N/A' }}</td>  
+                
+            </tr>
+            <tr>
                 <th>Last Exam Result</th>
                 <td colspan="3">{{ $student->last_exam_result ?? 'N/A' }}</td>
             </tr>

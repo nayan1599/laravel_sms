@@ -10,7 +10,7 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::with(['class', 'teacher'])->paginate(10);
+        $subjects = Subject::with(['class', 'teacher'])->paginate(30);
         return view('subjects.index', compact('subjects'));
     }
 

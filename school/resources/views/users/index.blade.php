@@ -1,7 +1,3 @@
-
-
-
-
 @extends('layouts.layouts')
 @section('title', 'User Management')
 @if(auth()->user()->role === 'admin')
@@ -18,6 +14,43 @@
             <i class="bi bi-plus-circle me-1"></i> Add User
         </a>
     </div>
+
+
+    <div class="row">
+        <div class="col-md-3 col-sm-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text display-6 fw-bold">{{ $total_user }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Admins</h5>
+                    <p class="card-text display-6 fw-bold">{{ $total_admin }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Teachers</h5>
+                    <p class="card-text display-6 fw-bold">{{ $total_teacher }}</p>
+                </div>
+            </div>
+        </div>
+            <div class="col-md-3 col-sm-12 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Students</h5>
+                    <p class="card-text display-6 fw-bold">{{ $total_students }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {{-- Success Alert --}}
     @if(session('success'))
@@ -145,17 +178,16 @@
 
 @endsection
 @endif
- @section('content')
+@section('content')
 <div class="container-fluid py-4">
 
- <div class="alert alert-danger d-flex align-items-center mb-3">
-    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-    <div>
-        <strong>অনুমতি সীমাবদ্ধ!</strong>
-        এই পেজটি শুধুমাত্র <b>Admin</b> ব্যবহারকারীর জন্য।
+    <div class="alert alert-danger d-flex align-items-center mb-3">
+        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+        <div>
+            <strong>অনুমতি সীমাবদ্ধ!</strong>
+            এই পেজটি শুধুমাত্র <b>Admin</b> ব্যবহারকারীর জন্য।
+        </div>
     </div>
-</div>
 
 </div>
 @endsection
-

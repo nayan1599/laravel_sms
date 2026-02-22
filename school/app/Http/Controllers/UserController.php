@@ -16,9 +16,13 @@ class UserController extends Controller
             ->orWhere('email', 'like', '%' . $request->search . '%')
             ->paginate(10);
 
+        $total_user = User::count();
+        $total_admin = User::where('role', 'admin')->count();
+        $total_teacher = User::where('role', 'teacher')->count();
+        $total_students = User::where('role', 'student')->count();
 
         // $users = User::latest()->get();
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users', 'total_user', 'total_admin', 'total_teacher', 'total_students'));
     }
 
     public function create()
@@ -32,7 +36,6 @@ class UserController extends Controller
     {
         $userId = decrypt($id); // decode
         $user = User::findOrFail($userId);
-        // $student = $user->student;
         return view('users.show', compact('user',));
     }
 
@@ -55,10 +58,6 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
-
-
-
-
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '.' . $file->getClientOriginalExtension();
@@ -83,9 +82,6 @@ class UserController extends Controller
 
         return view('users.edit', compact('user'));
     }
-
-
-
     public function update(Request $request, User $user)
     {
         $request->validate([

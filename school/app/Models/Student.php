@@ -11,7 +11,6 @@ class Student extends Model
 
     protected $fillable = [
         'name',
-        'user_id',
         'date_of_birth',
         'gender',
         'blood_group',
@@ -32,25 +31,27 @@ class Student extends Model
         'previous_school',
         'last_exam_result',
         'admission_date',
+        'residential_type',
         'remarks',
-        'photo'
-    ];
+        'photo',
+        'user_id', // Add this line
+        ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function studentClass()
+    public function class()
     {
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
-     public function class()
+   public function bloodGroup()
     {
-        return $this->belongsTo(ClassModel::class, 'class_id');
+        return $this->belongsTo(BloodGroup::class, 'blood_group', 'name');
     }
-   
     public function section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class, 'section_id');
     }
 }

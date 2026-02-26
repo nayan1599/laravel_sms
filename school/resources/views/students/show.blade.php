@@ -1,13 +1,9 @@
 @extends('layouts.layouts')
- 
-
-@section('title', 'Student Admission Form')
-
-
-
+ @section('title', 'Student Admission Form')
 @section('content')
 
-<div class="text-end">
+<div class="text-end mb-3">
+    <a href="{{ route('students.index') }}" class="btn btn-secondary">Back to Students List</a>
      <button class="btn btn-success no-print" onclick="printInvoice('printArea')">
             <i class="bi bi-printer"></i> Print
         </button>
@@ -39,7 +35,7 @@
                     </tr>
                     <tr>
                         <th>Date of Birth</th>
-                        <td>{{ $student->dob ?? 'N/A' }}</td>
+                        <td>{{ $student->date_of_birth ?? 'N/A' }}</td>
                     </tr>
                     <tr>
                         <th>Gender</th>
@@ -71,7 +67,7 @@
         <tbody>
             <tr>
                 <th>Phone</th>
-                <td>{{ $student->phone ?? 'N/A' }}</td>
+                <td>{{ $student->contact ?? 'N/A' }}</td>
                 <th>Email</th>
                 <td>{{ $student->email ?? 'N/A' }}</td>
             </tr>
@@ -96,8 +92,8 @@
                 <td>{{ $student->mother_name ?? 'N/A' }}</td>
             </tr>
             <tr>
-                <th>Guardian Phone</th>
-                <td>{{ $student->guardian_phone ?? 'N/A' }}</td>
+                <th>Guardian Contact</th>
+                <td>{{ $student->guardian_contact ?? 'N/A' }}</td>
                 <th>Occupation</th>
                 <td>{{ $student->guardian_occupation ?? 'N/A' }}</td>
             </tr>
@@ -109,7 +105,7 @@
         <tbody>
             <tr>
                 <th>Class</th>
-                <td>{{ $student->studentClass->class_name ?? 'N/A' }}</td>
+                <td>{{ $student->class->class_name ?? 'N/A' }}</td>
                 <th>Section</th>
                 <td>{{ $student->section->section_name ?? 'N/A' }}</td>
             </tr>
@@ -135,8 +131,12 @@
         </tbody>
     </table>
 
-    <h5 class="mt-4">Remarks</h5>
-    <p>{{ $student->remarks ?? 'N/A' }}</p>
+    @if($student->remarks)
+        <h5 class="mt-4">Remarks</h5>
+        <p>{{ $student->remarks }}</p>
+    @else
+         
+    @endif
     
 </div>
 

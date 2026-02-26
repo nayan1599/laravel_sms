@@ -150,7 +150,7 @@
                             </td>
 
                             {{-- Class --}}
-                            <td>{{ $student->studentClass->class_name ?? 'N/A' }}</td>
+                            <td>{{ $student->class->class_name ?? 'N/A' }}</td>
 
                             {{-- Section --}}
                             <td>{{ $student->section->section_name ?? 'N/A' }}</td>
@@ -160,7 +160,7 @@
 
                             {{-- Contact --}}
                             <td>
-                                <div class="small">📞 {{ $student->phone ?? 'N/A' }}</div>
+                                <div class="small">📞 {{ $student->contact ?? 'N/A' }}</div>
                             </td>
 
                             {{-- Guardian --}}

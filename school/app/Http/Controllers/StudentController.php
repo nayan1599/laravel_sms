@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ClassModel;
 use App\Models\BloodGroup;
 use App\Models\Section;
+use App\Models\User;
 use App\Models\OrganizationSetting;
 use Illuminate\Validation\Rule;
 
@@ -56,18 +57,11 @@ public function store(Request $request)
         'permanent_address' => 'nullable|string',
         'father_name' => 'nullable|string|max:100',
         'mother_name' => 'nullable|string|max:100',
-        'guardian_phone' => 'nullable|string|max:20',
+        'guardian_contact' => 'nullable|string|max:20',
         'guardian_occupation' => 'nullable|string|max:100',
         'class_id' => 'required|exists:classes,id',
         'section_id' => 'nullable|exists:sections,id',
-        'roll' => [
-            'nullable',
-            'integer',
-            Rule::unique('students')->where(function ($query) use ($request) {
-                return $query->where('class_id', $request->class_id)
-                             ->where('section_id', $request->section_id);
-            }),
-        ],
+        'roll' =>  'nullable|string|max:20|unique:students,roll,NULL,id,class_id,',
         'previous_school' => 'nullable|string|max:150',
         'last_exam_result' => 'nullable|string|max:50',
         'admission_date' => 'nullable|date',
@@ -75,9 +69,7 @@ public function store(Request $request)
         'remarks' => 'nullable|string',
         'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
-
-    // Add user_id from authenticated user
-    $data['user_id'] = auth()->id(); // This adds the logged-in user's ID
+ 
 
     if ($request->hasFile('photo')) {
         $file = $request->file('photo');
@@ -86,7 +78,27 @@ public function store(Request $request)
         $data['photo'] = 'uploads/students/' . $filename;
     }
 
-    Student::create($data);
+    DB::transaction(function () use ($data) {
+
+        // 1️⃣ Create User
+        $user = User::create([
+            'name'     => $data['name'],     // ✅ array access
+            'email'    => $data['email'] ?? null,
+            'contact'    => $data['contact'],
+            'password' => bcrypt($data['contact']),
+            'role'     => 'student',
+        ]);
+
+        // 2️⃣ Attach user_id with application
+        $data['user_id'] = $user->id;
+       
+
+        // 3️⃣ Create Student Application
+        Student::create($data);
+    });
+
+
+
     
     return redirect()->route('students.index')
         ->with('success', 'Student Added Successfully!');
@@ -138,38 +150,32 @@ public function store(Request $request)
     public function update(Request $request, Student $student)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'gender' => 'nullable|in:male,female,other',
-            'blood_group' => 'nullable|string|max:10',
-            'religion' => 'nullable|string|max:50',
-            'nationality' => 'nullable|string|max:50',
-            'birth_cert_no' => 'nullable|string|max:30',
-            'contact' => 'nullable|string|max:20',
-            'email' => 'nullable|email|unique:students,email,' . $student->id,
-            'present_address' => 'nullable|string',
-            'permanent_address' => 'nullable|string',
-            'father_name' => 'nullable|string|max:100',
-            'mother_name' => 'nullable|string|max:100',
-            'guardian_phone' => 'nullable|string|max:20',
-            'guardian_occupation' => 'nullable|string|max:100',
-            'class_id' => 'required|exists:classes,id',
-            'section_id' => 'nullable|exists:sections,id',
-            'roll' => [
-                'nullable',
-                'integer',
-                Rule::unique('students')->where(function ($query) use ($request) {
-                    return $query->where('class_id', $request->class_id)
-                                 ->where('section_id', $request->section_id);
-                })->ignore($student->id),
-            ],
-            'previous_school' => 'nullable|string|max:150',
-            'last_exam_result' => 'nullable|string|max:50',
-            'admission_date' => 'nullable|date',
-            'residential_type' => 'nullable|string|max:50',
-            'remarks' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        'name' => 'required|string|max:255',
+        'date_of_birth' => 'nullable|date',
+        'gender' => 'nullable|in:male,female,other',
+        'blood_group' => 'nullable|string|max:10',
+        'religion' => 'nullable|string|max:50',
+        'nationality' => 'nullable|string|max:50',
+        'birth_cert_no' => 'nullable|string|max:30',
+        'contact' => 'nullable|string|max:20',
+        // 'email' => 'nullable|email|unique:students,email',
+        'present_address' => 'nullable|string',
+        'permanent_address' => 'nullable|string',
+        'father_name' => 'nullable|string|max:100',
+        'mother_name' => 'nullable|string|max:100',
+        'guardian_contact' => 'nullable|string|max:20',
+        'guardian_occupation' => 'nullable|string|max:100',
+        'class_id' => 'required|exists:classes,id',
+        'section_id' => 'nullable|exists:sections,id',
+        'roll' =>  'nullable|string|max:20|unique:students,roll,NULL,id,class_id,',
+        'previous_school' => 'nullable|string|max:150',
+        'last_exam_result' => 'nullable|string|max:50',
+        'admission_date' => 'nullable|date',
+        'residential_type' => 'nullable|string|max:50',
+        'remarks' => 'nullable|string',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
 
         if ($request->hasFile('photo')) {
             // Delete old photo if exists

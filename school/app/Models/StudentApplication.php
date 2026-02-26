@@ -13,6 +13,7 @@ class StudentApplication extends Model
         'name',
         'email',
         'phone',
+        'user_id',
         'gender',
         'class_id',
         'section_id',
@@ -30,7 +31,10 @@ class StudentApplication extends Model
         return $this->belongsTo(ClassModel::class, 'class_id');
     }
 
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     // ✅ Section Relation
     public function section()
     {

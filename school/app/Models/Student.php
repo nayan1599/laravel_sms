@@ -23,7 +23,7 @@ class Student extends Model
         'permanent_address',
         'father_name',
         'mother_name',
-        'guardian_phone',
+        'guardian_contact',
         'guardian_occupation',
         'class_id',
         'section_id',

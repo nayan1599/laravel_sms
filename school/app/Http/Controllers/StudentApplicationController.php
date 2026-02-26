@@ -60,6 +60,7 @@ public function store(Request $request)
         'photo'         => 'nullable|image|max:2048',
         'status'        => 'nullable|in:pending,approved,rejected',
     ]);
+     
 
     DB::transaction(function () use ($data) {
 
@@ -105,23 +106,21 @@ public function store(Request $request)
     public function approve($id)
     {
         $application = StudentApplication::findOrFail($id);
-
-        // 🔐 Already processed check
+      
         if ($application->status !== 'pending') {
             return back()->with('error', 'This application is already processed.');
         }
 
         DB::transaction(function () use ($application) {
- 
-            // 2️⃣ Create Student with user_id
+
             Student::create([
-          
-                'name'            => $application->name,
+               
+                'name'             => $application->name,
                 'guardian_contact' => $application->phone,
-                'gender'          => $application->gender,
-                'class_id'        => $application->class_id,
-                'father_name'     => $application->father_name,
-                'date_of_birth'   => $application->date_of_birth,
+                'gender'           => $application->gender,
+                'class_id'         => $application->class_id,
+                'father_name'      => $application->father_name,
+                'date_of_birth'    => $application->date_of_birth,
             ]);
 
             $application->update([

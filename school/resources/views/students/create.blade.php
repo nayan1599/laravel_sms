@@ -48,8 +48,8 @@
             </div>
 
             <div class="col-md-6 my-2">
-                <label class="form-label">Gender</label>
-                <select name="gender" class="form-select @error('gender') is-invalid @enderror">
+                <label class="form-label">Gender <span class="text-danger">*</span></label>
+                <select name="gender" class="form-select @error('gender') is-invalid @enderror" required>
                     <option value="">Select Gender</option>
                     <option value="male" {{ old('gender', $student->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
                     <option value="female" {{ old('gender', $student->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
@@ -175,12 +175,12 @@
 
             {{-- FIXED: Changed name from guardian_contact to guardian_phone to match controller --}}
             <div class="col-md-6 my-2">
-                <label class="form-label">Guardian Phone</label>
+                <label class="form-label">Guardian Contact</label>
                 <input type="text" 
-                       name="guardian_phone" 
-                       value="{{ old('guardian_phone', $student->guardian_phone ?? '') }}" 
-                       class="form-control @error('guardian_phone') is-invalid @enderror">
-                @error('guardian_phone')
+                       name="guardian_contact" 
+                       value="{{ old('guardian_contact', $student->guardian_contact ?? '') }}" 
+                       class="form-control @error('guardian_contact') is-invalid @enderror">
+                @error('guardian_contact')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -273,9 +273,10 @@
             </div>
 
             <div class="col-md-6 my-2">
-                <label class="form-label">Last Exam Result</label>
+                <label class="form-label">Last Exam Result <span class="text-danger">*</span></label>
                 <input type="text" 
                        name="last_exam_result" 
+                       required
                        value="{{ old('last_exam_result', $student->last_exam_result ?? '') }}" 
                        class="form-control @error('last_exam_result') is-invalid @enderror">
                 @error('last_exam_result')
